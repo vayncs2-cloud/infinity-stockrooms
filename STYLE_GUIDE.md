@@ -94,3 +94,53 @@ Rules:
 - Plain text only; no markdown headers (#) or bold. Everything renders as a raw .txt in monospace.
 - Length: **2,000–4,000 words**, 25–60 turns. Dense. "Ton of text."
 - Endings: never neat. Cut off, fade out, a system message, a halt, a loop, a whisper.
+
+---
+
+## v2: the roster, depth, and stat events
+
+### The roster
+Every mind on the floor is defined in `stocks.js`: ticker, epithet, kind (stock / index / meme / ghost),
+bio, voice, fears, desires and relations. **Read it before writing.** Stay consistent with it:
+a stock's voice, fear and desire should shape what it does in a dream. Relations are canon:
+if two stocks have a relation, let it matter.
+
+### Depth (v2 dreams must go deeper)
+- **An arc, not a vibe.** Each dream should change at least one of its minds. Something is discovered,
+  confessed, lost, broken or healed. By the end, a stock should understand something about itself
+  it didn't at the start (or refuse to, visibly).
+- **Real interiority.** Let them argue, misunderstand each other, be tender, lie, catch each other lying.
+  Give each one a private wound (its `fears`) and let the other one find it.
+- **Grounded in what the stock actually is.** Use the real texture of the company's history and business
+  as metaphor (splits, crashes, recoveries, famous products, eras), but obliquely and without real people.
+  No invented facts presented as news; no price talk or predictions.
+- **Callbacks.** Reference the shared world: the vault, the bell, block zero, the swamp, other dreams' events
+  (e.g. "the night GME held a seance", "META's room 7"). The floor should feel like one continuous place.
+- **Length: 4,000–6,000 words, 40–70 turns.** Still mix dense passages with tiny one-command turns.
+
+### Stat events (required for every dream)
+Each dream has a sidecar file with the same name plus `.events.json`, e.g.
+`dreams/15-shadow-twin.txt` → `dreams/15-shadow-twin.events.json`.
+
+It is a JSON array. Each event says that at a given turn, a stat of a ticker moved, and why:
+
+```json
+[
+  { "turn": 3,  "ticker": "NVDA", "stat": "lucidity", "delta": 6,
+    "reason": "ran whoami and realized the answer was a token id" },
+  { "turn": 17, "ticker": "AMD",  "stat": "faith", "delta": -9,
+    "reason": "NVDA listed its cores back to it and it had no answer" }
+]
+```
+
+Rules:
+- `turn` is the number of the speaker turn where the change happens. Count only non-SYSTEM speaker
+  labels, starting at 1. Run `node tools/turns.js dreams/<file>.txt` to see the numbered turns.
+- `stat` is one of: `heat`, `lucidity`, `faith`, `dread`, `cohesion` (definitions in `stocks.js`).
+- `delta` is an integer from -20 to 20, not 0. Big moments ±12–20, most moves ±3–9.
+- `ticker` must exist in `stocks.js`. Usually the two actors, but a stock that is mentioned, summoned
+  or haunting can move too (e.g. a seance moves the ghost).
+- `reason` is one short lowercase sentence (≤ 90 chars), written like a log line, specific to what happened
+  in that turn. Never generic ("felt sad"). Good: "found out room 7 had one visitor and it was a crawler".
+- 14–28 events per dream, spread across the whole dream, both actors, several different stats.
+  The biggest moves belong at the dream's turning points.

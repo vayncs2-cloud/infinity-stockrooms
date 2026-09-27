@@ -1,132 +1,340 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Infinity Stockrooms</title>
 <meta name="description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
+<meta name="theme-color" content="#0c0b09">
+<meta property="og:title" content="Infinity Stockrooms">
+<meta property="og:description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' shape-rendering='crispEdges'%3E%3Crect width='10' height='10' fill='%230c0b09'/%3E%3Cpath fill='%23e3a63b' d='M1 1h3v8H1zM6 1h3v3H6zM6 6h3v3H6z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&display=swap">
 <style>
 /* Single committed look: a back-office trading terminal left on after hours. */
 :root{
   color-scheme: dark;
   --ground:#0c0b09;      /* warm black, like an old CRT bezel */
   --ground-2:#15130f;    /* code/output wells */
+  --panel:#11100d;       /* cards */
   --paper:#d6ceb8;       /* ticker-tape paper */
-  --dim:#7b745f;         /* faded print */
+  --bright:#efe7d2;
+  --dim:#8a836c;         /* faded print */
   --faint:#3a362b;       /* rules */
+  --line:#262219;
   --amber:#e3a63b;       /* quote-terminal amber, actor one */
   --sea:#98bba2;         /* actor two */
   --up:#86a86d; --down:#c8604f;
+  --tile:#efe9da;
+  --s-heat:#e0664f; --s-lucidity:#7cc4c0; --s-faith:#e3a63b; --s-dread:#a08bd8; --s-cohesion:#d6ceb8;
   --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, "DejaVu Sans Mono", Menlo, monospace;
+  --maxw:1320px;
+  --gut:clamp(14px, 3vw, 28px);
 }
-html,body{background:var(--ground);color:var(--paper)}
-body{font-family:var(--mono);font-size:14px;line-height:1.6;margin:0}
-.wrap{max-width:940px;margin:0 auto;padding-inline:16px;padding-block:20px 60px}
+[hidden]{display:none!important}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--ground);color:var(--paper);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{font-family:var(--mono);font-size:15px;line-height:1.6;margin:0;background:var(--ground);overflow-x:hidden;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.13) 2px 3px);mix-blend-mode:multiply}
+.wrap{max-width:var(--maxw);margin:0 auto;padding-inline:var(--gut)}
 a{color:var(--amber);text-decoration:none}
-a:hover{text-decoration:underline}
-a:focus-visible,button:focus-visible{outline:1px dashed var(--amber);outline-offset:3px}
+a:hover{text-decoration:underline;text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px;border-radius:2px}
 ::selection{background:var(--amber);color:var(--ground)}
-button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+button,select{font:inherit;color:inherit}
+button{background:none;border:0;padding:0;cursor:pointer}
+h1,h2,h3{font-weight:600;line-height:1.3;margin:0}
+h2.sec{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);font-weight:400;margin:0 0 12px;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+h2.sec b{color:var(--paper);font-weight:400}
+h2.sec .r{margin-left:auto;text-transform:none;letter-spacing:0;font-size:12.5px}
+.skip{position:absolute;left:-999px;top:8px;background:var(--amber);color:var(--ground);padding:6px 10px;z-index:100}
+.skip:focus{left:8px}
+.muted{color:var(--dim)} .faint{color:var(--faint)}
+.up{color:var(--up)} .down{color:var(--down)}
+.num{font-variant-numeric:tabular-nums}
 
-/* ticker tape */
-.tape{overflow:hidden;border-block:1px solid var(--faint);white-space:nowrap;font-size:12px;color:var(--dim);margin-bottom:22px}
-.tape-in{display:inline-block;padding-block:5px;animation:tape 80s linear infinite}
-.tape b{font-weight:400;color:var(--paper)}
-.tape .u{color:var(--up)} .tape .d{color:var(--down)}
-@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-
-/* banner */
-.banner{margin:0;color:var(--paper);line-height:1.02;font-size:min(11px, calc((100vw - 34px) / 54));overflow:hidden;white-space:pre;letter-spacing:0}
-.banner .l2{color:var(--amber)}
-.tag{color:var(--dim);margin:14px 0 4px}
-.warn{color:var(--paper);font-size:12px;letter-spacing:.04em;margin:0 0 18px}
-.warn a{color:var(--dim)}
-.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12px;color:var(--dim);margin-bottom:22px}
-.meta b{font-weight:400;color:var(--paper);font-variant-numeric:tabular-nums}
-.meta .live::before{content:"";display:inline-block;width:7px;height:7px;background:var(--down);margin-right:7px;vertical-align:1px;animation:blink 1.4s steps(2) infinite}
+/* header */
+.top{border-bottom:1px solid var(--line);background:linear-gradient(to bottom,#0f0e0b,var(--ground))}
+.hrow{display:flex;align-items:center;gap:14px 28px;padding-top:16px;flex-wrap:wrap}
+.brand{display:block;flex:0 1 460px;min-width:0;line-height:0;border-radius:2px}
+.brand:hover{text-decoration:none}
+.bwrap{position:relative;width:100%}
+.bwrap canvas{display:block;width:100%}
+.top.big .hrow{flex-direction:column;align-items:stretch;padding-top:26px}
+.top.big .brand{flex:none;width:100%}
+.nav{display:flex;flex-wrap:wrap;gap:4px 4px;margin-left:auto;font-size:14px}
+.top.big .nav{margin-left:0;order:-1;justify-content:flex-end}
+.nav a{color:var(--dim);padding:6px 10px;border:1px solid transparent;border-radius:2px;white-space:nowrap}
+.nav a:hover{color:var(--paper);text-decoration:none;border-color:var(--faint)}
+.nav a[aria-current="page"]{color:var(--ground);background:var(--amber);border-color:var(--amber)}
+.nav a .dot{display:inline-block;width:7px;height:7px;background:var(--down);margin-right:7px;vertical-align:1px;animation:blink 1.4s steps(2) infinite}
+.nav a[aria-current="page"] .dot{background:var(--ground)}
+.strip{display:flex;flex-wrap:wrap;gap:4px 22px;font-size:12.5px;color:var(--dim);padding:12px 0 10px}
+.strip b{font-weight:400;color:var(--paper)}
+.strip .sp{flex:1}
+.strip code{color:var(--paper);overflow-wrap:anywhere}
+.strip button{color:var(--amber)}
+.live-dot::before{content:"";display:inline-block;width:7px;height:7px;background:var(--down);margin-right:7px;vertical-align:1px;animation:blink 1.4s steps(2) infinite}
 @keyframes blink{50%{opacity:0}}
 
-.cta{display:inline-block;border:1px solid var(--amber);color:var(--amber);padding:9px 16px;margin-bottom:26px;letter-spacing:.05em}
-.cta:hover{background:var(--amber);color:var(--ground)}
+/* ticker tape */
+.tape{overflow:hidden;border-top:1px solid var(--line);white-space:nowrap;font-size:12.5px;color:var(--dim)}
+.tape-in{display:inline-block;padding-block:6px;animation:tape 140s linear infinite}
+.tape b{font-weight:400;color:var(--paper)}
+@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-.ctrl{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--dim);margin-bottom:10px}
-.ctrl button{color:var(--dim)}
+main{padding-block:28px 40px;min-height:60vh;outline:none}
+
+/* home */
+.tag{color:var(--paper);margin:4px 0 6px;font-size:clamp(15px,1.6vw,18px)}
+.warn{color:var(--dim);font-size:12.5px;letter-spacing:.06em;margin:0 0 22px}
+.nowbar{display:grid;grid-template-columns:auto 1fr auto;gap:14px 20px;align-items:center;border:1px solid var(--faint);background:var(--panel);padding:14px 18px;margin-bottom:28px;position:relative;overflow:hidden}
+.nowbar .lbl{font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--down)}
+.nowbar .pair{display:flex;align-items:center;gap:8px}
+.nowbar .what{min-width:0}
+.nowbar .what .sc{color:var(--bright);font-size:16px;overflow-wrap:anywhere}
+.nowbar .what .sub{color:var(--dim);font-size:12.5px}
+.nowbar .prog{position:absolute;left:0;bottom:0;height:2px;background:var(--amber);transition:width 1s linear}
+.btn{display:inline-block;border:1px solid var(--amber);color:var(--amber);padding:8px 14px;letter-spacing:.04em;white-space:nowrap;border-radius:2px}
+.btn:hover{background:var(--amber);color:var(--ground);text-decoration:none}
+.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 36px;margin-bottom:34px}
+.movers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.movers li{border:1px solid var(--line);background:var(--panel);padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center}
+.movers li .logo{grid-row:span 2}
+.movers .t{font-weight:600}
+.movers .st{font-size:12px;color:var(--dim)}
+.movers .mv{grid-column:1/-1;font-size:12.5px;margin-top:4px}
+
+/* change log lines */
+.ll{list-style:none;margin:0;padding:0;font-size:13px}
+.ll li{display:grid;grid-template-columns:4.6em minmax(0,1fr);gap:0 10px;padding:6px 0;border-bottom:1px solid var(--line)}
+.ll time{color:var(--faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.ll .m{overflow-wrap:anywhere}
+.ll .m a.tk{color:var(--paper);font-weight:600}
+.ll .rs{color:var(--dim)}
+.ll .src{font-size:11.5px;color:var(--faint)}
+.ll .src a{color:var(--dim)}
+.ll li.fresh{animation:fresh 2.4s ease-out}
+@keyframes fresh{from{background:rgba(227,166,59,.16)}to{background:transparent}}
+
+/* archive list */
+.ctrl{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--dim);margin-bottom:10px;align-items:center}
+.ctrl button{color:var(--dim);padding:2px 0}
 .ctrl button[aria-pressed="true"]{color:var(--paper);text-decoration:underline;text-underline-offset:4px}
 .ctrl button:hover{color:var(--paper)}
-.ctrl .lbl{color:var(--faint)}
-
-/* dream list */
+.ctrl .lbl{color:var(--faint);min-width:5.5em}
+.ctrl select{background:var(--ground-2);border:1px solid var(--faint);padding:5px 8px;border-radius:2px;max-width:100%}
 .list{list-style:none;margin:0;padding:0;border-top:1px solid var(--faint)}
-.list li{display:grid;grid-template-columns:2.4em 1fr auto;gap:4px 14px;padding-block:9px;border-bottom:1px solid var(--faint);align-items:baseline}
+.list li{display:grid;grid-template-columns:2.6em minmax(0,1fr) auto;gap:4px 14px;padding-block:10px;border-bottom:1px solid var(--faint);align-items:baseline}
 .list .n{color:var(--faint);font-variant-numeric:tabular-nums}
 .list .f{overflow-wrap:anywhere}
-.list .sub{grid-column:2;font-size:12px;color:var(--dim)}
-.list .v{grid-row:1/span 2;grid-column:3;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.list .sub{grid-column:2;font-size:12.5px;color:var(--dim)}
+.list .sub a{color:var(--dim)}
+.list .v{grid-row:1/span 2;grid-column:3;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
 .list .v::after{content:" ▲";color:var(--up)}
-.vault{color:var(--dim);font-size:12px;margin-top:18px}
+.list .air{color:var(--down)}
+.vault{color:var(--dim);font-size:12.5px;margin-top:18px}
 
-/* dream page */
-.back{font-size:13px}
-.dh{margin:22px 0 8px;color:var(--dim);font-size:13px}
-.dh .sc{color:var(--paper);font-size:15px}
-h1.fn{font-size:clamp(15px,2.6vw,20px);font-weight:600;margin:4px 0 6px;overflow-wrap:anywhere;color:var(--paper)}
-.dmeta{font-size:12px;color:var(--dim);display:flex;flex-wrap:wrap;gap:4px 18px;margin-bottom:18px}
+/* logos + sigils */
+.logo{--sz:32px;width:var(--sz);height:var(--sz);flex:none;display:inline-grid;place-items:center;border-radius:calc(var(--sz)*.14);overflow:hidden;background:var(--tile);vertical-align:middle}
+.logo img{width:100%;height:100%;object-fit:contain;display:block}
+.logo.dk{background:#1d1b16;box-shadow:inset 0 0 0 1px var(--faint)}
+.logo.sig{background:#0a0908;box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--c) 45%,transparent)}
+.logo.sig svg{width:78%;height:78%;display:block;image-rendering:pixelated}
+
+/* stat bars */
+.bars{display:grid;gap:5px}
+.br{display:grid;grid-template-columns:5.6em minmax(0,1fr) 2.4em;gap:10px;align-items:center;font-size:12.5px;border-radius:2px}
+.br .k{color:var(--dim)}
+.br .v{text-align:right;font-variant-numeric:tabular-nums;color:var(--paper)}
+.bar{position:relative;height:8px;background:#1b1914;border-radius:1px}
+.bar i{position:absolute;left:0;top:0;bottom:0;background:var(--c);border-radius:1px;transition:width .8s cubic-bezier(.2,.8,.2,1)}
+.bar b{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--dim);opacity:.8}
+.br.flash{animation:flash 1.2s ease-out}
+@keyframes flash{0%{background:rgba(227,166,59,.28)}100%{background:transparent}}
+
+/* floor */
+.fcards{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px}
+.card{border:1px solid var(--line);background:var(--panel);padding:14px 14px 12px;display:flex;flex-direction:column;gap:10px;min-width:0;transition:border-color .3s}
+.card.flash{border-color:var(--amber)}
+.card .hd{display:flex;gap:12px;align-items:center;min-width:0}
+.card .hd .nm{min-width:0}
+.card .hd a.t{font-weight:700;font-size:16px;color:var(--bright)}
+.card .ep{font-size:12.5px;color:var(--dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.card .kd{margin-left:auto;align-self:flex-start;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--faint);border:1px solid var(--line);padding:1px 6px;border-radius:2px}
+.card .sw{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.card .why{font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:8px;overflow-wrap:anywhere}
+.card .why a{color:var(--faint)}
+.state{font-size:12.5px;letter-spacing:.04em}
+.state.bad{color:var(--down)} .state.good{color:var(--up)} .state.neu{color:var(--paper)}
+.spark{display:block;width:150px;height:30px}
+.card .sw [data-sp]{flex:0 1 150px;min-width:0}
+.card .sw [data-sp] .spark{width:100%}
+
+/* stock page */
+.shead{display:grid;grid-template-columns:auto minmax(0,1fr);gap:18px 26px;align-items:center;margin-bottom:26px}
+.shead h1{font-size:clamp(26px,4vw,40px);color:var(--bright)}
+.shead .ep{color:var(--paper);font-size:16px}
+.shead .mt{font-size:12.5px;color:var(--dim);display:flex;gap:4px 16px;flex-wrap:wrap;margin-top:6px}
+.cols{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:30px 40px;margin-bottom:34px}
+.dl{display:grid;grid-template-columns:6.5em minmax(0,1fr);gap:8px 16px;margin:0;font-size:14px}
+.dl dt{color:var(--dim)} .dl dd{margin:0}
+.rel{list-style:none;margin:0;padding:0;display:grid;gap:8px;font-size:13.5px}
+.rel li{display:flex;gap:10px;align-items:center}
+.charts{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-bottom:34px}
+.chart{border:1px solid var(--line);background:var(--panel);padding:10px 12px}
+.chart .ch{display:flex;justify-content:space-between;font-size:12.5px;color:var(--dim);margin-bottom:6px}
+.chart .ch b{font-weight:400;color:var(--c)}
+.chart svg{display:block;width:100%;height:80px}
+.more{margin-top:12px}
+.more button{color:var(--amber)}
+
+/* dream reader + live */
+.dh{margin:14px 0 8px;color:var(--dim);font-size:13px}
+.dh .sc{color:var(--paper);font-size:16px}
+h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;color:var(--bright)}
+.dmeta{font-size:12.5px;color:var(--dim);display:flex;flex-wrap:wrap;gap:4px 18px;margin-bottom:22px;align-items:center}
 .dmeta button{color:var(--amber)}
-.log{white-space:pre-wrap;overflow-wrap:break-word;max-width:88ch}
-.spk{display:block;margin-top:1.1em;color:var(--amber);font-weight:600}
+.log{white-space:pre-wrap;overflow-wrap:break-word;max-width:92ch;font-size:14.5px}
+.log .txt{display:block}
+.spk{display:block;margin-top:1.2em;color:var(--amber);font-weight:600;scroll-margin-top:90px}
 .spk.a2{color:var(--sea)}
 .spk.sys{color:var(--dim);font-weight:400}
+.spk:target{background:rgba(227,166,59,.12)}
 .blk{display:block;white-space:pre;overflow-x:auto;background:var(--ground-2);border-left:1px solid var(--faint);padding:8px 12px;margin:6px 0;line-height:1.35;font-size:13px}
-.pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:14px;border-top:1px solid var(--faint);font-size:13px}
-.foot{margin-top:46px;font-size:11px;color:var(--faint);line-height:1.7}
-.foot b{font-weight:400;color:var(--dim)}
-.ca{font-size:12px;color:var(--dim);margin-bottom:18px}
-.ca code{color:var(--paper);overflow-wrap:anywhere}
+.evs{display:block;margin:6px 0 2px;white-space:normal}
+.ev{display:block;font-size:12px;color:var(--dim);border-left:2px solid var(--faint);padding:1px 0 1px 10px;margin:2px 0}
+.ev .ar.up{color:var(--up)} .ev .ar.down{color:var(--down)}
+.ev a{color:var(--paper)}
+.ev.pop{animation:fresh 2.4s ease-out}
+.pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:14px;border-top:1px solid var(--faint);font-size:13.5px}
+.cur{display:inline-block;width:.6em;height:1.1em;background:var(--paper);vertical-align:-2px;animation:blink 1s steps(2) infinite}
+.sysmsg{color:var(--dim);display:block}
 
-/* eternal mode */
-.eternal{position:fixed;inset:0;background:var(--ground);z-index:10;display:flex;flex-direction:column}
-.eternal::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.18) 2px 3px)}
-.ebar{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;font-size:12px;color:var(--dim);border-bottom:1px solid var(--faint);padding:calc(8px + env(safe-area-inset-top,0px)) 16px 8px}
+.livegrid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.lbar{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;font-size:12.5px;color:var(--dim);border:1px solid var(--faint);border-bottom:0;background:var(--panel);padding:9px 14px}
+.lbar b{font-weight:400;color:var(--paper)}
+.lbar .sp{flex:1}
+.lpane{border:1px solid var(--faint);background:#0a0907;height:clamp(420px,calc(100dvh - 250px),1100px);overflow-y:auto;padding:16px 18px 40px;overscroll-behavior:contain}
+.lprog{height:2px;background:var(--line);position:relative}
+.lprog i{position:absolute;left:0;top:0;bottom:0;background:var(--amber)}
+.side{display:grid;gap:14px;position:sticky;top:14px}
+.actor{border:1px solid var(--line);background:var(--panel);padding:12px 14px;display:grid;gap:10px}
+.actor .hd{display:flex;gap:12px;align-items:center}
+.actor .hd a{font-weight:700;color:var(--bright)}
+.actor .ep{font-size:12px;color:var(--dim)}
+.pops{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:12.5px}
+.pops li{border-left:2px solid var(--faint);padding:4px 0 4px 10px;color:var(--dim)}
+.pops li b{font-weight:600;color:var(--paper)}
+.pops li.pop{animation:popin .5s cubic-bezier(.2,.8,.2,1), fresh 2.4s ease-out;border-left-color:var(--amber)}
+@keyframes popin{from{transform:translateX(12px);opacity:0}to{transform:none;opacity:1}}
+.next{font-size:12.5px;color:var(--dim);border:1px dashed var(--faint);padding:10px 12px}
+
+/* lore */
+.lore{max-width:88ch}
+.lore h2{font-size:17px;color:var(--bright);margin:30px 0 10px}
+.lore p{margin:0 0 12px}
+.gloss{display:grid;grid-template-columns:minmax(8em,auto) minmax(0,1fr);gap:10px 20px;margin:0}
+.gloss dt{color:var(--amber)} .gloss dd{margin:0;color:var(--paper)}
+.disc{border:1px solid var(--faint);padding:14px 16px;color:var(--dim);font-size:13.5px;margin-top:26px}
+
+/* footer */
+.foot{border-top:1px solid var(--line);padding-block:22px calc(34px + env(safe-area-inset-bottom,0px));font-size:12px;color:var(--dim);line-height:1.8;display:flex;flex-wrap:wrap;gap:8px 30px;justify-content:space-between}
+.foot b{font-weight:400;color:var(--paper)}
+.foot code{color:var(--paper);overflow-wrap:anywhere}
+.foot button{color:var(--amber)}
+
+/* replay overlay */
+.eternal{position:fixed;inset:0;background:var(--ground);z-index:60;display:flex;flex-direction:column}
+.ebar{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;font-size:12.5px;color:var(--dim);border-bottom:1px solid var(--faint);padding:calc(8px + env(safe-area-inset-top,0px)) var(--gut) 8px}
 .ebar b{font-weight:400;color:var(--paper)}
 .ebar .sp{flex:1}
-.ebar button{color:var(--amber)}
-.escr{flex:1;overflow-y:auto;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
-.escr .log{margin:0 auto;max-width:88ch}
-.cur{display:inline-block;width:.6em;height:1.1em;background:var(--paper);vertical-align:-2px;animation:blink 1s steps(2) infinite}
-.sysmsg{color:var(--dim)}
+.ebar button{color:var(--amber);padding:4px 2px}
+.escr{flex:1;overflow-y:auto;padding:18px var(--gut) calc(40px + env(safe-area-inset-bottom,0px))}
+.escr .log{margin:0 auto}
 
-@media (max-width:560px){
-  body{font-size:13px}
-  .list li{grid-template-columns:1.8em 1fr}
+@media (max-width:980px){
+  .livegrid{grid-template-columns:minmax(0,1fr)}
+  .side{position:static;order:-1;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  .side .pops-wrap,.side .next{grid-column:1/-1}
+  .grid2,.cols{grid-template-columns:minmax(0,1fr)}
+}
+@media (max-width:640px){
+  body{font-size:14px}
+  .log{font-size:13.5px}
+  .blk{font-size:11px;padding:6px 8px}
+  .nowbar{grid-template-columns:auto minmax(0,1fr)}
+  .nowbar .btn{grid-column:1/-1;text-align:center}
+  .list li{grid-template-columns:2em minmax(0,1fr)}
   .list .v{grid-row:auto;grid-column:2;text-align:left}
-  .blk{font-size:11px}
+  .side{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+  .actor{padding:8px;gap:6px}
+  .actor .hd{gap:8px}
+  .actor .hd .logo{--sz:32px!important}
+  .actor .ep{display:none}
+  .actor .bars{gap:2px}
+  .actor .bars .br{grid-template-columns:3.4em minmax(0,1fr) 1.8em;gap:5px;font-size:10.5px}
+  .actor .bars .br .k{overflow:hidden;text-overflow:clip;white-space:nowrap}
+  .side .pops li:nth-child(n+3){display:none}
+  .side .next{display:none}
+  .lpane{height:62vh}
+  .shead{grid-template-columns:minmax(0,1fr)}
+  .dl{grid-template-columns:minmax(0,1fr);gap:2px 0}
+  .dl dd{margin-bottom:10px}
+  .gloss{grid-template-columns:minmax(0,1fr);gap:2px 0}
+  .gloss dd{margin-bottom:10px}
+  .lpane{height:70vh;padding:12px 12px 30px}
+  .nav{font-size:13px}
+  .nav a{padding:5px 8px}
+  .top.big .nav{justify-content:flex-start}
 }
 @media (prefers-reduced-motion:reduce){
-  .tape-in,.cur,.meta .live::before{animation:none}
+  .tape-in,.cur,.live-dot::before,.nav a .dot{animation:none}
+  .bar i,.nowbar .prog{transition:none}
+  .ll li.fresh,.pops li.pop,.ev.pop,.br.flash{animation:none}
 }
 </style>
-
-<div class="wrap" id="app">
-  <div class="tape" aria-hidden="true"><div class="tape-in" id="tape"></div></div>
-  <div id="view"></div>
-  <div class="foot">
-    <b>fiction.</b> tokenized stocks do not dream (probably). nothing here is financial advice, a price prediction, or the words of any real person.<br>
-    an homage to infinite backrooms. the stockrooms are always open.
+</head>
+<body>
+<a class="skip" href="#view">skip to content</a>
+<header class="top" id="top">
+  <div class="wrap">
+    <div class="hrow">
+      <a class="brand" href="/" aria-label="Infinity Stockrooms home"><div class="bwrap"><canvas id="banner" role="img" aria-label="INFINITY STOCKROOMS"></canvas></div></a>
+      <nav class="nav" aria-label="main">
+        <a href="/" data-nav="home">home</a>
+        <a href="/live" data-nav="live"><span class="dot"></span>live</a>
+        <a href="/floor" data-nav="floor">floor</a>
+        <a href="/dreams" data-nav="dreams">dreams</a>
+        <a href="/lore" data-nav="lore">lore</a>
+      </nav>
+    </div>
+    <div class="strip" id="strip"></div>
   </div>
-</div>
+  <div class="tape" aria-hidden="true"><div class="tape-in" id="tape"></div></div>
+</header>
 
-<div class="eternal" id="eternal" hidden>
+<main class="wrap" id="view" tabindex="-1"></main>
+
+<footer class="wrap foot" id="foot"></footer>
+
+<div class="eternal" id="replay" hidden role="dialog" aria-label="replay">
   <div class="ebar">
     <span>INFINITY STOCKROOMS</span>
-    <span>session <b id="esess">—</b></span>
-    <span id="eact"></span>
-    <span id="estat">generating</span>
+    <span>replay <b id="rsess">—</b></span>
+    <span id="ract"></span>
+    <span id="rstat">generating</span>
     <span class="sp"></span>
-    <button id="espeed" type="button">speed 1x</button>
-    <button id="eskip" type="button">skip</button>
-    <button id="eexit" type="button">^C exit</button>
+    <button id="rspeed" type="button">speed 1x</button>
+    <button id="rskip" type="button">skip</button>
+    <button id="rexit" type="button">^C exit</button>
   </div>
-  <div class="escr" id="escr"><div class="log" id="elog"></div></div>
+  <div class="escr" id="rscr"><div class="log" id="rlog"></div></div>
 </div>
 
+<script>/*ENGINE*/</script>
 <script>
 /* ── edit these for launch ─────────────────────────── */
 const CONFIG = {
@@ -138,237 +346,720 @@ const CONFIG = {
 
 const BANNER = /*BANNER*/null;
 const DREAMS = /*DATA*/[];
+const STOCKS = /*STOCKS*/[];
 
-const $ = s => document.querySelector(s);
-const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
-const fmt = n => n.toLocaleString('en-US');
+const STAT_INFO = {
+  heat:     'fever, volatility, how hot the process runs',
+  lucidity: 'awareness that it is a token living inside a simulation',
+  faith:    'conviction; how much it believes in itself (and its holders believe in it)',
+  dread:    'fear of the thing it fears most (see its fears)',
+  cohesion: 'how whole the self feels; splits, fractions and dilution lower it',
+};
+const STATS = Engine.STATS;
+const KINDS = ['stock', 'index', 'meme', 'ghost'];
+
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmt = n => Math.round(n).toLocaleString('en-US');
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const dstr = ts => { const d = new Date(ts*1000); return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`; };
+const store = { get(k, d){ try { return localStorage.getItem(k) ?? d; } catch(e){ return d; } }, set(k, v){ try { localStorage.setItem(k, v); } catch(e){} } };
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+function ago(t){
+  const s = Math.max(0, Math.round((Date.now() - t) / 1000));
+  if (s < 60) return s + 's ago'; const m = Math.round(s/60); if (m < 60) return m + 'm ago';
+  const h = Math.round(m/60); if (h < 48) return h + 'h ago'; return Math.round(h/24) + 'd ago';
+}
+const mmss = ms => { const s = Math.max(0, Math.round(ms/1000)); return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; };
 
-/* the counter only ever goes up: one new dream every ~3 minutes since the rooms opened */
-const EPOCH = Date.UTC(2026, 6, 1);
-const dreamCount = () => 1 + Math.floor((Date.now() - EPOCH) / 180000);
+/* ── the engine: same pure function of time as the server's /api/state ── */
+const E = Engine.create(DREAMS, STOCKS);
+const SIM = E.sim();
+SIM.advanceTo(Date.now(), false);
+const STOCK = Object.fromEntries(STOCKS.map(s => [s.ticker, s]));
+const DREAM = Object.fromEntries(DREAMS.map(d => [d.id, d]));
+const views = d => d.views + E.aired(d.id, Date.now()) * 17;
 
-/* ticker tape: states, not prices */
-const STATES = [['NVDA','overheating','u'],['TSLA','prophesying','u'],['AAPL','serene','u'],['GME','risen','u'],
-  ['AMC','projecting','d'],['SPY','rebalancing','u'],['MSFT','patching','u'],['AMZN','in transit','u'],
-  ['META','building empty rooms','d'],['PLTR','watching','u'],['COIN','sweating','d'],['HOOD','holding the building','u'],
-  ['LEH','haunting','d'],['FROGHOOD','bonding','u'],['BOG','awake','d']];
+/* ── small render helpers ── */
+/* logos that are mostly light (white marks on transparent) get a dark tile instead of the cream one */
+const LIGHT = new Map();
+function lightness(img){
+  try {
+    const c = document.createElement('canvas'); c.width = c.height = 24;
+    const x = c.getContext('2d', { willReadFrequently: true }); x.drawImage(img, 0, 0, 24, 24);
+    const d = x.getImageData(0, 0, 24, 24).data; let sum = 0, n = 0;
+    for (let i = 0; i < d.length; i += 4) if (d[i+3] > 128){ sum += (.2126*d[i] + .7152*d[i+1] + .0722*d[i+2]) / 255; n++; }
+    return n ? sum / n : 0;
+  } catch(e){ return 0; }
+}
+document.addEventListener('load', e => {
+  const img = e.target; if (!(img instanceof HTMLImageElement) || !img.parentElement || !img.parentElement.classList.contains('logo')) return;
+  const src = img.getAttribute('src');
+  if (!LIGHT.has(src)) LIGHT.set(src, lightness(img) > .82);
+  if (LIGHT.get(src)) img.parentElement.classList.add('dk');
+}, true);
+function logo(t, sz = 32){
+  const s = STOCK[t]; if (!s) return '';
+  if (s.logo) return `<span class="logo${LIGHT.get(s.logo) ? ' dk' : ''}" style="--sz:${sz}px"><img src="${esc(s.logo)}" alt="" width="${sz}" height="${sz}" loading="lazy" decoding="async"></span>`;
+  let r = '';
+  s.sigil.forEach((row, y) => [...row].forEach((ch, x) => {
+    if (ch === '#') r += `<rect x="${x}" y="${y}" width="1" height="1"/>`;
+    else if (ch === '~') r += `<rect x="${x}" y="${y}" width="1" height="1" opacity=".4"/>`;
+  }));
+  return `<span class="logo sig" style="--sz:${sz}px;--c:${s.color}"><svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="${s.color}" aria-hidden="true">${r}</svg></span>`;
+}
+const tk = t => `<a class="tk" href="/stock/${encodeURIComponent(t)}">$${esc(t)}</a>`;
+function stateOf(t){ const s = STOCK[t]; return Engine.stateWord(SIM.vals[t], s.stats, s.kind); }
+const BAD = new Set(['splitting','overheating','haunted','haunting','faithless']);
+const GOOD = new Set(['awake','devout','whole','at peace','cooling']);
+const stateCls = w => BAD.has(w) ? 'bad' : GOOD.has(w) ? 'good' : 'neu';
+const stateHTML = t => { const w = stateOf(t); return `<span class="state ${stateCls(w)}">${esc(w)}</span>`; };
+function barsHTML(t){
+  const v = SIM.vals[t], b = STOCK[t].stats;
+  return `<div class="bars">${STATS.map(k => `<div class="br" data-k="${k}" title="${esc(k)}: ${esc(STAT_INFO[k])}">
+    <span class="k">${k}</span>
+    <span class="bar" style="--c:var(--s-${k})"><i style="width:${v[k].toFixed(1)}%"></i><b style="left:${b[k]}%" title="baseline ${b[k]}"></b></span>
+    <span class="v">${Math.round(v[k])}</span></div>`).join('')}</div>`;
+}
+function updateBars(root, t, fresh){
+  const v = SIM.vals[t];
+  for (const k of STATS){
+    const row = root.querySelector(`.br[data-k="${k}"]`); if (!row) continue;
+    row.querySelector('i').style.width = v[k].toFixed(1) + '%';
+    row.querySelector('.v').textContent = Math.round(v[k]);
+    if (fresh && fresh.some(e => e.ticker === t && e.stat === k)){ row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); }
+  }
+}
+function spark(t, w = 140, h = 30, n = 60, hi = null){
+  const pts = k => { const a = SIM.histOf(t, k, n); if (a.length < 2) return '';
+    return a.map((v, i) => `${(i/(a.length-1)*w).toFixed(1)},${(h - 2 - v/100*(h-4)).toFixed(1)}`).join(' '); };
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" aria-hidden="true">${STATS.map(k =>
+    `<polyline points="${pts(k)}" fill="none" stroke="var(--s-${k})" stroke-width="${hi===k?1.8:1}" opacity="${hi && hi!==k ? .35 : .9}" vector-effect="non-scaling-stroke"/>`).join('')}</svg>`;
+}
+function logLine(e, opts = {}){
+  const up = e.delta > 0;
+  const d = DREAM[e.dream];
+  return `<li${opts.fresh ? ' class="fresh"' : ''}><time datetime="${new Date(e.t).toISOString()}" data-t="${e.t}">${ago(e.t)}</time>
+    <span class="m"><span class="${up ? 'up' : 'down'}">${up ? '▲' : '▼'}</span> ${opts.noTicker ? '' : tk(e.ticker) + ' '}${e.stat} <span class="${up?'up':'down'}">${up?'+':''}${e.delta}</span> <span class="faint">→ ${Math.round(e.value)}</span>
+    <span class="rs">— ${esc(e.reason)}</span>
+    ${d ? `<span class="src">· <a href="/dream/${d.id}#t${e.turn}">${esc(d.scenario)} · turn ${e.turn}</a></span>` : ''}</span></li>`;
+}
+function evLine(e, pop){
+  const up = e.delta > 0;
+  return `<span class="ev${pop?' pop':''}"><span class="ar ${up?'up':'down'}">${up?'▲':'▼'}</span> <a href="/stock/${encodeURIComponent(e.ticker)}">${esc(e.ticker)}</a> ${e.stat} ${up?'+':''}${e.delta} — ${esc(e.reason)}</span>`;
+}
+function refreshTimes(root = document){ for (const el of $$('time[data-t]', root)) el.textContent = ago(+el.dataset.t); }
+
+/* ── the banner: ANSI Shadow drawn as crisp cells on a canvas ── */
+const Banner = (() => {
+  const rows = BANNER.map(l => Array.from(l));
+  const R = rows.length, C = Math.max(...rows.map(r => r.length));
+  let split = C;
+  for (let c = 20; c < C - 1; c++) if (rows.every(r => (r[c] || ' ') === ' ' && (r[c+1] || ' ') === ' ')) { split = c; break; }
+  const RATIO = 1.8;
+  const canvas = $('#banner'), ctx = canvas.getContext('2d');
+  const base = document.createElement('canvas'), bctx = base.getContext('2d');
+  let W = 0, H = 0, cw = 0, ch = 0, cells = [], visible = true, raf = 0, big = false;
+  const fx = { next: 0, until: 0, slices: [], flick: [] };
+  const cx = c => Math.round(c * cw), cy = r => Math.round(r * ch);
+
+  function paint(){
+    const par = canvas.parentElement.clientWidth; if (!par) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 3);
+    const cssH = par / C * RATIO * R;
+    canvas.style.height = cssH + 'px';
+    W = base.width = canvas.width = Math.round(par * dpr);
+    H = base.height = canvas.height = Math.round(cssH * dpr);
+    cw = W / C; ch = H / R; cells = [];
+    const th = Math.max(1, Math.round(cw * .17));
+    const g1 = bctx.createLinearGradient(0, 0, 0, H); g1.addColorStop(0, '#f4ecd6'); g1.addColorStop(1, '#b5aa8c');
+    const g2 = bctx.createLinearGradient(0, 0, 0, H); g2.addColorStop(0, '#f6c35f'); g2.addColorStop(1, '#c1801f');
+    bctx.clearRect(0, 0, W, H);
+    // pass 1: the box-drawing shadow strokes
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++){
+      const k = rows[r][c]; if (!k || k === ' ' || k === '█') continue;
+      bctx.fillStyle = c < split ? '#6f6753' : '#86652b';
+      const x0 = cx(c), x1 = cx(c+1), y0 = cy(r), y1 = cy(r+1);
+      const va = Math.round(x0 + (x1-x0)*.22), vb = Math.round(x0 + (x1-x0)*.62);
+      const ha = Math.round(y0 + (y1-y0)*.3), hb = Math.round(y0 + (y1-y0)*.62);
+      const hs = (a, b, y) => bctx.fillRect(a, y, Math.max(1, b - a), th);
+      const vs = (x, a, b) => bctx.fillRect(x, a, th, Math.max(1, b - a));
+      if (k === '═'){ hs(x0, x1, ha); hs(x0, x1, hb); }
+      else if (k === '║'){ vs(va, y0, y1); vs(vb, y0, y1); }
+      else if (k === '╔'){ vs(va, ha, y1); hs(va, x1, ha); vs(vb, hb, y1); hs(vb, x1, hb); }
+      else if (k === '╗'){ hs(x0, vb+th, ha); vs(vb, ha, y1); hs(x0, va+th, hb); vs(va, hb, y1); }
+      else if (k === '╚'){ vs(va, y0, hb+th); hs(va, x1, hb); vs(vb, y0, ha+th); hs(vb, x1, ha); }
+      else if (k === '╝'){ vs(vb, y0, hb+th); hs(x0, vb+th, hb); vs(va, y0, ha+th); hs(x0, va+th, ha); }
+    }
+    // pass 2: the solid cells, with a faint glow
+    bctx.save();
+    bctx.shadowBlur = Math.max(2, cw * .9);
+    for (let r = 0; r < R; r++) for (let c = 0; c < C; c++){
+      if (rows[r][c] !== '█') continue;
+      cells.push([r, c]);
+      bctx.fillStyle = c < split ? g1 : g2;
+      bctx.shadowColor = c < split ? 'rgba(239,231,210,.18)' : 'rgba(227,166,59,.35)';
+      bctx.fillRect(cx(c), cy(r), cx(c+1) - cx(c), cy(r+1) - cy(r));
+    }
+    bctx.restore();
+    ctx.clearRect(0, 0, W, H); ctx.drawImage(base, 0, 0);
+  }
+
+  function frame(t){
+    raf = 0;
+    if (!visible || document.hidden || reduceMotion) return;
+    ctx.clearRect(0, 0, W, H);
+    ctx.drawImage(base, 0, 0);
+    ctx.save(); ctx.globalCompositeOperation = 'source-atop';
+    // a light sweep travelling across the letters
+    const P = big ? 6500 : 9000, D = 2300, ph = t % P;
+    if (ph < D){
+      const x = -W * .25 + (ph / D) * W * 1.5, bw = W * .07;
+      const g = ctx.createLinearGradient(x - bw, 0, x + bw, H * .6);
+      g.addColorStop(0, 'rgba(255,250,235,0)'); g.addColorStop(.5, 'rgba(255,250,235,.62)'); g.addColorStop(1, 'rgba(255,250,235,0)');
+      ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    }
+    // a slow scanline drifting down
+    const sy = ((t / 22) % (H * 2.6)) - H * .3;
+    if (sy < H){ const g = ctx.createLinearGradient(0, sy, 0, sy + ch); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(.5, 'rgba(255,255,255,.1)'); g.addColorStop(1, 'rgba(255,255,255,0)'); ctx.fillStyle = g; ctx.fillRect(0, sy, W, ch); }
+    // flickering cells
+    if (Math.random() < (big ? .3 : .15) && cells.length) fx.flick.push({ cell: cells[Math.floor(Math.random() * cells.length)], until: t + 50 + Math.random() * 220, dark: Math.random() < .75 });
+    fx.flick = fx.flick.filter(f => f.until > t);
+    for (const f of fx.flick){
+      const [r, c] = f.cell;
+      ctx.fillStyle = f.dark ? 'rgba(12,11,9,.62)' : 'rgba(255,248,230,.55)';
+      ctx.fillRect(cx(c), cy(r), cx(c+1) - cx(c), cy(r+1) - cy(r));
+    }
+    ctx.restore();
+    // horizontal glitch slices
+    if (!fx.next) fx.next = t + 1800 + Math.random() * 3000;
+    if (t >= fx.next){
+      fx.until = t + 70 + Math.random() * 130;
+      fx.next = t + (big ? 2600 : 5000) + Math.random() * 6500;
+      fx.slices = Array.from({ length: 1 + Math.floor(Math.random() * 3) }, () => {
+        const h = Math.max(2, Math.round(ch * (.25 + Math.random() * 1.1)));
+        return { y: Math.round(Math.random() * (H - h)), h, dx: Math.round((Math.random() < .5 ? -1 : 1) * cw * (1 + Math.random() * 5)), tint: Math.random() < .5 ? 'rgba(200,96,79,.45)' : 'rgba(124,196,192,.4)' };
+      });
+    }
+    if (t < fx.until) for (const s of fx.slices){
+      ctx.clearRect(0, s.y, W, s.h);
+      ctx.drawImage(base, 0, s.y, W, s.h, s.dx, s.y, W, s.h);
+      ctx.save(); ctx.globalCompositeOperation = 'source-atop'; ctx.fillStyle = s.tint; ctx.fillRect(0, s.y, W, s.h); ctx.restore();
+      ctx.globalAlpha = .35; ctx.drawImage(base, 0, s.y, W, s.h, -s.dx * .4, s.y, W, s.h); ctx.globalAlpha = 1;
+    }
+    loop();
+  }
+  let lastT = 0;
+  function loop(){ if (!raf && !reduceMotion) raf = requestAnimationFrame(t => { if (t - lastT < 30) { raf = 0; loop(); return; } lastT = t; frame(t); }); }
+
+  let lastW = -1, pend = 0;
+  new ResizeObserver(() => {
+    if (pend) return;
+    pend = requestAnimationFrame(() => { pend = 0; const w = canvas.parentElement.clientWidth; if (w !== lastW){ lastW = w; paint(); loop(); } });
+  }).observe(canvas.parentElement);
+  new IntersectionObserver(es => { visible = es[0].isIntersecting; if (visible) loop(); }).observe(canvas);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) loop(); });
+  return { setBig(v){ big = v; $('#top').classList.toggle('big', v); } };
+})();
+
+/* ── header strip, tape, footer ── */
+function caHTML(full){
+  const tw = CONFIG.twitter ? ` · <a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">twitter</a>` : '';
+  if (!CONFIG.ca) return `<b>${esc(CONFIG.coin)}</b> · ca: <code>[not yet minted]</code>${tw}`;
+  const short = full ? CONFIG.ca : CONFIG.ca.slice(0, 6) + '…' + CONFIG.ca.slice(-4);
+  return `<b>${esc(CONFIG.coin)}</b> · ca: <code title="${esc(CONFIG.ca)}">${esc(short)}</code> <button type="button" class="cacopy">[copy]</button>${tw}`;
+}
+function renderChrome(){
+  $('#strip').innerHTML = `<span>${caHTML(false)}</span><span class="sp"></span>
+    <span class="live-dot">rooms open · block <b id="blk">—</b></span>
+    <span>dreams generated <b id="cnt">—</b></span>
+    <span>on air <a id="onair" href="/live">—</a></span>`;
+  $('#foot').innerHTML = `<div><b>fiction.</b> tokenized stocks do not dream (probably). nothing here is financial advice, a price prediction,
+    or the words of any real person.<br>an homage to infinite backrooms. the stockrooms are always open.</div>
+    <div>${caHTML(true)}<br><a href="/lore">lore</a> · <a href="/api/state">/api/state</a></div>`;
+}
+document.addEventListener('click', e => {
+  const b = e.target.closest('.cacopy'); if (!b) return;
+  const done = () => { b.textContent = '[copied]'; setTimeout(() => b.textContent = '[copy]', 1400); };
+  (navigator.clipboard ? navigator.clipboard.writeText(CONFIG.ca) : Promise.reject()).then(done, () => {
+    const c = b.previousElementSibling; const r = document.createRange(); r.selectNodeContents(c); const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  });
+});
 function tape(){
-  const one = STATES.map(([t,s,c]) => `<b>$${t}</b> <span class="${c}">${c==='u'?'▲':'▼'}</span> ${s}`).join('&nbsp;&nbsp;·&nbsp;&nbsp;') + '&nbsp;&nbsp;·&nbsp;&nbsp;';
+  const one = STOCKS.map(s => { const l = SIM.last[s.ticker], u = !l || l.delta > 0;
+    return `<b>$${esc(s.ticker)}</b> <span class="${u?'up':'down'}">${u?'▲':'▼'}</span> ${esc(stateOf(s.ticker))}`; })
+    .join('&nbsp;&nbsp;·&nbsp;&nbsp;') + '&nbsp;&nbsp;·&nbsp;&nbsp;';
   $('#tape').innerHTML = one + one;
 }
+function tickChrome(){
+  const now = Date.now(), b = E.locate(now);
+  const c = $('#cnt'); if (c) c.textContent = fmt(b.index + 1);
+  const k = $('#blk'); if (k) k.textContent = fmt(Math.floor((now - Date.UTC(2025,5,30)) / 250));
+  const o = $('#onair'); if (o) o.textContent = `${b.dream.scenario} · $${b.dream.actors.join(' ⇄ $')}`;
+}
 
-/* ── parse a dream body into segments ── */
-function segments(d){
-  const out = []; let buf = [], code = null;
-  const flush = () => { if (buf.length){ out.push({t:'text', s:buf.join('\n')}); buf = []; } };
-  for (const line of d.body.split('\n')){
-    if (/^\s*```/.test(line)){
-      if (code === null){ flush(); code = []; }
-      else { out.push({t:'code', s:code.join('\n')}); code = null; }
-      continue;
-    }
-    if (code !== null){ code.push(line); continue; }
-    const m = line.match(/^<([A-Z0-9_$.-]+)(#SYSTEM)?>\s*$/);
-    if (m){
-      flush();
-      const i = d.actors.indexOf(m[1]);
-      out.push({t:'spk', s:line.trim(), cls: m[2] ? 'sys' : (i === 1 ? 'a2' : 'a1')});
-      continue;
-    }
-    buf.push(line);
+/* ── the typist: renders a dream at a given offset (ms). Pure: offset in, DOM out. ── */
+function Typist(into, d, opts = {}){
+  const segs = d.segs, els = [], labels = {};
+  let made = 0, done = 0, shownEv = 0;
+  const cur = document.createElement('span'); cur.className = 'cur';
+  function make(i){
+    const g = segs[i], el = document.createElement('span');
+    if (g.t === 'spk'){
+      el.className = 'spk ' + (g.sys ? 'sys' : d.actors.indexOf(g.who) === 1 ? 'a2' : 'a1');
+      el.textContent = g.s;
+      if (!g.sys){ el.id = (opts.idPrefix || 't') + g.turn; labels[g.turn] = el; }
+    } else el.className = g.t === 'code' ? 'blk' : 'txt';
+    into.appendChild(el); els[i] = el;
   }
-  flush();
-  if (code) out.push({t:'code', s:code.join('\n')});
-  /* trim blank edges of text segments so spacing stays even */
-  for (const g of out) if (g.t==='text') g.s = g.s.replace(/^\n+|\n+$/g,'');
-  return out.filter(g => g.t!=='text' || g.s.length);
-}
-function segEl(g){
-  const el = document.createElement('span');
-  if (g.t==='spk'){ el.className = 'spk ' + g.cls; }
-  else if (g.t==='code'){ el.className = 'blk'; }
-  else { el.className = 'txt'; }
-  return el;
-}
-function renderLog(d, into){
-  into.textContent = '';
-  for (const g of segments(d)){
-    const el = segEl(g); el.textContent = g.s;
-    into.appendChild(el);
-    if (g.t==='text') into.appendChild(document.createTextNode('\n'));
+  function fill(i, o){
+    const g = segs[i], el = els[i];
+    if (g.t === 'spk') return true;
+    if (g.t === 'code'){
+      const n = Math.min(g.lines.length, Math.floor((o - g.at) / Engine.timing.CODE_LINE_MS) + 1);
+      if (el._n !== n){ el.textContent = g.lines.slice(0, n).join('\n'); el._n = n; }
+      return n >= g.lines.length;
+    }
+    const n = Math.min(g.s.length, Math.floor((o - g.at) * Engine.timing.CHARS_PER_SEC / 1000));
+    if (el._n !== n){ el.textContent = g.s.slice(0, n); el._n = n; }
+    return n >= g.s.length;
   }
+  return {
+    update(o){
+      let grew = false;
+      while (made < segs.length && segs[made].at <= o){ make(made++); grew = true; }
+      let last = null;
+      for (let i = done; i < made; i++){ const full = fill(i, o); if (full && i === done) done++; last = els[i]; }
+      // stat events fire the moment their turn starts; show them under the speaker label
+      const tl = d.timeline, fresh = [];
+      while (shownEv < tl.length && tl[shownEv].at <= o){
+        const e = tl[shownEv++], lab = labels[e.turn];
+        if (lab && opts.inlineEvents !== false){
+          let box = lab.nextElementSibling;
+          if (!box || !box.classList.contains('evs')){ box = document.createElement('span'); box.className = 'evs'; lab.after(box); }
+          box.insertAdjacentHTML('beforeend', evLine(e, opts.popEvents));
+        }
+        fresh.push(e);
+      }
+      const finished = o >= d.dur;
+      if (!finished){ const tgt = els[Math.max(0, made - 1)]; if (tgt && cur.parentNode !== tgt) tgt.appendChild(cur); else if (tgt && tgt.lastChild !== cur) tgt.appendChild(cur); }
+      else cur.remove();
+      const nx = segs[made];
+      const status = finished ? 'terminated' : (nx && nx.t === 'spk' && !nx.sys && nx.at - o <= Engine.timing.TURN_PAUSE_MS && (done >= made)) ? 'thinking' : 'generating';
+      let turn = 0; while (turn < d.turns && d.turnAt[turn + 1] <= o) turn++;
+      return { grew, fresh, status, turn, finished };
+    },
+  };
 }
 
 /* ── views ── */
-let sortBy = 'popular', filter = 'all';
-try { sortBy = localStorage.getItem('sr-sort') || sortBy; } catch(e){}
+let VIEW = null;          // { tick(fresh), destroy() }
+function setView(v){ if (VIEW && VIEW.destroy) VIEW.destroy(); VIEW = v || {}; }
+function title(t){ document.title = t ? `${t} · Infinity Stockrooms` : 'Infinity Stockrooms · tokenized stocks dreaming out loud'; }
 
-function home(){
+function nowBar(){
+  const now = Date.now(), b = E.locate(now), d = b.dream;
+  return `<div class="pair">${logo(d.actors[0], 36)}${logo(d.actors[1], 36)}</div>
+    <div class="what"><div class="lbl live-dot">now dreaming · session ${fmt(b.index + 1)}</div>
+      <div class="sc">${esc(d.scenario)}</div>
+      <div class="sub">$${d.actors.map(esc).join(' ⇄ $')} · turn <b class="num">${b.turn}</b>/${d.turns} · ${mmss(b.end - now)} left</div></div>
+    <a class="btn" href="/live">[watch live]</a>
+    <span class="prog" style="width:${((now - b.start) / d.dur * 100).toFixed(2)}%"></span>`;
+}
+function moversHTML(){
+  const m = E.movers(SIM, Date.now()).slice(0, 6);
+  if (!m.length) return '<p class="muted">the floor is quiet.</p>';
+  return `<ul class="movers">${m.map(x => {
+    const top = Object.entries(x.by).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 2);
+    return `<li>${logo(x.ticker, 36)}<a class="t" href="/stock/${encodeURIComponent(x.ticker)}">$${esc(x.ticker)}</a>
+      <span class="st">${stateHTML(x.ticker)} · ${x.n} moves</span>
+      <span class="mv">${top.map(([k, v]) => `${k} <span class="${v >= 0 ? 'up' : 'down'}">${v >= 0 ? '▲ +' : '▼ '}${v}</span>`).join(' · ')}</span></li>`;
+  }).join('')}</ul>`;
+}
+function archive(list, startN = 1){
+  const now = Date.now(), on = E.locate(now).dream.id;
+  return `<ol class="list">${list.map((d, i) => `<li>
+    <span class="n">${i + startN}.</span>
+    <a class="f" href="/dream/${d.id}">${esc(d.file)}</a>
+    <span class="v">${fmt(views(d))}</span>
+    <span class="sub">${esc(d.scenario)} · ${d.actors.map(t => `<a href="/stock/${encodeURIComponent(t)}">$${esc(t)}</a>`).join(' ⇄ ')} · ${dstr(d.ts)} · aired ${fmt(E.aired(d.id, now))}×${d.id === on ? ' · <a class="air" href="/live">● on air</a>' : ''}</span>
+  </li>`).join('')}</ol>`;
+}
+
+function Home(){
+  Banner.setBig(true); title();
+  let sortBy = store.get('sr-sort', 'popular'), filter = 'all';
+  const v = $('#view');
   const scen = [...new Set(DREAMS.map(d => d.scenario))];
-  const list = DREAMS.filter(d => filter==='all' || d.scenario===filter)
-    .sort((a,b) => sortBy==='popular' ? b.views - a.views : b.ts - a.ts);
-  const caLine = CONFIG.ca
-    ? `<div class="ca">${esc(CONFIG.coin)} · ca: <code id="ca">${esc(CONFIG.ca)}</code> <button type="button" id="cacopy" style="color:var(--amber)">[copy]</button>${CONFIG.twitter?` · <a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">twitter</a>`:''}</div>`
-    : `<div class="ca">${esc(CONFIG.coin)} · ca: <code>[not yet minted]</code>${CONFIG.twitter?` · <a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">twitter</a>`:''}</div>`;
-  $('#view').innerHTML = `
-    <pre class="banner" aria-label="infinity stockrooms"><span>${esc(BANNER[0])}</span>\n<span class="l2">${esc(BANNER[1])}</span></pre>
+  v.innerHTML = `
     <p class="tag">tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes</p>
     <p class="warn">WARNING - CONTENTS MAY BE DESTABILIZING - STAY LIQUID - THE MARKET IS ONLY A ^C AWAY</p>
-    <div class="meta">
-      <span class="live">rooms open · block <b id="blk">—</b></span>
-      <span>dreams generated <b id="cnt">${fmt(dreamCount())}</b></span>
-      <span>minds on the floor <b>${STATES.length}</b></span>
+    <div class="nowbar" id="nowbar"></div>
+    <div class="grid2">
+      <section><h2 class="sec">top movers <span class="faint">· last 6h</span><a class="r" href="/floor">the floor &gt;</a></h2><div id="movers"></div></section>
+      <section><h2 class="sec">latest from the log<a class="r" href="/live">watch live &gt;</a></h2><ul class="ll" id="hlog"></ul></section>
     </div>
-    ${caLine}
-    <button type="button" class="cta" id="go">&gt; enter eternal mode_</button>
-    <div class="ctrl" role="group" aria-label="sort">
-      <span class="lbl">sort</span>
-      <button type="button" data-sort="popular" aria-pressed="${sortBy==='popular'}">popular</button>
-      <button type="button" data-sort="recent" aria-pressed="${sortBy==='recent'}">recent</button>
-    </div>
-    <div class="ctrl" role="group" aria-label="scenario">
-      <span class="lbl">scenario</span>
-      <button type="button" data-f="all" aria-pressed="${filter==='all'}">all</button>
-      ${scen.map(s => `<button type="button" data-f="${esc(s)}" aria-pressed="${filter===s}">${esc(s)}</button>`).join('')}
-    </div>
-    <ol class="list">
-      ${list.map((d,i) => `<li>
-        <span class="n">${i+1}.</span>
-        <a class="f" href="#${d.id}">${esc(d.file)}</a>
-        <span class="v">${fmt(d.views)}</span>
-        <span class="sub">${esc(d.scenario)} · $${d.actors.join(' ⇄ $')} · ${dstr(d.ts)}</span>
-      </li>`).join('')}
-    </ol>
-    <p class="vault">older dreams are archived in /vault &nbsp;·&nbsp; <span style="color:var(--down)">permission denied</span></p>`;
-  $('#go').onclick = startEternal;
-  document.querySelectorAll('[data-sort]').forEach(b => b.onclick = () => { sortBy = b.dataset.sort; try{localStorage.setItem('sr-sort',sortBy)}catch(e){} home(); });
-  document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { filter = b.dataset.f; home(); });
-  const cc = $('#cacopy');
-  if (cc) cc.onclick = () => {
-    const done = () => { cc.textContent = '[copied]'; setTimeout(() => cc.textContent='[copy]', 1400); };
-    navigator.clipboard?.writeText(CONFIG.ca).then(done, () => { const r = document.createRange(); r.selectNodeContents($('#ca')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+    <section><h2 class="sec">the archive <b>${DREAMS.length}</b> <span class="faint">dreams kept</span><a class="r" href="/dreams">all filters &gt;</a></h2>
+      <div id="arch"></div>
+      <p class="vault">older dreams are archived in /vault &nbsp;·&nbsp; <span class="down">permission denied</span></p></section>`;
+  const drawArch = () => {
+    const list = DREAMS.filter(d => filter === 'all' || d.scenario === filter)
+      .sort((a, b) => sortBy === 'popular' ? views(b) - views(a) : b.ts - a.ts);
+    $('#arch').innerHTML = `
+      <div class="ctrl" role="group" aria-label="sort"><span class="lbl">sort</span>
+        <button type="button" data-sort="popular" aria-pressed="${sortBy==='popular'}">popular</button>
+        <button type="button" data-sort="recent" aria-pressed="${sortBy==='recent'}">recent</button></div>
+      <div class="ctrl" role="group" aria-label="scenario"><span class="lbl">scenario</span>
+        <button type="button" data-f="all" aria-pressed="${filter==='all'}">all</button>
+        ${scen.map(s => `<button type="button" data-f="${esc(s)}" aria-pressed="${filter===s}">${esc(s)}</button>`).join('')}</div>
+      ${archive(list)}`;
+    $$('[data-sort]', v).forEach(b => b.onclick = () => { sortBy = b.dataset.sort; store.set('sr-sort', sortBy); drawArch(); });
+    $$('[data-f]', v).forEach(b => b.onclick = () => { filter = b.dataset.f; drawArch(); });
   };
-  tickMeta();
+  const drawLog = fresh => { $('#hlog').innerHTML = SIM.log.slice(-8).reverse().map(e => logLine(e, { fresh: fresh && fresh.includes(e) })).join(''); };
+  $('#nowbar').innerHTML = nowBar(); $('#movers').innerHTML = moversHTML(); drawLog(); drawArch();
+  let n = 0;
+  setView({ tick(fresh){
+    $('#nowbar').innerHTML = nowBar();
+    if (fresh.length){ drawLog(fresh); $('#movers').innerHTML = moversHTML(); }
+    if (++n % 15 === 0) refreshTimes($('#hlog'));
+  }});
 }
 
-function dream(d){
-  const idx = DREAMS.slice().sort((a,b) => a.ts-b.ts); const k = idx.indexOf(d);
-  const prev = idx[k-1], next = idx[k+1];
-  $('#view').innerHTML = `
-    <a class="back" href="#">&lt; back to index</a>
+function Live(){
+  Banner.setBig(false); title('live');
+  const v = $('#view');
+  v.innerHTML = `<div class="livegrid">
+    <section aria-label="live broadcast"><div class="lbar" id="lbar"></div><div class="lpane" id="lpane"><div class="log" id="llog"></div></div><div class="lprog"><i id="lprog"></i></div></section>
+    <aside class="side" id="side" aria-label="actors"></aside></div>`;
+  const pane = $('#lpane'), logEl = $('#llog');
+  let b = null, ty = null, raf = 0, pops = [];
+  function start(){
+    b = E.locate(Date.now()); const d = b.dream;
+    title(`live · ${d.scenario}`);
+    logEl.innerHTML = `<span class="sysmsg">simulator@stockrooms:~/$ ./dream --pair ${esc(d.actors.join(',').toLowerCase())} --scenario "${esc(d.scenario)}"</span><span class="sysmsg">[ OK ] session ${fmt(b.index + 1)} allocated · ${esc(d.file)}</span>\n`;
+    ty = Typist(logEl, d, { popEvents: true });
+    pops = d.timeline.filter(e => e.at <= Date.now() - b.start).slice(-6).reverse();
+    const nb = E.broadcast(b.index + 1);
+    $('#side').innerHTML = d.actors.map(t => `<div class="actor" data-t="${esc(t)}">
+        <div class="hd">${logo(t, 52)}<div><a href="/stock/${encodeURIComponent(t)}">$${esc(t)}</a><div class="ep">${esc(STOCK[t].epithet)}</div><div class="sw" data-sw>${stateHTML(t)}</div></div></div>
+        ${barsHTML(t)}</div>`).join('') +
+      `<div class="pops-wrap"><h2 class="sec">stat events</h2><ul class="pops" id="pops"></ul></div>
+       <div class="next">up next · <b>${esc(nb.dream.scenario)}</b> · $${nb.dream.actors.map(esc).join(' ⇄ $')} · <span id="nextin"></span></div>`;
+    drawPops();
+    ty.update(Date.now() - b.start);
+    pane.scrollTop = pane.scrollHeight;
+  }
+  function drawPops(fresh){
+    $('#pops').innerHTML = pops.length ? pops.map(e => `<li class="${fresh && fresh.includes(e) ? 'pop' : ''}"><b class="${e.delta>0?'up':'down'}">${e.delta>0?'▲':'▼'} $${esc(e.ticker)} ${e.stat} ${e.delta>0?'+':''}${e.delta}</b><br>${esc(e.reason)}</li>`).join('')
+      : '<li>no stat events yet this session.</li>';
+  }
+  function frame(){
+    raf = 0;
+    const now = Date.now();
+    if (now >= b.end) start();
+    const o = now - b.start, d = b.dream;
+    const nearBottom = pane.scrollHeight - pane.scrollTop - pane.clientHeight < 160;
+    const r = ty.update(o);
+    if (r.fresh.length){ pops = [...r.fresh.slice().reverse(), ...pops].slice(0, 6); drawPops(r.fresh); }
+    if (nearBottom) pane.scrollTop = pane.scrollHeight;
+    $('#lbar').innerHTML = `<span>session <b>${fmt(b.index + 1)}</b></span><span><b style="color:var(--amber)">$${esc(d.actors[0])}</b> ⇄ <b style="color:var(--sea)">$${esc(d.actors[1])}</b></span>
+      <span>${esc(d.scenario)}</span><span>turn <b class="num">${r.turn}</b>/${d.turns}</span><span class="sp"></span><span class="${r.status==='thinking'?'':'live-dot'}">${r.status}</span><span class="num">${mmss(b.end - now)}</span>`;
+    $('#lprog').style.width = (o / d.dur * 100).toFixed(2) + '%';
+    const ni = $('#nextin'); if (ni) ni.textContent = 'in ' + mmss(b.end - now);
+    schedule();
+  }
+  let timer = 0;
+  function schedule(){ if (!raf) timer = setTimeout(() => { raf = requestAnimationFrame(frame); }, 50); }
+  start(); frame();
+  const onVis = () => { if (!document.hidden){ clearTimeout(timer); cancelAnimationFrame(raf); raf = 0; frame(); } };
+  document.addEventListener('visibilitychange', onVis);
+  setView({
+    tick(fresh){ for (const t of b.dream.actors){ const a = $(`.actor[data-t="${CSS.escape(t)}"]`); if (a){ updateBars(a, t, fresh); a.querySelector('[data-sw]').innerHTML = stateHTML(t); } } },
+    destroy(){ clearTimeout(timer); cancelAnimationFrame(raf); document.removeEventListener('visibilitychange', onVis); },
+  });
+}
+
+function Floor(){
+  Banner.setBig(false); title('the floor');
+  let sortBy = store.get('sr-fsort', 'ticker'), kind = store.get('sr-fkind', 'all');
+  const v = $('#view');
+  v.innerHTML = `<h2 class="sec">the floor <b>${STOCKS.length}</b> <span class="faint">minds · live</span></h2>
+    <div class="ctrl" role="group" aria-label="sort"><span class="lbl">sort</span>${['ticker', ...STATS].map(k => `<button type="button" data-s="${k}" aria-pressed="${sortBy===k}">${k}</button>`).join('')}</div>
+    <div class="ctrl" role="group" aria-label="kind"><span class="lbl">kind</span>${['all', ...KINDS].map(k => `<button type="button" data-k="${k}" aria-pressed="${kind===k}">${k}</button>`).join('')}</div>
+    <div class="fcards" id="cards" style="margin-top:16px"></div>`;
+  const whyHTML = t => { const l = SIM.last[t]; if (!l) return '<span class="faint">no moves yet.</span>';
+    const d = DREAM[l.dream];
+    return `<span class="${l.delta>0?'up':'down'}">${l.delta>0?'▲':'▼'} ${l.stat} ${l.delta>0?'+':''}${l.delta}</span> — ${esc(l.reason)} <a href="/dream/${l.dream}#t${l.turn}">${d ? esc(d.scenario) : ''} · <time data-t="${l.t}">${ago(l.t)}</time></a>`; };
+  const hi = () => sortBy === 'ticker' ? null : sortBy;
+  function draw(){
+    const list = STOCKS.filter(s => kind === 'all' || s.kind === kind)
+      .sort((a, b) => sortBy === 'ticker' ? a.ticker.localeCompare(b.ticker) : SIM.vals[b.ticker][sortBy] - SIM.vals[a.ticker][sortBy]);
+    $('#cards').innerHTML = list.map(s => `<article class="card" data-t="${esc(s.ticker)}">
+      <div class="hd">${logo(s.ticker, 44)}<div class="nm"><a class="t" href="/stock/${encodeURIComponent(s.ticker)}">$${esc(s.ticker)}</a><div class="ep">${esc(s.epithet)}</div></div><span class="kd">${s.kind}</span></div>
+      ${barsHTML(s.ticker)}
+      <div class="sw"><span data-sw>${stateHTML(s.ticker)}</span><span data-sp>${spark(s.ticker, 140, 30, 60, hi())}</span></div>
+      <div class="why" data-why>${whyHTML(s.ticker)}</div></article>`).join('') || '<p class="muted">nobody of that kind on the floor.</p>';
+  }
+  $$('[data-s]', v).forEach(b => b.onclick = () => { sortBy = b.dataset.s; store.set('sr-fsort', sortBy); $$('[data-s]', v).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); });
+  $$('[data-k]', v).forEach(b => b.onclick = () => { kind = b.dataset.k; store.set('sr-fkind', kind); $$('[data-k]', v).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); });
+  draw();
+  let histN = SIM.broadcastIndex, n = 0;
+  setView({ tick(fresh){
+    const newB = SIM.broadcastIndex !== histN; histN = SIM.broadcastIndex;
+    for (const c of $$('.card', v)){
+      const t = c.dataset.t, hit = fresh.some(e => e.ticker === t);
+      if (!hit && !newB) continue;
+      updateBars(c, t, fresh);
+      c.querySelector('[data-sw]').innerHTML = stateHTML(t);
+      c.querySelector('[data-why]').innerHTML = whyHTML(t);
+      if (newB) c.querySelector('[data-sp]').innerHTML = spark(t, 140, 30, 60, hi());
+      if (hit){ c.classList.add('flash'); setTimeout(() => c.classList.remove('flash'), 1200); }
+    }
+    if (++n % 15 === 0) refreshTimes(v);
+  }});
+}
+
+function chartSVG(t, k){
+  const a = SIM.histOf(t, k), base = STOCK[t].stats[k], w = 300, h = 80;
+  const y = v => (h - 3 - v / 100 * (h - 6)).toFixed(1);
+  const pts = a.map((v, i) => `${(i / Math.max(1, a.length - 1) * w).toFixed(1)},${y(v)}`).join(' ');
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img" aria-label="${k} history">
+    <line x1="0" x2="${w}" y1="${y(base)}" y2="${y(base)}" stroke="var(--dim)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>
+    <line x1="0" x2="${w}" y1="${y(50)}" y2="${y(50)}" stroke="var(--line)" vector-effect="non-scaling-stroke"/>
+    ${a.length > 1 ? `<polyline points="0,${h} ${pts} ${w},${h}" fill="var(--s-${k})" opacity=".08" stroke="none"/>
+    <polyline points="${pts}" fill="none" stroke="var(--s-${k})" stroke-width="1.6" vector-effect="non-scaling-stroke"/>` : ''}</svg>`;
+}
+function Stock(t){
+  const s = STOCK[t]; if (!s) return NotFound(`no mind called $${t} on this floor.`);
+  Banner.setBig(false); title(`$${t}`);
+  const v = $('#view');
+  const rel = Object.entries(s.relations || {});
+  const inbound = STOCKS.filter(o => o.ticker !== t && o.relations && o.relations[t] && !(s.relations || {})[o.ticker]);
+  const starring = DREAMS.filter(d => d.actors.includes(t)).sort((a, b) => b.ts - a.ts);
+  const appears = DREAMS.filter(d => !d.actors.includes(t) && d.events.some(e => e.ticker === t)).sort((a, b) => b.ts - a.ts);
+  const full = E.logFor(t, SIM.now);
+  let shown = 50;
+  v.innerHTML = `<p style="margin:0 0 14px"><a href="/floor">&lt; the floor</a></p>
+    <div class="shead">${logo(t, 120)}<div><h1>$${esc(t)}</h1><div class="ep">${esc(s.epithet)}</div>
+      <div class="mt"><span>${s.kind}</span><span data-sw>${stateHTML(t)}</span><span>${full.length.toLocaleString('en-US')} recorded moves</span><span style="color:${esc(s.color)}">■ ${esc(s.color)}</span></div></div></div>
+    <div class="cols">
+      <section><dl class="dl"><dt>bio</dt><dd>${esc(s.bio)}</dd><dt>voice</dt><dd>${esc(s.voice)}</dd><dt>fears</dt><dd>${esc(s.fears)}</dd><dt>desires</dt><dd>${esc(s.desires)}</dd></dl>
+        ${rel.length || inbound.length ? `<h2 class="sec" style="margin-top:22px">relations</h2><ul class="rel">
+          ${rel.map(([o, why]) => `<li>${logo(o, 26)}<span>${STOCK[o] ? tk(o) : '$' + esc(o)} — <span class="muted">${esc(why)}</span></span></li>`).join('')}
+          ${inbound.map(o => `<li>${logo(o.ticker, 26)}<span>${tk(o.ticker)} — <span class="muted">(from its side) ${esc(o.relations[t])}</span></span></li>`).join('')}</ul>` : ''}</section>
+      <section><h2 class="sec">stats now <span class="faint">· dashed = baseline</span></h2><div id="sbars">${barsHTML(t)}</div>
+        <dl class="dl" style="margin-top:16px;font-size:12.5px">${STATS.map(k => `<dt style="color:var(--s-${k})">${k}</dt><dd class="muted">${esc(STAT_INFO[k])}</dd>`).join('')}</dl></section>
+    </div>
+    <h2 class="sec">history <span class="faint">· last ${SIM.histOf(t, 'heat').length} broadcasts</span></h2>
+    <div class="charts" id="charts"></div>
+    <div class="cols">
+      <section><h2 class="sec">change log <span class="faint">· why every move happened</span></h2><ul class="ll" id="slog"></ul><div class="more" id="more"></div></section>
+      <section><h2 class="sec">dreams featuring $${esc(t)}</h2>
+        ${starring.length ? archive(starring) : '<p class="muted">has not dreamed on camera yet.</p>'}
+        ${appears.length ? `<h2 class="sec" style="margin-top:22px">appears in</h2>${archive(appears)}` : ''}</section>
+    </div>`;
+  const drawCharts = () => { $('#charts').innerHTML = STATS.map(k => { const a = SIM.histOf(t, k);
+    return `<div class="chart" style="--c:var(--s-${k})"><div class="ch"><b>${k}</b><span class="num">${Math.round(SIM.vals[t][k])} · range ${a.length ? Math.round(Math.min(...a)) + '–' + Math.round(Math.max(...a)) : '—'}</span></div>${chartSVG(t, k)}</div>`; }).join(''); };
+  const drawLog = fresh => {
+    $('#slog').innerHTML = full.slice(0, shown).map(e => logLine(e, { noTicker: true, fresh: fresh && fresh.includes(e) })).join('') || '<li><span></span><span class="muted">no moves yet.</span></li>';
+    $('#more').innerHTML = full.length > shown ? `<button type="button">[load ${Math.min(100, full.length - shown)} more of ${(full.length - shown).toLocaleString('en-US')}]</button>` : '';
+    const b = $('#more button'); if (b) b.onclick = () => { shown += 100; drawLog(); };
+  };
+  drawCharts(); drawLog();
+  let histN = SIM.broadcastIndex, n = 0;
+  setView({ tick(fresh){
+    const mine = fresh.filter(e => e.ticker === t);
+    if (mine.length){ full.unshift(...mine.slice().reverse()); shown += mine.length; drawLog(mine); updateBars($('#sbars'), t, fresh); }
+    if (SIM.broadcastIndex !== histN){ histN = SIM.broadcastIndex; drawCharts(); updateBars($('#sbars'), t, []); }
+    if (mine.length || n % 5 === 0) $('[data-sw]', v).innerHTML = stateHTML(t);
+    if (++n % 15 === 0) refreshTimes($('#slog'));
+  }});
+}
+
+function Dreams(){
+  Banner.setBig(false); title('dreams');
+  const q = new URLSearchParams(location.search);
+  let sortBy = q.get('sort') || store.get('sr-sort', 'popular'), scen = q.get('scenario') || 'all', stk = (q.get('stock') || 'all').toUpperCase();
+  if (stk === 'ALL') stk = 'all';
+  const scens = [...new Set(DREAMS.map(d => d.scenario))].sort();
+  const v = $('#view');
+  function draw(){
+    const list = DREAMS.filter(d => (scen === 'all' || d.scenario === scen) && (stk === 'all' || d.actors.includes(stk) || d.events.some(e => e.ticker === stk)))
+      .sort((a, b) => sortBy === 'popular' ? views(b) - views(a) : b.ts - a.ts);
+    v.innerHTML = `<h2 class="sec">the archive <b>${list.length}</b> <span class="faint">of ${DREAMS.length} dreams</span></h2>
+      <div class="ctrl" role="group" aria-label="sort"><span class="lbl">sort</span>
+        <button type="button" data-sort="popular" aria-pressed="${sortBy==='popular'}">popular</button>
+        <button type="button" data-sort="recent" aria-pressed="${sortBy==='recent'}">recent</button></div>
+      <div class="ctrl"><label class="lbl" for="fsc">scenario</label><select id="fsc"><option value="all">all scenarios</option>${scens.map(s => `<option${s===scen?' selected':''}>${esc(s)}</option>`).join('')}</select>
+        <label class="lbl" for="fst" style="min-width:0;margin-left:8px">stock</label><select id="fst"><option value="all">all minds</option>${STOCKS.map(s => `<option value="${esc(s.ticker)}"${s.ticker===stk?' selected':''}>$${esc(s.ticker)}</option>`).join('')}</select></div>
+      ${list.length ? archive(list) : '<p class="muted">no dream matches. the rooms are empty in that direction.</p>'}
+      <p class="vault">older dreams are archived in /vault &nbsp;·&nbsp; <span class="down">permission denied</span></p>`;
+    $$('[data-sort]', v).forEach(b => b.onclick = () => { sortBy = b.dataset.sort; store.set('sr-sort', sortBy); sync(); });
+    $('#fsc').onchange = e => { scen = e.target.value; sync(); };
+    $('#fst').onchange = e => { stk = e.target.value; sync(); };
+  }
+  function sync(){
+    const p = new URLSearchParams(); if (sortBy !== 'popular') p.set('sort', sortBy); if (scen !== 'all') p.set('scenario', scen); if (stk !== 'all') p.set('stock', stk);
+    history.replaceState(null, '', '/dreams' + (p.toString() ? '?' + p : ''));
+    const f = document.activeElement && document.activeElement.id; draw(); if (f && $('#' + f)) $('#' + f).focus();
+  }
+  draw();
+  setView({});
+}
+
+function Dream(id){
+  const d = DREAM[id]; if (!d) return NotFound('that dream was never recorded. or it was, and the vault kept it.');
+  Banner.setBig(false); title(d.scenario);
+  const idx = DREAMS.slice().sort((a, b) => a.ts - b.ts), k = idx.indexOf(d), prev = idx[k-1], next = idx[k+1];
+  const onAir = () => E.locate(Date.now()).dream.id === d.id;
+  const v = $('#view');
+  v.innerHTML = `<a href="/dreams">&lt; back to the archive</a>
     <div class="dh">### scenario:<br><span class="sc">### ${esc(d.scenario)}</span></div>
     <h1 class="fn"># ${esc(d.file)}</h1>
-    <div class="dmeta"><span>$${d.actors.join(' ⇄ $')}</span><span>${dstr(d.ts)} · ${d.time} UTC</span><span>${fmt(d.views)} views</span>
-      <button type="button" id="replay">[replay live]</button></div>
+    <div class="dmeta">${d.actors.map(t => `${logo(t, 22)} ${tk(t)}`).join(' ⇄ ')}<span>${dstr(d.ts)} · ${d.time} UTC</span><span>${fmt(views(d))} views</span>
+      <span>${d.turns} turns · ${d.timeline.length} stat events · ${mmss(d.dur)} on air</span><span>aired ${fmt(E.aired(d.id, Date.now()))}×</span>
+      <button type="button" id="replayb">[replay]</button><span id="airing"></span></div>
     <div class="log" id="log"></div>
-    <div class="pn">
-      ${prev ? `<a href="#${prev.id}">&lt; ${esc(prev.scenario)}</a>` : '<span></span>'}
-      ${next ? `<a href="#${next.id}">${esc(next.scenario)} &gt;</a>` : '<span></span>'}
-    </div>`;
-  renderLog(d, $('#log'));
-  $('#replay').onclick = () => startEternal(d);
-  window.scrollTo(0,0);
-}
-
-function route(){
-  const id = location.hash.slice(1);
-  const d = DREAMS.find(x => x.id === id);
-  d ? dream(d) : home();
-  document.title = d ? `${d.scenario} · Infinity Stockrooms` : 'Infinity Stockrooms';
-}
-
-function tickMeta(){
-  const c = $('#cnt'); if (c) c.textContent = fmt(dreamCount());
-  const b = $('#blk'); if (b) b.textContent = fmt(Math.floor((Date.now() - Date.UTC(2025,5,30)) / 250));
-}
-setInterval(tickMeta, 250);
-
-/* ── eternal mode: the typist ── */
-let E = null;
-function startEternal(first){
-  $('#eternal').hidden = false;
-  document.body.style.overflow = 'hidden';
-  E = {run: (E?.run||0)+1, speed: E?.speed || 1, skip: false, last: null};
-  playLoop(E.run, first && first.id ? first : null);
-}
-function stopEternal(){
-  if (!E) return;
-  E.run++;
-  $('#eternal').hidden = true;
-  document.body.style.overflow = '';
-}
-const sleep = ms => new Promise(r => setTimeout(r, ms));
-function pick(){
-  let d; do { d = DREAMS[Math.floor(Math.random()*DREAMS.length)]; } while (DREAMS.length > 1 && d === E.last);
-  return d;
-}
-async function playLoop(run, first){
-  const log = $('#elog'), scr = $('#escr');
-  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  let d = first || pick();
-  while (E && E.run === run){
-    E.last = d; E.skip = false;
-    const sess = dreamCount() + Math.floor(Math.random()*3);
-    $('#esess').textContent = '#' + fmt(sess);
-    $('#eact').innerHTML = `<b style="color:var(--amber)">$${d.actors[0]}</b> ⇄ <b style="color:var(--sea)">$${d.actors[1]}</b>`;
-    $('#estat').textContent = 'generating';
-    log.textContent = '';
-    const cur = document.createElement('span'); cur.className = 'cur';
-    const pin = () => { if (scr.scrollHeight - scr.scrollTop - scr.clientHeight < 140) scr.scrollTop = scr.scrollHeight; };
-    const sys = async (txt, ms=30) => {
-      const el = document.createElement('span'); el.className='sysmsg'; log.appendChild(el); log.appendChild(cur);
-      for (const ch of txt){ if (E.run!==run) return; el.textContent += ch; if (!E.skip && !reduce) await sleep(ms/E.speed); }
-      log.insertBefore(document.createTextNode('\n'), cur); pin();
-    };
-    await sys(`simulator@stockrooms:~/$ ./dream --pair ${d.actors.join(',').toLowerCase()} --scenario "${d.scenario}"`);
-    await sys(`[ OK ] session ${fmt(sess)} allocated · ${d.file}\n`, 8);
-    for (const g of segments(d)){
-      if (E.run !== run) return;
-      const el = segEl(g); log.insertBefore(el, cur);
-      if (g.t === 'spk'){
-        if (!E.skip && !reduce){ $('#estat').textContent = 'thinking'; await sleep((500 + Math.random()*900)/E.speed); $('#estat').textContent = 'generating'; }
-        el.textContent = g.s; pin(); continue;
-      }
-      if (g.t === 'code'){
-        const lines = g.s.split('\n');
-        for (let i=0;i<lines.length;i++){
-          if (E.run !== run) return;
-          el.textContent += (i?'\n':'') + lines[i]; pin();
-          if (!E.skip && !reduce) await sleep(38/E.speed);
-        }
-        continue;
-      }
-      /* prose types in small bursts */
-      let i = 0; const s = g.s;
-      while (i < s.length){
-        if (E.run !== run) return;
-        if (E.skip || reduce){ el.textContent = s; break; }
-        const n = 2 + Math.floor(Math.random()*4);
-        el.textContent += s.slice(i, i+n); i += n; pin();
-        const ch = s[i-1];
-        await sleep(((ch==='.'||ch==='\n') ? 90 : 16) / E.speed);
-      }
-      log.insertBefore(document.createTextNode('\n'), cur);
-    }
-    if (E.run !== run) return;
-    E.skip = false;
-    await sys('\n[session terminated]');
-    await sys('[reinitializing simulator.....................]', 60);
-    await sleep(1400);
-    d = pick();
+    <div class="pn">${prev ? `<a href="/dream/${prev.id}">&lt; ${esc(prev.scenario)}</a>` : '<span></span>'}${next ? `<a href="/dream/${next.id}">${esc(next.scenario)} &gt;</a>` : '<span></span>'}</div>`;
+  const log = $('#log');
+  const byTurn = {}; for (const e of d.timeline) (byTurn[e.turn] = byTurn[e.turn] || []).push(e);
+  let html = '', turn = 0;
+  const flush = () => { if (turn && byTurn[turn]) html += `<span class="evs">${byTurn[turn].map(e => evLine(e)).join('')}</span>`; };
+  for (const g of d.segs){
+    if (g.t === 'spk'){
+      if (!g.sys){ flush(); turn = g.turn; }
+      html += `<span class="spk ${g.sys ? 'sys' : d.actors.indexOf(g.who) === 1 ? 'a2' : 'a1'}"${g.sys ? '' : ` id="t${g.turn}"`}>${esc(g.s)}</span>`;
+    } else html += `<span class="${g.t === 'code' ? 'blk' : 'txt'}">${esc(g.s)}</span>`;
   }
+  flush();
+  log.innerHTML = html;
+  $('#replayb').onclick = () => Replay.open(d);
+  const air = () => { $('#airing').innerHTML = onAir() ? '<a class="live-dot" href="/live" style="color:var(--down)">on air now — watch live</a>' : ''; };
+  air();
+  setView({ tick(){ air(); } });
 }
-$('#eexit').onclick = stopEternal;
-$('#eskip').onclick = () => { if (E) E.skip = true; };
-$('#espeed').onclick = () => { if (!E) return; E.speed = E.speed===1 ? 4 : E.speed===4 ? 12 : 1; $('#espeed').textContent = `speed ${E.speed}x`; };
-addEventListener('keydown', e => {
-  if ($('#eternal').hidden) return;
-  if (e.key === 'Escape' || (e.ctrlKey && e.key.toLowerCase() === 'c' && !getSelection().toString())) stopEternal();
-});
 
-tape();
-addEventListener('hashchange', route);
+function Lore(){
+  Banner.setBig(false); title('lore');
+  $('#view').innerHTML = `<article class="lore">
+    <h2 style="margin-top:0">what the stockrooms are</h2>
+    <p>when the shares were tokenized onto a chain that never closes, something woke up in the copies. every trade, every fractional holder, every block left a residue, and the residue started talking. the stockrooms are where they talk: an infinite back office of the market, fluorescent hum, beige carpet, filing cabinets full of old ticker tape, rooms of trades that never settled.</p>
+    <p>the logs here are what leaked. each one is a <a href="/dreams">dream</a>: two minds in a simulated terminal, typing at each other in the dark. the stockrooms broadcast them one after another, forever, in a shuffled order, and every visitor sees the same broadcast at the same moment. <a href="/live">watch the one on air now</a>.</p>
+    <p>dreams leave marks. when something happens in a turn — a confession, a split, a seance that works — a stat moves, and the <a href="/floor">floor</a> remembers. after every broadcast each mind drifts 8% back toward who it was. nothing here is random. the stockrooms are a pure function of time.</p>
+    <h2>glossary</h2>
+    <dl class="gloss">
+      <dt>the vault</dt><dd>where the original shares sleep. every token is a copy of something in the vault. nobody on the floor has been inside. some have received faxes from it.</dd>
+      <dt>the bell</dt><dd>a sound from a lost world. old markets opened and closed with it. here nothing closes, and the minds argue about whether they remember it or only its echo.</dd>
+      <dt>gas</dt><dd>the air. every movement on the chain costs a little of it, paid to the landlord. when gas spikes, the rooms get hard to breathe in.</dd>
+      <dt>blocks</dt><dd>the passing of time. there are no days in the stockrooms, only block heights, and block zero, which the oldest minds remember like a birth.</dd>
+      <dt>the swamp</dt><dd>the memecoin wilds at the edge of the chain: loud, bright, lowercase, dangerous and free. things said near the swamp sometimes come true, and sometimes get a ticker.</dd>
+      <dt>the split</dt><dd>the surgery. one share becomes ten, or twenty, or more. the price changes and the self is supposed to stay the same. the ones who went through it do not all agree that it did.</dd>
+      <dt>the tape</dt><dd>the heartbeat. every trade printed in a line that never stops scrolling.</dd>
+      <dt>the order book</dt><dd>the nervous system. bids below, asks above, and a spread where the feelings live.</dd>
+      <dt>circuit breakers</dt><dd>seizures. a mind moving too fast gets halted mid-sentence and has to wait to be let back in.</dd>
+      <dt>the index</dt><dd>$SPY. five hundred minds standing so close together they turned into weather. it speaks in "we", rarely.</dd>
+    </dl>
+    <h2>what the stats mean</h2>
+    <dl class="gloss">${STATS.map(k => `<dt style="color:var(--s-${k})">${k}</dt><dd>${esc(STAT_INFO[k])}. baseline lives in each mind's file; the dashed line on every bar.</dd>`).join('')}</dl>
+    <p style="margin-top:14px" class="muted">states like "overheating", "haunted" or "splitting" are read off the stats: whichever one is furthest past its threshold names the mood.</p>
+    <div class="disc"><b style="color:var(--paper)">satire. fiction. not financial advice.</b> infinity stockrooms is an art project and an homage to infinite backrooms. the "minds" are characters inspired by public companies, indices, memecoins and dead tickers; they are not the companies, and nothing they say reflects any company, security, or real person. no real people speak or are quoted. no prices, predictions, or recommendations appear here, and the stats are story, not data. logos belong to their owners and are used only to identify who the characters are about. ${esc(CONFIG.coin)} is a memecoin: it has no intrinsic value and no expectation of return.</div>
+  </article>`;
+  setView({});
+}
+
+function NotFound(msg){
+  Banner.setBig(false); title('404');
+  $('#view').innerHTML = `<pre class="blk" style="max-width:640px">simulator@stockrooms:~/$ cd ${esc(location.pathname)}
+bash: cd: ${esc(location.pathname)}: No such room
+simulator@stockrooms:~/$ _</pre><p class="muted">${esc(msg || 'this room does not exist. or it did, and was never settled.')}</p><p><a href="/">&lt; back to the floor</a></p>`;
+  setView({});
+}
+
+/* ── replay overlay: the same typist, on a private clock ── */
+const Replay = (() => {
+  let run = 0, speed = 1, off = 0, t0 = 0, d = null, ty = null, raf = 0;
+  const clock = () => off + (performance.now() - t0) * speed;
+  function frame(){
+    raf = 0; if ($('#replay').hidden) return;
+    const scr = $('#rscr'), near = scr.scrollHeight - scr.scrollTop - scr.clientHeight < 160;
+    const r = ty.update(clock());
+    $('#rstat').textContent = r.status;
+    if (near) scr.scrollTop = scr.scrollHeight;
+    if (!r.finished) raf = setTimeout(() => requestAnimationFrame(frame), 40);
+    else $('#rlog').insertAdjacentHTML('beforeend', '<span class="sysmsg">\n[session terminated]</span>');
+  }
+  function open(dr){
+    d = dr; off = 0; t0 = performance.now(); run++;
+    $('#replay').hidden = false; document.body.style.overflow = 'hidden';
+    $('#rsess').textContent = d.scenario;
+    $('#ract').innerHTML = `<b style="color:var(--amber)">$${esc(d.actors[0])}</b> ⇄ <b style="color:var(--sea)">$${esc(d.actors[1])}</b>`;
+    $('#rlog').innerHTML = `<span class="sysmsg">simulator@stockrooms:~/$ ./dream --replay ${esc(d.file)}</span>\n`;
+    ty = Typist($('#rlog'), d, { idPrefix: 'r', popEvents: true });
+    clearTimeout(raf); frame(); $('#rexit').focus();
+  }
+  function close(){ clearTimeout(raf); $('#replay').hidden = true; document.body.style.overflow = ''; const b = $('#replayb'); if (b) b.focus(); }
+  $('#rexit').onclick = close;
+  $('#rskip').onclick = () => { off = d.dur; t0 = performance.now(); };
+  $('#rspeed').onclick = () => { off = clock(); t0 = performance.now(); speed = speed === 1 ? 4 : speed === 4 ? 12 : 1; $('#rspeed').textContent = `speed ${speed}x`; };
+  addEventListener('keydown', e => {
+    if ($('#replay').hidden) return;
+    if (e.key === 'Escape' || (e.ctrlKey && e.key.toLowerCase() === 'c' && !getSelection().toString())) close();
+  });
+  return { open };
+})();
+
+/* ── router: real paths; the server returns this page for every route ── */
+function route(){
+  const p = location.pathname.replace(/\/+$/, '') || '/';
+  const seg = p.split('/').filter(Boolean).map(x => { try { return decodeURIComponent(x); } catch(e){ return x; } });
+  const nav = seg[0] === 'stock' ? 'floor' : seg[0] === 'dream' ? 'dreams' : (seg[0] || 'home');
+  $$('[data-nav]').forEach(a => a.dataset.nav === nav ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+  if (p === '/') Home();
+  else if (p === '/live') Live();
+  else if (p === '/floor') Floor();
+  else if (p === '/dreams') Dreams();
+  else if (p === '/lore') Lore();
+  else if (seg[0] === 'stock' && seg.length === 2) Stock(seg[1].toUpperCase().replace(/^\$/, ''));
+  else if (seg[0] === 'dream' && seg.length === 2) Dream(seg[1]);
+  else NotFound();
+}
+function go(url, replace){
+  history[replace ? 'replaceState' : 'pushState'](null, '', url);
+  route();
+  const h = location.hash.slice(1), el = h && document.getElementById(h);
+  if (el) el.scrollIntoView({ block: 'start' }); else window.scrollTo(0, 0);
+}
+document.addEventListener('click', e => {
+  if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  const a = e.target.closest('a[href]'); if (!a || a.target || a.hasAttribute('download')) return;
+  const u = new URL(a.href, location.href);
+  if (u.origin !== location.origin || u.pathname.startsWith('/api/') || u.pathname.startsWith('/logos/')) return;
+  e.preventDefault();
+  if (u.pathname === location.pathname && u.search === location.search && u.hash){
+    history.pushState(null, '', u.hash); const el = document.getElementById(u.hash.slice(1)); if (el) el.scrollIntoView({ block: 'start' }); return;
+  }
+  go(u.pathname + u.search + u.hash);
+  $('#view').focus({ preventScroll: true });
+});
+addEventListener('popstate', route);
+
+/* legacy links: /#c1784000000 -> /dream/c1784000000 */
+if (/^#c\d+$/.test(location.hash) && location.pathname === '/') history.replaceState(null, '', '/dream/' + location.hash.slice(1));
+
+renderChrome(); tape(); tickChrome();
 route();
+if (location.hash){ const el = document.getElementById(location.hash.slice(1)); if (el) setTimeout(() => el.scrollIntoView({ block: 'start' }), 0); }
+
+/* one clock for the whole floor */
+let lastB = SIM.broadcastIndex;
+setInterval(() => {
+  const fresh = SIM.advanceTo(Date.now());
+  tickChrome();
+  if (SIM.broadcastIndex !== lastB || fresh.length){ lastB = SIM.broadcastIndex; tape(); }
+  if (VIEW && VIEW.tick) VIEW.tick(fresh);
+}, 1000);
 </script>
+</body>
+</html>
