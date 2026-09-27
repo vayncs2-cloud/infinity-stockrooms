@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#0c0b09">
 <meta property="og:title" content="Infinity Stockrooms">
 <meta property="og:description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' shape-rendering='crispEdges'%3E%3Crect width='10' height='10' fill='%230c0b09'/%3E%3Cpath fill='%23e3a63b' d='M1 1h3v8H1zM6 1h3v3H6zM6 6h3v3H6z'/%3E%3C/svg%3E">
+<!--FAVICON--><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' shape-rendering='crispEdges'%3E%3Crect width='10' height='10' fill='%230c0b09'/%3E%3Cpath fill='%23e3a63b' d='M1 1h3v8H1zM6 1h3v3H6zM6 6h3v3H6z'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&display=swap">
@@ -345,7 +345,7 @@ h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;c
 const CONFIG = {
   coin: "$STOCKROOMS",
   ca: "",            // paste the contract address here when deployed
-  twitter: "",       // e.g. "https://x.com/yourhandle"
+  twitter: "https://x.com/stockroomsRH",
 };
 /* ──────────────────────────────────────────────────── */
 
@@ -576,6 +576,7 @@ function caHTML(full){
   return `<b>${esc(CONFIG.coin)}</b> · ca: <code title="${esc(CONFIG.ca)}">${esc(short)}</code> <button type="button" class="cacopy">[copy]</button>${tw}`;
 }
 function renderChrome(){
+  if (CONFIG.twitter && !$('.nav .xlink')) $('.nav').insertAdjacentHTML('beforeend', `<a class="xlink" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">x ↗</a>`);
   $('#strip').innerHTML = `<span>${caHTML(false)}</span><span class="sp"></span>
     <span class="live-dot">rooms open · block <b id="blk">—</b></span>
     <span>dreams generated <b id="cnt">—</b></span>

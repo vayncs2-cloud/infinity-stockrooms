@@ -7,7 +7,7 @@ const zlib = require('zlib');
 const { build } = require('./build');
 const Engine = require('./engine');
 
-const { page, count, dreams, stocks, logoFiles } = build();   // build once on boot
+const { page, count, dreams, stocks, logoFiles, favicon, twitter } = build();   // build once on boot
 const PORT = process.env.PORT || 3000;
 
 const html = Buffer.from(page);
@@ -65,7 +65,11 @@ http.createServer((req, res) => {
     if (!buf) return send(req, res, 404, { 'content-type': 'text/plain' }, 'not found');
     return send(req, res, 200, { 'content-type': 'image/png', 'cache-control': 'public, max-age=604800, immutable' }, buf);
   }
-  if (url === '/favicon.ico') return send(req, res, 204, {}, '');
+  if (favicon && url.toLowerCase() === '/' + favicon.name) {
+    return send(req, res, 200, { 'content-type': favicon.type, 'cache-control': 'public, max-age=604800' }, favicon.data);
+  }
+  if (url === '/favicon.ico') return favicon ? send(req, res, 302, { location: '/' + favicon.name }, '') : send(req, res, 204, {}, '');
+  if ((url === '/twitter' || url === '/x') && twitter) return send(req, res, 302, { location: twitter }, '');
   if (url === '/index.html') return send(req, res, 301, { location: '/' }, '');
 
   // everything else is a page of the app

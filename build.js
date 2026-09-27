@@ -85,12 +85,29 @@ function build() {
   const engine = fs.readFileSync(path.join(__dirname, 'engine.js'), 'utf8');
   const tpl = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
   const js = v => JSON.stringify(v).replace(/<\//g, '<\\/').replace(/<!--/g, '<\\!--');
+
+  // site logo: drop favicon.png / .svg / .ico / .jpg in the project root and it becomes the favicon (and share image)
+  const FAV_TYPES = { png: 'image/png', svg: 'image/svg+xml', ico: 'image/x-icon', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
+  const favName = fs.readdirSync(__dirname).find(f => /^favicon\.(png|svg|ico|jpe?g|webp)$/i.test(f));
+  let favicon = null, head = '';
+  if (favName) {
+    const ext = favName.split('.').pop().toLowerCase(), file = path.join(__dirname, favName);
+    const v = Math.round(fs.statSync(file).mtimeMs / 1000).toString(36);
+    favicon = { name: favName.toLowerCase(), type: FAV_TYPES[ext], data: fs.readFileSync(file) };
+    const href = `/${favicon.name}?v=${v}`;
+    const origin = process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '';
+    head = `<link rel="icon" type="${favicon.type}" href="${href}">`;
+    if (ext !== 'ico' && ext !== 'svg') head += `\n<link rel="apple-touch-icon" href="${href}">\n<meta property="og:image" content="${origin}${href}">\n<meta name="twitter:card" content="summary">`;
+  }
+  const twitter = (tpl.match(/twitter:\s*"([^"]*)"/) || [])[1] || '';
+
   const page = tpl
+    .replace(/<!--FAVICON-->[^\n]*/, m => head || m.replace('<!--FAVICON-->', ''))
     .replace('/*ENGINE*/', () => engine.replace(/<\/script/gi, '<\\/script'))
     .replace('/*DATA*/[]', () => js(dreams))
     .replace('/*STOCKS*/[]', () => js(stocks))
     .replace('/*BANNER*/null', () => js(banner));
-  return { page, count: dreams.length, dreams, stocks, logoFiles };
+  return { page, count: dreams.length, dreams, stocks, logoFiles, favicon, twitter };
 }
 
 module.exports = { build };
