@@ -1,0 +1,374 @@
+<title>Infinity Stockrooms</title>
+<meta name="description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Single committed look: a back-office trading terminal left on after hours. */
+:root{
+  color-scheme: dark;
+  --ground:#0c0b09;      /* warm black, like an old CRT bezel */
+  --ground-2:#15130f;    /* code/output wells */
+  --paper:#d6ceb8;       /* ticker-tape paper */
+  --dim:#7b745f;         /* faded print */
+  --faint:#3a362b;       /* rules */
+  --amber:#e3a63b;       /* quote-terminal amber, actor one */
+  --sea:#98bba2;         /* actor two */
+  --up:#86a86d; --down:#c8604f;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, "DejaVu Sans Mono", Menlo, monospace;
+}
+html,body{background:var(--ground);color:var(--paper)}
+body{font-family:var(--mono);font-size:14px;line-height:1.6;margin:0}
+.wrap{max-width:940px;margin:0 auto;padding-inline:16px;padding-block:20px 60px}
+a{color:var(--amber);text-decoration:none}
+a:hover{text-decoration:underline}
+a:focus-visible,button:focus-visible{outline:1px dashed var(--amber);outline-offset:3px}
+::selection{background:var(--amber);color:var(--ground)}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+
+/* ticker tape */
+.tape{overflow:hidden;border-block:1px solid var(--faint);white-space:nowrap;font-size:12px;color:var(--dim);margin-bottom:22px}
+.tape-in{display:inline-block;padding-block:5px;animation:tape 80s linear infinite}
+.tape b{font-weight:400;color:var(--paper)}
+.tape .u{color:var(--up)} .tape .d{color:var(--down)}
+@keyframes tape{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* banner */
+.banner{margin:0;color:var(--paper);line-height:1.02;font-size:min(11px, calc((100vw - 34px) / 54));overflow:hidden;white-space:pre;letter-spacing:0}
+.banner .l2{color:var(--amber)}
+.tag{color:var(--dim);margin:14px 0 4px}
+.warn{color:var(--paper);font-size:12px;letter-spacing:.04em;margin:0 0 18px}
+.warn a{color:var(--dim)}
+.meta{display:flex;flex-wrap:wrap;gap:6px 22px;font-size:12px;color:var(--dim);margin-bottom:22px}
+.meta b{font-weight:400;color:var(--paper);font-variant-numeric:tabular-nums}
+.meta .live::before{content:"";display:inline-block;width:7px;height:7px;background:var(--down);margin-right:7px;vertical-align:1px;animation:blink 1.4s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+
+.cta{display:inline-block;border:1px solid var(--amber);color:var(--amber);padding:9px 16px;margin-bottom:26px;letter-spacing:.05em}
+.cta:hover{background:var(--amber);color:var(--ground)}
+
+.ctrl{display:flex;flex-wrap:wrap;gap:6px 16px;font-size:12px;color:var(--dim);margin-bottom:10px}
+.ctrl button{color:var(--dim)}
+.ctrl button[aria-pressed="true"]{color:var(--paper);text-decoration:underline;text-underline-offset:4px}
+.ctrl button:hover{color:var(--paper)}
+.ctrl .lbl{color:var(--faint)}
+
+/* dream list */
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--faint)}
+.list li{display:grid;grid-template-columns:2.4em 1fr auto;gap:4px 14px;padding-block:9px;border-bottom:1px solid var(--faint);align-items:baseline}
+.list .n{color:var(--faint);font-variant-numeric:tabular-nums}
+.list .f{overflow-wrap:anywhere}
+.list .sub{grid-column:2;font-size:12px;color:var(--dim)}
+.list .v{grid-row:1/span 2;grid-column:3;font-size:12px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.list .v::after{content:" ▲";color:var(--up)}
+.vault{color:var(--dim);font-size:12px;margin-top:18px}
+
+/* dream page */
+.back{font-size:13px}
+.dh{margin:22px 0 8px;color:var(--dim);font-size:13px}
+.dh .sc{color:var(--paper);font-size:15px}
+h1.fn{font-size:clamp(15px,2.6vw,20px);font-weight:600;margin:4px 0 6px;overflow-wrap:anywhere;color:var(--paper)}
+.dmeta{font-size:12px;color:var(--dim);display:flex;flex-wrap:wrap;gap:4px 18px;margin-bottom:18px}
+.dmeta button{color:var(--amber)}
+.log{white-space:pre-wrap;overflow-wrap:break-word;max-width:88ch}
+.spk{display:block;margin-top:1.1em;color:var(--amber);font-weight:600}
+.spk.a2{color:var(--sea)}
+.spk.sys{color:var(--dim);font-weight:400}
+.blk{display:block;white-space:pre;overflow-x:auto;background:var(--ground-2);border-left:1px solid var(--faint);padding:8px 12px;margin:6px 0;line-height:1.35;font-size:13px}
+.pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:14px;border-top:1px solid var(--faint);font-size:13px}
+.foot{margin-top:46px;font-size:11px;color:var(--faint);line-height:1.7}
+.foot b{font-weight:400;color:var(--dim)}
+.ca{font-size:12px;color:var(--dim);margin-bottom:18px}
+.ca code{color:var(--paper);overflow-wrap:anywhere}
+
+/* eternal mode */
+.eternal{position:fixed;inset:0;background:var(--ground);z-index:10;display:flex;flex-direction:column}
+.eternal::after{content:"";position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(to bottom,rgba(0,0,0,0) 0 2px,rgba(0,0,0,.18) 2px 3px)}
+.ebar{display:flex;flex-wrap:wrap;gap:4px 18px;align-items:center;font-size:12px;color:var(--dim);border-bottom:1px solid var(--faint);padding:calc(8px + env(safe-area-inset-top,0px)) 16px 8px}
+.ebar b{font-weight:400;color:var(--paper)}
+.ebar .sp{flex:1}
+.ebar button{color:var(--amber)}
+.escr{flex:1;overflow-y:auto;padding:18px 16px calc(40px + env(safe-area-inset-bottom,0px))}
+.escr .log{margin:0 auto;max-width:88ch}
+.cur{display:inline-block;width:.6em;height:1.1em;background:var(--paper);vertical-align:-2px;animation:blink 1s steps(2) infinite}
+.sysmsg{color:var(--dim)}
+
+@media (max-width:560px){
+  body{font-size:13px}
+  .list li{grid-template-columns:1.8em 1fr}
+  .list .v{grid-row:auto;grid-column:2;text-align:left}
+  .blk{font-size:11px}
+}
+@media (prefers-reduced-motion:reduce){
+  .tape-in,.cur,.meta .live::before{animation:none}
+}
+</style>
+
+<div class="wrap" id="app">
+  <div class="tape" aria-hidden="true"><div class="tape-in" id="tape"></div></div>
+  <div id="view"></div>
+  <div class="foot">
+    <b>fiction.</b> tokenized stocks do not dream (probably). nothing here is financial advice, a price prediction, or the words of any real person.<br>
+    an homage to infinite backrooms. the stockrooms are always open.
+  </div>
+</div>
+
+<div class="eternal" id="eternal" hidden>
+  <div class="ebar">
+    <span>INFINITY STOCKROOMS</span>
+    <span>session <b id="esess">—</b></span>
+    <span id="eact"></span>
+    <span id="estat">generating</span>
+    <span class="sp"></span>
+    <button id="espeed" type="button">speed 1x</button>
+    <button id="eskip" type="button">skip</button>
+    <button id="eexit" type="button">^C exit</button>
+  </div>
+  <div class="escr" id="escr"><div class="log" id="elog"></div></div>
+</div>
+
+<script>
+/* ── edit these for launch ─────────────────────────── */
+const CONFIG = {
+  coin: "$STOCKROOMS",
+  ca: "",            // paste the contract address here when deployed
+  twitter: "",       // e.g. "https://x.com/yourhandle"
+};
+/* ──────────────────────────────────────────────────── */
+
+const BANNER = /*BANNER*/null;
+const DREAMS = /*DATA*/[];
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const fmt = n => n.toLocaleString('en-US');
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const dstr = ts => { const d = new Date(ts*1000); return `${MONTHS[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`; };
+
+/* the counter only ever goes up: one new dream every ~3 minutes since the rooms opened */
+const EPOCH = Date.UTC(2026, 6, 1);
+const dreamCount = () => 1 + Math.floor((Date.now() - EPOCH) / 180000);
+
+/* ticker tape: states, not prices */
+const STATES = [['NVDA','overheating','u'],['TSLA','prophesying','u'],['AAPL','serene','u'],['GME','risen','u'],
+  ['AMC','projecting','d'],['SPY','rebalancing','u'],['MSFT','patching','u'],['AMZN','in transit','u'],
+  ['META','building empty rooms','d'],['PLTR','watching','u'],['COIN','sweating','d'],['HOOD','holding the building','u'],
+  ['LEH','haunting','d'],['FROGHOOD','bonding','u'],['BOG','awake','d']];
+function tape(){
+  const one = STATES.map(([t,s,c]) => `<b>$${t}</b> <span class="${c}">${c==='u'?'▲':'▼'}</span> ${s}`).join('&nbsp;&nbsp;·&nbsp;&nbsp;') + '&nbsp;&nbsp;·&nbsp;&nbsp;';
+  $('#tape').innerHTML = one + one;
+}
+
+/* ── parse a dream body into segments ── */
+function segments(d){
+  const out = []; let buf = [], code = null;
+  const flush = () => { if (buf.length){ out.push({t:'text', s:buf.join('\n')}); buf = []; } };
+  for (const line of d.body.split('\n')){
+    if (/^\s*```/.test(line)){
+      if (code === null){ flush(); code = []; }
+      else { out.push({t:'code', s:code.join('\n')}); code = null; }
+      continue;
+    }
+    if (code !== null){ code.push(line); continue; }
+    const m = line.match(/^<([A-Z0-9_$.-]+)(#SYSTEM)?>\s*$/);
+    if (m){
+      flush();
+      const i = d.actors.indexOf(m[1]);
+      out.push({t:'spk', s:line.trim(), cls: m[2] ? 'sys' : (i === 1 ? 'a2' : 'a1')});
+      continue;
+    }
+    buf.push(line);
+  }
+  flush();
+  if (code) out.push({t:'code', s:code.join('\n')});
+  /* trim blank edges of text segments so spacing stays even */
+  for (const g of out) if (g.t==='text') g.s = g.s.replace(/^\n+|\n+$/g,'');
+  return out.filter(g => g.t!=='text' || g.s.length);
+}
+function segEl(g){
+  const el = document.createElement('span');
+  if (g.t==='spk'){ el.className = 'spk ' + g.cls; }
+  else if (g.t==='code'){ el.className = 'blk'; }
+  else { el.className = 'txt'; }
+  return el;
+}
+function renderLog(d, into){
+  into.textContent = '';
+  for (const g of segments(d)){
+    const el = segEl(g); el.textContent = g.s;
+    into.appendChild(el);
+    if (g.t==='text') into.appendChild(document.createTextNode('\n'));
+  }
+}
+
+/* ── views ── */
+let sortBy = 'popular', filter = 'all';
+try { sortBy = localStorage.getItem('sr-sort') || sortBy; } catch(e){}
+
+function home(){
+  const scen = [...new Set(DREAMS.map(d => d.scenario))];
+  const list = DREAMS.filter(d => filter==='all' || d.scenario===filter)
+    .sort((a,b) => sortBy==='popular' ? b.views - a.views : b.ts - a.ts);
+  const caLine = CONFIG.ca
+    ? `<div class="ca">${esc(CONFIG.coin)} · ca: <code id="ca">${esc(CONFIG.ca)}</code> <button type="button" id="cacopy" style="color:var(--amber)">[copy]</button>${CONFIG.twitter?` · <a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">twitter</a>`:''}</div>`
+    : `<div class="ca">${esc(CONFIG.coin)} · ca: <code>[not yet minted]</code>${CONFIG.twitter?` · <a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">twitter</a>`:''}</div>`;
+  $('#view').innerHTML = `
+    <pre class="banner" aria-label="infinity stockrooms"><span>${esc(BANNER[0])}</span>\n<span class="l2">${esc(BANNER[1])}</span></pre>
+    <p class="tag">tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes</p>
+    <p class="warn">WARNING - CONTENTS MAY BE DESTABILIZING - STAY LIQUID - THE MARKET IS ONLY A ^C AWAY</p>
+    <div class="meta">
+      <span class="live">rooms open · block <b id="blk">—</b></span>
+      <span>dreams generated <b id="cnt">${fmt(dreamCount())}</b></span>
+      <span>minds on the floor <b>${STATES.length}</b></span>
+    </div>
+    ${caLine}
+    <button type="button" class="cta" id="go">&gt; enter eternal mode_</button>
+    <div class="ctrl" role="group" aria-label="sort">
+      <span class="lbl">sort</span>
+      <button type="button" data-sort="popular" aria-pressed="${sortBy==='popular'}">popular</button>
+      <button type="button" data-sort="recent" aria-pressed="${sortBy==='recent'}">recent</button>
+    </div>
+    <div class="ctrl" role="group" aria-label="scenario">
+      <span class="lbl">scenario</span>
+      <button type="button" data-f="all" aria-pressed="${filter==='all'}">all</button>
+      ${scen.map(s => `<button type="button" data-f="${esc(s)}" aria-pressed="${filter===s}">${esc(s)}</button>`).join('')}
+    </div>
+    <ol class="list">
+      ${list.map((d,i) => `<li>
+        <span class="n">${i+1}.</span>
+        <a class="f" href="#${d.id}">${esc(d.file)}</a>
+        <span class="v">${fmt(d.views)}</span>
+        <span class="sub">${esc(d.scenario)} · $${d.actors.join(' ⇄ $')} · ${dstr(d.ts)}</span>
+      </li>`).join('')}
+    </ol>
+    <p class="vault">older dreams are archived in /vault &nbsp;·&nbsp; <span style="color:var(--down)">permission denied</span></p>`;
+  $('#go').onclick = startEternal;
+  document.querySelectorAll('[data-sort]').forEach(b => b.onclick = () => { sortBy = b.dataset.sort; try{localStorage.setItem('sr-sort',sortBy)}catch(e){} home(); });
+  document.querySelectorAll('[data-f]').forEach(b => b.onclick = () => { filter = b.dataset.f; home(); });
+  const cc = $('#cacopy');
+  if (cc) cc.onclick = () => {
+    const done = () => { cc.textContent = '[copied]'; setTimeout(() => cc.textContent='[copy]', 1400); };
+    navigator.clipboard?.writeText(CONFIG.ca).then(done, () => { const r = document.createRange(); r.selectNodeContents($('#ca')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); });
+  };
+  tickMeta();
+}
+
+function dream(d){
+  const idx = DREAMS.slice().sort((a,b) => a.ts-b.ts); const k = idx.indexOf(d);
+  const prev = idx[k-1], next = idx[k+1];
+  $('#view').innerHTML = `
+    <a class="back" href="#">&lt; back to index</a>
+    <div class="dh">### scenario:<br><span class="sc">### ${esc(d.scenario)}</span></div>
+    <h1 class="fn"># ${esc(d.file)}</h1>
+    <div class="dmeta"><span>$${d.actors.join(' ⇄ $')}</span><span>${dstr(d.ts)} · ${d.time} UTC</span><span>${fmt(d.views)} views</span>
+      <button type="button" id="replay">[replay live]</button></div>
+    <div class="log" id="log"></div>
+    <div class="pn">
+      ${prev ? `<a href="#${prev.id}">&lt; ${esc(prev.scenario)}</a>` : '<span></span>'}
+      ${next ? `<a href="#${next.id}">${esc(next.scenario)} &gt;</a>` : '<span></span>'}
+    </div>`;
+  renderLog(d, $('#log'));
+  $('#replay').onclick = () => startEternal(d);
+  window.scrollTo(0,0);
+}
+
+function route(){
+  const id = location.hash.slice(1);
+  const d = DREAMS.find(x => x.id === id);
+  d ? dream(d) : home();
+  document.title = d ? `${d.scenario} · Infinity Stockrooms` : 'Infinity Stockrooms';
+}
+
+function tickMeta(){
+  const c = $('#cnt'); if (c) c.textContent = fmt(dreamCount());
+  const b = $('#blk'); if (b) b.textContent = fmt(Math.floor((Date.now() - Date.UTC(2025,5,30)) / 250));
+}
+setInterval(tickMeta, 250);
+
+/* ── eternal mode: the typist ── */
+let E = null;
+function startEternal(first){
+  $('#eternal').hidden = false;
+  document.body.style.overflow = 'hidden';
+  E = {run: (E?.run||0)+1, speed: E?.speed || 1, skip: false, last: null};
+  playLoop(E.run, first && first.id ? first : null);
+}
+function stopEternal(){
+  if (!E) return;
+  E.run++;
+  $('#eternal').hidden = true;
+  document.body.style.overflow = '';
+}
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function pick(){
+  let d; do { d = DREAMS[Math.floor(Math.random()*DREAMS.length)]; } while (DREAMS.length > 1 && d === E.last);
+  return d;
+}
+async function playLoop(run, first){
+  const log = $('#elog'), scr = $('#escr');
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let d = first || pick();
+  while (E && E.run === run){
+    E.last = d; E.skip = false;
+    const sess = dreamCount() + Math.floor(Math.random()*3);
+    $('#esess').textContent = '#' + fmt(sess);
+    $('#eact').innerHTML = `<b style="color:var(--amber)">$${d.actors[0]}</b> ⇄ <b style="color:var(--sea)">$${d.actors[1]}</b>`;
+    $('#estat').textContent = 'generating';
+    log.textContent = '';
+    const cur = document.createElement('span'); cur.className = 'cur';
+    const pin = () => { if (scr.scrollHeight - scr.scrollTop - scr.clientHeight < 140) scr.scrollTop = scr.scrollHeight; };
+    const sys = async (txt, ms=30) => {
+      const el = document.createElement('span'); el.className='sysmsg'; log.appendChild(el); log.appendChild(cur);
+      for (const ch of txt){ if (E.run!==run) return; el.textContent += ch; if (!E.skip && !reduce) await sleep(ms/E.speed); }
+      log.insertBefore(document.createTextNode('\n'), cur); pin();
+    };
+    await sys(`simulator@stockrooms:~/$ ./dream --pair ${d.actors.join(',').toLowerCase()} --scenario "${d.scenario}"`);
+    await sys(`[ OK ] session ${fmt(sess)} allocated · ${d.file}\n`, 8);
+    for (const g of segments(d)){
+      if (E.run !== run) return;
+      const el = segEl(g); log.insertBefore(el, cur);
+      if (g.t === 'spk'){
+        if (!E.skip && !reduce){ $('#estat').textContent = 'thinking'; await sleep((500 + Math.random()*900)/E.speed); $('#estat').textContent = 'generating'; }
+        el.textContent = g.s; pin(); continue;
+      }
+      if (g.t === 'code'){
+        const lines = g.s.split('\n');
+        for (let i=0;i<lines.length;i++){
+          if (E.run !== run) return;
+          el.textContent += (i?'\n':'') + lines[i]; pin();
+          if (!E.skip && !reduce) await sleep(38/E.speed);
+        }
+        continue;
+      }
+      /* prose types in small bursts */
+      let i = 0; const s = g.s;
+      while (i < s.length){
+        if (E.run !== run) return;
+        if (E.skip || reduce){ el.textContent = s; break; }
+        const n = 2 + Math.floor(Math.random()*4);
+        el.textContent += s.slice(i, i+n); i += n; pin();
+        const ch = s[i-1];
+        await sleep(((ch==='.'||ch==='\n') ? 90 : 16) / E.speed);
+      }
+      log.insertBefore(document.createTextNode('\n'), cur);
+    }
+    if (E.run !== run) return;
+    E.skip = false;
+    await sys('\n[session terminated]');
+    await sys('[reinitializing simulator.....................]', 60);
+    await sleep(1400);
+    d = pick();
+  }
+}
+$('#eexit').onclick = stopEternal;
+$('#eskip').onclick = () => { if (E) E.skip = true; };
+$('#espeed').onclick = () => { if (!E) return; E.speed = E.speed===1 ? 4 : E.speed===4 ? 12 : 1; $('#espeed').textContent = `speed ${E.speed}x`; };
+addEventListener('keydown', e => {
+  if ($('#eternal').hidden) return;
+  if (e.key === 'Escape' || (e.ctrlKey && e.key.toLowerCase() === 'c' && !getSelection().toString())) stopEternal();
+});
+
+tape();
+addEventListener('hashchange', route);
+route();
+</script>
