@@ -10,6 +10,7 @@ const SEED_VIEWS = { '01':184302,'02':96871,'12':77412,'06':41209,'10':38550,'04
                      '13':8844,'14':7310,'15':11976,'16':5402,'17':6688,'18':4921,
                      '19':7755,'20':9130,'21':5874,'22':10244,'23':6391,'24':8067 };
 const STATS = ['heat', 'lucidity', 'faith', 'dread', 'cohesion'];
+const SITE = 'https://stockrooms-production.up.railway.app';
 
 function loadStocks() {
   delete require.cache[require.resolve('./stocks.js')];
@@ -86,28 +87,17 @@ function build() {
   const tpl = fs.readFileSync(path.join(__dirname, 'template.html'), 'utf8');
   const js = v => JSON.stringify(v).replace(/<\//g, '<\\/').replace(/<!--/g, '<\\!--');
 
-  // site logo: drop favicon.png / .svg / .ico / .jpg in the project root and it becomes the favicon (and share image)
-  const FAV_TYPES = { png: 'image/png', svg: 'image/svg+xml', ico: 'image/x-icon', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp' };
-  const favName = fs.readdirSync(__dirname).find(f => /^favicon\.(png|svg|ico|jpe?g|webp)$/i.test(f));
-  let favicon = null, head = '';
-  if (favName) {
-    const ext = favName.split('.').pop().toLowerCase(), file = path.join(__dirname, favName);
-    const v = Math.round(fs.statSync(file).mtimeMs / 1000).toString(36);
-    favicon = { name: favName.toLowerCase(), type: FAV_TYPES[ext], data: fs.readFileSync(file) };
-    const href = `/${favicon.name}?v=${v}`;
-    const origin = process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : '';
-    head = `<link rel="icon" type="${favicon.type}" href="${href}">`;
-    if (ext !== 'ico' && ext !== 'svg') head += `\n<link rel="apple-touch-icon" href="${href}">\n<meta property="og:image" content="${origin}${href}">\n<meta name="twitter:card" content="summary">`;
-  }
+  // share cards need absolute URLs: PUBLIC_URL wins, then Railway's domain, then the production default
+  const origin = (process.env.PUBLIC_URL || (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : SITE)).replace(/\/+$/, '');
   const twitter = (tpl.match(/twitter:\s*"([^"]*)"/) || [])[1] || '';
 
   const page = tpl
-    .replace(/<!--FAVICON-->[^\n]*/, m => head || m.replace('<!--FAVICON-->', ''))
+    .replace(/%ORIGIN%/g, origin)
     .replace('/*ENGINE*/', () => engine.replace(/<\/script/gi, '<\\/script'))
     .replace('/*DATA*/[]', () => js(dreams))
     .replace('/*STOCKS*/[]', () => js(stocks))
     .replace('/*BANNER*/null', () => js(banner));
-  return { page, count: dreams.length, dreams, stocks, logoFiles, favicon, twitter };
+  return { page, count: dreams.length, dreams, stocks, logoFiles, twitter };
 }
 
 module.exports = { build };

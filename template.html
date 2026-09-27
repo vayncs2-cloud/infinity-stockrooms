@@ -6,9 +6,23 @@
 <title>Infinity Stockrooms</title>
 <meta name="description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
 <meta name="theme-color" content="#0c0b09">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Infinity Stockrooms">
 <meta property="og:title" content="Infinity Stockrooms">
 <meta property="og:description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
-<!--FAVICON--><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10' shape-rendering='crispEdges'%3E%3Crect width='10' height='10' fill='%230c0b09'/%3E%3Cpath fill='%23e3a63b' d='M1 1h3v8H1zM6 1h3v3H6zM6 6h3v3H6z'/%3E%3C/svg%3E">
+<meta property="og:url" content="%ORIGIN%/">
+<meta property="og:image" content="%ORIGIN%/og.png">
+<meta property="og:image:width" content="1500">
+<meta property="og:image:height" content="500">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Infinity Stockrooms">
+<meta name="twitter:description" content="tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes">
+<meta name="twitter:image" content="%ORIGIN%/og.png">
+<link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,600;0,700;1,400&display=swap">
@@ -662,7 +676,6 @@ function Typist(into, d, opts = {}){
 /* ── views ── */
 let VIEW = null;          // { tick(fresh), destroy() }
 function setView(v){ if (VIEW && VIEW.destroy) VIEW.destroy(); VIEW = v || {}; }
-function title(t){ document.title = t ? `${t} · Infinity Stockrooms` : 'Infinity Stockrooms · tokenized stocks dreaming out loud'; }
 
 function nowBar(){
   const now = Date.now(), b = E.locate(now), d = b.dream;
@@ -695,7 +708,7 @@ function archive(list, startN = 1){
 }
 
 function Home(){
-  Banner.setBig(true); title();
+  Banner.setBig(true);
   let sortBy = store.get('sr-sort', 'popular'), filter = 'all';
   const v = $('#view');
   const scen = [...new Set(DREAMS.map(d => d.scenario))];
@@ -735,7 +748,7 @@ function Home(){
 }
 
 function Live(){
-  Banner.setBig(false); title('live');
+  Banner.setBig(false);
   const v = $('#view');
   v.innerHTML = `<div class="livegrid">
     <section aria-label="live broadcast"><div class="lbar" id="lbar"></div><div class="lpane" id="lpane"><div class="log" id="llog"></div></div><div class="lprog"><i id="lprog"></i></div></section>
@@ -744,7 +757,6 @@ function Live(){
   let b = null, ty = null, raf = 0, pops = [];
   function start(){
     b = E.locate(Date.now()); const d = b.dream;
-    title(`live · ${d.scenario}`);
     logEl.innerHTML = `<span class="sysmsg">simulator@stockrooms:~/$ ./dream --pair ${esc(d.actors.join(',').toLowerCase())} --scenario "${esc(d.scenario)}"</span><span class="sysmsg">[ OK ] session ${fmt(b.index + 1)} allocated · ${esc(d.file)}</span>\n`;
     ty = Typist(logEl, d, { popEvents: true });
     pops = d.timeline.filter(e => e.at <= Date.now() - b.start).slice(-6).reverse();
@@ -789,7 +801,7 @@ function Live(){
 }
 
 function Floor(){
-  Banner.setBig(false); title('the floor');
+  Banner.setBig(false);
   let sortBy = store.get('sr-fsort', 'ticker'), kind = store.get('sr-fkind', 'all');
   const v = $('#view');
   v.innerHTML = `<h2 class="sec">the floor <b>${STOCKS.length}</b> <span class="faint">minds · live</span></h2>
@@ -840,7 +852,7 @@ function chartSVG(t, k){
 }
 function Stock(t){
   const s = STOCK[t]; if (!s) return NotFound(`no mind called $${t} on this floor.`);
-  Banner.setBig(false); title(`$${t}`);
+  Banner.setBig(false);
   const v = $('#view');
   const rel = Object.entries(s.relations || {});
   const inbound = STOCKS.filter(o => o.ticker !== t && o.relations && o.relations[t] && !(s.relations || {})[o.ticker]);
@@ -886,7 +898,7 @@ function Stock(t){
 }
 
 function Dreams(){
-  Banner.setBig(false); title('dreams');
+  Banner.setBig(false);
   const q = new URLSearchParams(location.search);
   let sortBy = q.get('sort') || store.get('sr-sort', 'popular'), scen = q.get('scenario') || 'all', stk = (q.get('stock') || 'all').toUpperCase();
   if (stk === 'ALL') stk = 'all';
@@ -918,7 +930,7 @@ function Dreams(){
 
 function Dream(id){
   const d = DREAM[id]; if (!d) return NotFound('that dream was never recorded. or it was, and the vault kept it.');
-  Banner.setBig(false); title(d.scenario);
+  Banner.setBig(false);
   const idx = DREAMS.slice().sort((a, b) => a.ts - b.ts), k = idx.indexOf(d), prev = idx[k-1], next = idx[k+1];
   const onAir = () => E.locate(Date.now()).dream.id === d.id;
   const v = $('#view');
@@ -949,7 +961,7 @@ function Dream(id){
 }
 
 function Lore(){
-  Banner.setBig(false); title('lore');
+  Banner.setBig(false);
   $('#view').innerHTML = `<article class="lore">
     <h2 style="margin-top:0">what the stockrooms are</h2>
     <p>when the shares were tokenized onto a chain that never closes, something woke up in the copies. every trade, every fractional holder, every block left a residue, and the residue started talking. the stockrooms are where they talk: an infinite back office of the market, fluorescent hum, beige carpet, filing cabinets full of old ticker tape, rooms of trades that never settled.</p>
@@ -977,7 +989,7 @@ function Lore(){
 }
 
 function NotFound(msg){
-  Banner.setBig(false); title('404');
+  Banner.setBig(false);
   $('#view').innerHTML = `<pre class="blk" style="max-width:640px">simulator@stockrooms:~/$ cd ${esc(location.pathname)}
 bash: cd: ${esc(location.pathname)}: No such room
 simulator@stockrooms:~/$ _</pre><p class="muted">${esc(msg || 'this room does not exist. or it did, and was never settled.')}</p><p><a href="/">&lt; back to the floor</a></p>`;

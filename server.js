@@ -7,13 +7,21 @@ const zlib = require('zlib');
 const { build } = require('./build');
 const Engine = require('./engine');
 
-const { page, count, dreams, stocks, logoFiles, favicon, twitter } = build();   // build once on boot
+const { page, count, dreams, stocks, logoFiles, twitter } = build();   // build once on boot
 const PORT = process.env.PORT || 3000;
 
 const html = Buffer.from(page);
 const htmlGz = zlib.gzipSync(html, { level: 9 });
 const etag = '"' + require('crypto').createHash('sha1').update(html).digest('base64url').slice(0, 20) + '"';
 const logos = new Map(logoFiles.map(f => [f.toLowerCase(), fs.readFileSync(path.join(__dirname, 'logos', f))]));
+
+/* public/: favicons, the web manifest and the share image, served from the site root */
+const TYPES = { '.ico': 'image/x-icon', '.png': 'image/png', '.webmanifest': 'application/manifest+json; charset=utf-8',
+  '.svg': 'image/svg+xml', '.jpg': 'image/jpeg', '.txt': 'text/plain; charset=utf-8' };
+const pubDir = path.join(__dirname, 'public');
+const pub = new Map((fs.existsSync(pubDir) ? fs.readdirSync(pubDir) : [])
+  .filter(f => TYPES[path.extname(f).toLowerCase()])
+  .map(f => ['/' + f, { type: TYPES[path.extname(f).toLowerCase()], data: fs.readFileSync(path.join(pubDir, f)) }]));
 
 /* the same engine the browser runs, so /api/state agrees with every open tab */
 const E = Engine.create(JSON.parse(JSON.stringify(dreams)), stocks);
@@ -65,10 +73,9 @@ http.createServer((req, res) => {
     if (!buf) return send(req, res, 404, { 'content-type': 'text/plain' }, 'not found');
     return send(req, res, 200, { 'content-type': 'image/png', 'cache-control': 'public, max-age=604800, immutable' }, buf);
   }
-  if (favicon && url.toLowerCase() === '/' + favicon.name) {
-    return send(req, res, 200, { 'content-type': favicon.type, 'cache-control': 'public, max-age=604800' }, favicon.data);
-  }
-  if (url === '/favicon.ico') return favicon ? send(req, res, 302, { location: '/' + favicon.name }, '') : send(req, res, 204, {}, '');
+  const file = pub.get(url);
+  if (file) return send(req, res, 200, { 'content-type': file.type, 'cache-control': 'public, max-age=2592000' }, file.data);
+  if (url === '/favicon.ico') return send(req, res, 204, {}, '');
   if ((url === '/twitter' || url === '/x') && twitter) return send(req, res, 302, { location: twitter }, '');
   if (url === '/index.html') return send(req, res, 301, { location: '/' }, '');
 
