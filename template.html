@@ -30,7 +30,7 @@
   --tile:#efe9da;
   --s-heat:#e0664f; --s-lucidity:#7cc4c0; --s-faith:#e3a63b; --s-dread:#a08bd8; --s-cohesion:#d6ceb8;
   --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, "DejaVu Sans Mono", Menlo, monospace;
-  --maxw:1320px;
+  --maxw:1480px;
   --gut:clamp(14px, 3vw, 28px);
 }
 [hidden]{display:none!important}
@@ -57,15 +57,14 @@ h2.sec .r{margin-left:auto;text-transform:none;letter-spacing:0;font-size:12.5px
 
 /* header */
 .top{border-bottom:1px solid var(--line);background:linear-gradient(to bottom,#0f0e0b,var(--ground))}
-.hrow{display:flex;align-items:center;gap:14px 28px;padding-top:16px;flex-wrap:wrap}
-.brand{display:block;flex:0 1 460px;min-width:0;line-height:0;border-radius:2px}
+/* the banner always spans the full content width; the nav sits above it */
+.hrow{display:flex;flex-direction:column;align-items:stretch;gap:12px;padding-top:14px}
+.brand{display:block;width:100%;min-width:0;line-height:0;border-radius:2px}
 .brand:hover{text-decoration:none}
 .bwrap{position:relative;width:100%}
 .bwrap canvas{display:block;width:100%}
-.top.big .hrow{flex-direction:column;align-items:stretch;padding-top:26px}
-.top.big .brand{flex:none;width:100%}
-.nav{display:flex;flex-wrap:wrap;gap:4px 4px;margin-left:auto;font-size:14px}
-.top.big .nav{margin-left:0;order:-1;justify-content:flex-end}
+.top.big .hrow{padding-top:22px;gap:18px}
+.nav{display:flex;flex-wrap:wrap;gap:4px 4px;order:-1;justify-content:flex-end;font-size:14px}
 .nav a{color:var(--dim);padding:6px 10px;border:1px solid transparent;border-radius:2px;white-space:nowrap}
 .nav a:hover{color:var(--paper);text-decoration:none;border-color:var(--faint)}
 .nav a[aria-current="page"]{color:var(--ground);background:var(--amber);border-color:var(--amber)}
@@ -127,12 +126,14 @@ main{padding-block:28px 40px;min-height:60vh;outline:none}
 .ctrl .lbl{color:var(--faint);min-width:5.5em}
 .ctrl select{background:var(--ground-2);border:1px solid var(--faint);padding:5px 8px;border-radius:2px;max-width:100%}
 .list{list-style:none;margin:0;padding:0;border-top:1px solid var(--faint)}
-.list li{display:grid;grid-template-columns:2.6em minmax(0,1fr) auto;gap:4px 14px;padding-block:10px;border-bottom:1px solid var(--faint);align-items:baseline}
-.list .n{color:var(--faint);font-variant-numeric:tabular-nums}
+.list li{display:grid;grid-template-columns:2.6em auto minmax(0,1fr) auto;gap:4px 14px;padding-block:10px;border-bottom:1px solid var(--faint);align-items:center}
+.list .n{color:var(--faint);font-variant-numeric:tabular-nums;grid-row:1/span 2}
+.list .lp{grid-row:1/span 2;display:flex;gap:4px}
+.list .lp:hover{text-decoration:none}
 .list .f{overflow-wrap:anywhere}
-.list .sub{grid-column:2;font-size:12.5px;color:var(--dim)}
+.list .sub{grid-column:3;font-size:12.5px;color:var(--dim)}
 .list .sub a{color:var(--dim)}
-.list .v{grid-row:1/span 2;grid-column:3;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.list .v{grid-row:1/span 2;grid-column:4;font-size:12.5px;color:var(--dim);font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
 .list .v::after{content:" ▲";color:var(--up)}
 .list .air{color:var(--down)}
 .vault{color:var(--dim);font-size:12.5px;margin-top:18px}
@@ -208,6 +209,7 @@ h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;c
 .ev{display:block;font-size:12px;color:var(--dim);border-left:2px solid var(--faint);padding:1px 0 1px 10px;margin:2px 0}
 .ev .ar.up{color:var(--up)} .ev .ar.down{color:var(--down)}
 .ev a{color:var(--paper)}
+.ev .logo,.ll .logo,.pops .logo{vertical-align:-3px;margin-right:2px}
 .ev.pop{animation:fresh 2.4s ease-out}
 .pn{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:40px;padding-top:14px;border-top:1px solid var(--faint);font-size:13.5px}
 .cur{display:inline-block;width:.6em;height:1.1em;background:var(--paper);vertical-align:-2px;animation:blink 1s steps(2) infinite}
@@ -267,8 +269,11 @@ h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;c
   .blk{font-size:11px;padding:6px 8px}
   .nowbar{grid-template-columns:auto minmax(0,1fr)}
   .nowbar .btn{grid-column:1/-1;text-align:center}
-  .list li{grid-template-columns:2em minmax(0,1fr)}
-  .list .v{grid-row:auto;grid-column:2;text-align:left}
+  .list li{grid-template-columns:1.8em auto minmax(0,1fr);gap:3px 10px}
+  .list .n,.list .lp{grid-row:1/span 3;align-self:start}
+  .list .lp{padding-top:2px}
+  .list .lp .logo{--sz:22px!important}
+  .list .v{grid-row:auto;grid-column:3;text-align:left}
   .side{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
   .actor{padding:8px;gap:6px}
   .actor .hd{gap:8px}
@@ -288,7 +293,7 @@ h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;c
   .lpane{height:70vh;padding:12px 12px 30px}
   .nav{font-size:13px}
   .nav a{padding:5px 8px}
-  .top.big .nav{justify-content:flex-start}
+  .nav{justify-content:flex-start}
 }
 @media (prefers-reduced-motion:reduce){
   .tape-in,.cur,.live-dot::before,.nav a .dot{animation:none}
@@ -441,13 +446,13 @@ function logLine(e, opts = {}){
   const up = e.delta > 0;
   const d = DREAM[e.dream];
   return `<li${opts.fresh ? ' class="fresh"' : ''}><time datetime="${new Date(e.t).toISOString()}" data-t="${e.t}">${ago(e.t)}</time>
-    <span class="m"><span class="${up ? 'up' : 'down'}">${up ? '▲' : '▼'}</span> ${opts.noTicker ? '' : tk(e.ticker) + ' '}${e.stat} <span class="${up?'up':'down'}">${up?'+':''}${e.delta}</span> <span class="faint">→ ${Math.round(e.value)}</span>
+    <span class="m"><span class="${up ? 'up' : 'down'}">${up ? '▲' : '▼'}</span> ${opts.noTicker ? '' : logo(e.ticker, 18) + ' ' + tk(e.ticker) + ' '}${e.stat} <span class="${up?'up':'down'}">${up?'+':''}${e.delta}</span> <span class="faint">→ ${Math.round(e.value)}</span>
     <span class="rs">— ${esc(e.reason)}</span>
     ${d ? `<span class="src">· <a href="/dream/${d.id}#t${e.turn}">${esc(d.scenario)} · turn ${e.turn}</a></span>` : ''}</span></li>`;
 }
 function evLine(e, pop){
   const up = e.delta > 0;
-  return `<span class="ev${pop?' pop':''}"><span class="ar ${up?'up':'down'}">${up?'▲':'▼'}</span> <a href="/stock/${encodeURIComponent(e.ticker)}">${esc(e.ticker)}</a> ${e.stat} ${up?'+':''}${e.delta} — ${esc(e.reason)}</span>`;
+  return `<span class="ev${pop?' pop':''}"><span class="ar ${up?'up':'down'}">${up?'▲':'▼'}</span> ${logo(e.ticker, 16)} <a href="/stock/${encodeURIComponent(e.ticker)}">${esc(e.ticker)}</a> ${e.stat} ${up?'+':''}${e.delta} — ${esc(e.reason)}</span>`;
 }
 function refreshTimes(root = document){ for (const el of $$('time[data-t]', root)) el.textContent = ago(+el.dataset.t); }
 
@@ -681,6 +686,7 @@ function archive(list, startN = 1){
   const now = Date.now(), on = E.locate(now).dream.id;
   return `<ol class="list">${list.map((d, i) => `<li>
     <span class="n">${i + startN}.</span>
+    <a class="lp" href="/dream/${d.id}" tabindex="-1" aria-hidden="true">${logo(d.actors[0], 26)}${logo(d.actors[1], 26)}</a>
     <a class="f" href="/dream/${d.id}">${esc(d.file)}</a>
     <span class="v">${fmt(views(d))}</span>
     <span class="sub">${esc(d.scenario)} · ${d.actors.map(t => `<a href="/stock/${encodeURIComponent(t)}">$${esc(t)}</a>`).join(' ⇄ ')} · ${dstr(d.ts)} · aired ${fmt(E.aired(d.id, now))}×${d.id === on ? ' · <a class="air" href="/live">● on air</a>' : ''}</span>
@@ -752,7 +758,7 @@ function Live(){
     pane.scrollTop = pane.scrollHeight;
   }
   function drawPops(fresh){
-    $('#pops').innerHTML = pops.length ? pops.map(e => `<li class="${fresh && fresh.includes(e) ? 'pop' : ''}"><b class="${e.delta>0?'up':'down'}">${e.delta>0?'▲':'▼'} $${esc(e.ticker)} ${e.stat} ${e.delta>0?'+':''}${e.delta}</b><br>${esc(e.reason)}</li>`).join('')
+    $('#pops').innerHTML = pops.length ? pops.map(e => `<li class="${fresh && fresh.includes(e) ? 'pop' : ''}">${logo(e.ticker, 18)} <b class="${e.delta>0?'up':'down'}">${e.delta>0?'▲':'▼'} $${esc(e.ticker)} ${e.stat} ${e.delta>0?'+':''}${e.delta}</b><br>${esc(e.reason)}</li>`).join('')
       : '<li>no stat events yet this session.</li>';
   }
   function frame(){
