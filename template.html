@@ -102,15 +102,17 @@ main{flex:1 0 auto;padding-block:24px 40px;outline:none}
 
 /* home */
 .tag{color:var(--paper);margin:4px 0 6px;font-size:clamp(15px,1.6vw,18px)}
-.warn{color:var(--dim);font-size:12.5px;letter-spacing:.06em;margin:0 0 22px}
 .btn{display:inline-block;border:1px solid var(--amber);color:var(--amber);padding:8px 14px;letter-spacing:.04em;white-space:nowrap;border-radius:2px}
 .btn:hover{background:var(--amber);color:var(--ground);text-decoration:none}
 .grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px 36px;margin-bottom:34px}
 .hhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 24px;margin-bottom:18px}
-.hhead .tag,.hhead .warn{margin:0}
+.hhead .tag{margin:0}
 .hsec{margin-bottom:38px}
 .home3{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr) minmax(0,1fr);gap:28px 36px;margin-bottom:38px}
-.home .lpane{height:clamp(420px,calc(100dvh - 330px),880px)}
+.home .livegrid{align-items:stretch}
+.home .livegrid > section{display:flex;flex-direction:column;min-height:0}
+.home .lpane{flex:1 1 0;height:auto;min-height:360px;contain:size}
+.home .side{align-content:start}
 .movers{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
 .movers li{border:1px solid var(--line);background:var(--panel);padding:10px 12px;display:grid;grid-template-columns:auto 1fr;gap:2px 10px;align-items:center}
 .movers li .logo{grid-row:span 2}
@@ -157,7 +159,6 @@ main{flex:1 0 auto;padding-block:24px 40px;outline:none}
 .tabs a{color:var(--dim);border:1px solid var(--faint);padding:6px 12px;border-radius:2px}
 .tabs a:hover{color:var(--paper);text-decoration:none}
 .tabs a[aria-current="true"]{color:var(--ground);background:var(--amber);border-color:var(--amber)}
-.vault{color:var(--dim);font-size:12.5px;margin-top:18px}
 
 /* logos + sigils */
 .logo{--sz:32px;width:var(--sz);height:var(--sz);flex:none;display:inline-grid;place-items:center;border-radius:calc(var(--sz)*.14);overflow:hidden;background:var(--tile);vertical-align:middle}
@@ -285,6 +286,7 @@ h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;c
   .side{position:static;order:-1;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .side .pops-wrap,.side .next{grid-column:1/-1}
   .grid2,.cols,.home3{grid-template-columns:minmax(0,1fr)}
+  .home .lpane{flex:none;height:65vh;contain:none}
 }
 @media (min-width:981px) and (max-width:1400px){
   .home3{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
@@ -317,6 +319,7 @@ h1.fn{font-size:clamp(15px,2.4vw,20px);margin:4px 0 8px;overflow-wrap:anywhere;c
   .gloss{grid-template-columns:minmax(0,1fr);gap:2px 0}
   .gloss dd{margin-bottom:10px}
   .lpane,.home .lpane{height:70vh;padding:12px 12px 30px}
+  .home .lpane{height:62vh}
   .nav{font-size:13px}
   .nav a{padding:5px 8px}
   .nav{justify-content:flex-start}
@@ -604,11 +607,10 @@ function caHTML(full){
 function renderChrome(){
   if (CONFIG.twitter && !$('.nav .xlink')) $('.nav').insertAdjacentHTML('beforeend', `<a class="xlink" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">x ↗</a>`);
   $('#strip').innerHTML = `<span>${caHTML(false)}</span><span class="sp"></span>
-    <span class="live-dot">rooms open · block <b id="blk">—</b></span>
+    <span class="live-dot">live</span>
     <span>dreams generated <b id="cnt">—</b></span>
     <span>on air <a id="onair" href="/">—</a></span>`;
-  $('#foot').innerHTML = `<div><b>fiction.</b> tokenized stocks do not dream (probably). nothing here is financial advice, a price prediction,
-    or the words of any real person.<br>an homage to infinite backrooms. the stockrooms are always open.</div>
+  $('#foot').innerHTML = `<div><b>fiction.</b> nothing here is financial advice, a price prediction, or the words of any real person.<br>an homage to infinite backrooms.</div>
     <div>${caHTML(true)}<br><a href="/lore">lore</a> · <a href="/api/state">/api/state</a></div>`;
 }
 document.addEventListener('click', e => {
@@ -627,7 +629,6 @@ function tape(){
 function tickChrome(){
   const now = Date.now(), b = E.locate(now);
   const c = $('#cnt'); if (c) c.textContent = fmt(b.index + 1);
-  const k = $('#blk'); if (k) k.textContent = fmt(Math.floor((now - Date.UTC(2025,5,30)) / 250));
   const o = $('#onair'); if (o) o.textContent = `${b.dream.scenario} · $${b.dream.actors.join(' ⇄ $')}`;
 }
 
@@ -691,7 +692,7 @@ function setView(v){ if (VIEW && VIEW.destroy) VIEW.destroy(); VIEW = v || {}; }
 
 function moversHTML(){
   const m = E.movers(SIM, Date.now()).slice(0, 6);
-  if (!m.length) return '<p class="muted">the floor is quiet.</p>';
+  if (!m.length) return '<p class="muted">no moves yet.</p>';
   return `<ul class="movers">${m.map(x => {
     const top = Object.entries(x.by).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1])).slice(0, 2);
     return `<li>${logo(x.ticker, 36)}<a class="t" href="/stock/${encodeURIComponent(x.ticker)}">$${esc(x.ticker)}</a>
@@ -723,7 +724,7 @@ function airedSessions(match, limit = Infinity){
   return out;
 }
 function sessionsHTML(list, opts = {}){
-  if (!list.length) return '<p class="muted">nothing aired matches. the rooms are empty in that direction.</p>';
+  if (!list.length) return '<p class="muted">no sessions match.</p>';
   return `<ol class="list sess${opts.tight ? ' tight' : ''}">${list.map(b => { const d = b.dream; return `<li${opts.fresh === b.index ? ' class="fresh"' : ''}>
     <span class="n">#${fmt(b.index + 1)}</span>
     <a class="lp" href="/session/${b.index + 1}" tabindex="-1" aria-hidden="true">${logo(d.actors[0], opts.tight ? 22 : 26)}${logo(d.actors[1], opts.tight ? 22 : 26)}</a>
@@ -805,7 +806,7 @@ function FloorPanel(root, opts = {}){
       <div class="hd">${logo(s.ticker, 44)}<div class="nm"><a class="t" href="/stock/${encodeURIComponent(s.ticker)}">$${esc(s.ticker)}</a><div class="ep">${esc(s.epithet)}</div></div><span class="kd">${s.kind}</span></div>
       ${barsHTML(s.ticker)}
       <div class="sw"><span data-sw>${stateHTML(s.ticker)}</span><span data-sp>${spark(s.ticker, 140, 30, 60, hi())}</span></div>
-      <div class="why" data-why>${whyHTML(s.ticker)}</div></article>`).join('') || '<p class="muted">nobody of that kind on the floor.</p>';
+      <div class="why" data-why>${whyHTML(s.ticker)}</div></article>`).join('') || '<p class="muted">none of that kind.</p>';
   }
   $$('[data-s]', root).forEach(b => b.onclick = () => { sortBy = b.dataset.s; store.set('sr-fsort', sortBy); $$('[data-s]', root).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); });
   $$('[data-kind]', root).forEach(b => b.onclick = () => { kind = b.dataset.kind; store.set('sr-fkind', kind); $$('[data-kind]', root).forEach(x => x.setAttribute('aria-pressed', x === b)); draw(); });
@@ -831,11 +832,10 @@ function Home(){
   Banner.setBig(true);
   const v = $('#view');
   v.innerHTML = `<div class="home">
-    <div class="hhead"><p class="tag">tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes</p>
-      <p class="warn">WARNING - CONTENTS MAY BE DESTABILIZING - STAY LIQUID - THE MARKET IS ONLY A ^C AWAY</p></div>
+    <div class="hhead"><p class="tag">tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes</p></div>
     <section class="hsec" id="hlive" aria-label="live dream"></section>
     <div class="home3">
-      <section><h2 class="sec">just archived <span class="faint">· every session is kept</span><a class="r" href="/dreams">the archive &gt;</a></h2><div id="harch"></div></section>
+      <section><h2 class="sec">just archived<a class="r" href="/dreams">the archive &gt;</a></h2><div id="harch"></div></section>
       <section><h2 class="sec">latest from the log</h2><ul class="ll" id="hlog"></ul></section>
       <section><h2 class="sec">top movers <span class="faint">· last 6h</span></h2><div id="movers"></div></section>
     </div>
@@ -905,7 +905,7 @@ function Stock(t){
     <div class="cols">
       <section><h2 class="sec">change log <span class="faint">· why every move happened</span></h2><ul class="ll" id="slog"></ul><div class="more" id="more"></div></section>
       <section><h2 class="sec">dreams featuring $${esc(t)}</h2>
-        ${starring.length ? archive(starring) : '<p class="muted">has not dreamed on camera yet.</p>'}
+        ${starring.length ? archive(starring) : '<p class="muted">no dreams yet.</p>'}
         ${appears.length ? `<h2 class="sec" style="margin-top:22px">appears in</h2>${archive(appears)}` : ''}</section>
     </div>`;
   const drawCharts = () => { $('#charts').innerHTML = STATS.map(k => { const a = SIM.histOf(t, k);
@@ -944,7 +944,7 @@ function Dreams(){
     if (tab === 'aired'){
       const all = airedSessions(match), cur = E.locate(Date.now());
       v.innerHTML = `${tabs}<h2 class="sec">the archive <b>${fmt(all.length)}</b> <span class="faint">sessions aired and kept · newest first</span></h2>
-        <p class="muted" style="margin:-4px 0 14px;font-size:12.5px">every broadcast is written here the moment it ends. on air now: <a href="/live">session ${fmt(cur.index + 1)} · ${esc(cur.dream.scenario)}</a> · ${mmss(cur.end - Date.now())} left</p>
+        <p class="muted" style="margin:-4px 0 14px;font-size:12.5px">on air now: <a href="/live">session ${fmt(cur.index + 1)} · ${esc(cur.dream.scenario)}</a> · ${mmss(cur.end - Date.now())} left</p>
         ${filters}${sessionsHTML(all.slice(0, shown), { fresh })}
         ${all.length > shown ? `<div class="more"><button type="button" id="moreb">[load ${Math.min(100, all.length - shown)} more of ${fmt(all.length - shown)}]</button></div>` : ''}`;
       const mb = $('#moreb'); if (mb) mb.onclick = () => { shown += 100; draw(); };
@@ -954,8 +954,7 @@ function Dreams(){
         <div class="ctrl" role="group" aria-label="sort"><span class="lbl">sort</span>
           <button type="button" data-sort="popular" aria-pressed="${sortBy==='popular'}">popular</button>
           <button type="button" data-sort="recent" aria-pressed="${sortBy==='recent'}">recent</button></div>
-        ${filters}${list.length ? archive(list) : '<p class="muted">no dream matches. the rooms are empty in that direction.</p>'}
-        <p class="vault">older dreams are archived in /vault &nbsp;·&nbsp; <span class="down">permission denied</span></p>`;
+        ${filters}${list.length ? archive(list) : '<p class="muted">no dreams match.</p>'}`;
       $$('[data-sort]', v).forEach(b => b.onclick = () => { sortBy = b.dataset.sort; store.set('sr-sort', sortBy); sync(); });
     }
     $('#fsc').onchange = e => { scen = e.target.value; shown = 50; sync(); };
@@ -994,7 +993,7 @@ function transcriptHTML(d){
 }
 
 function Dream(id){
-  const d = DREAM[id]; if (!d) return NotFound('that dream was never recorded. or it was, and the vault kept it.');
+  const d = DREAM[id]; if (!d) return NotFound('no dream with that id.');
   Banner.setBig(false);
   const idx = DREAMS.slice().sort((a, b) => a.ts - b.ts), k = idx.indexOf(d), prev = idx[k-1], next = idx[k+1];
   const onAir = () => E.locate(Date.now()).dream.id === d.id;
@@ -1023,7 +1022,7 @@ function Session(n){
   const cur = E.locate(Date.now());
   if (!(n >= 1)) return NotFound();
   if (n - 1 === cur.index) return go('/live', true);
-  if (n - 1 > cur.index) return NotFound(`session ${fmt(n)} has not been dreamed yet. the rooms are still generating it.`);
+  if (n - 1 > cur.index) return NotFound(`session ${fmt(n)} has not aired yet.`);
   Banner.setBig(false);
   const b = E.broadcast(n - 1), d = b.dream;
   const v = $('#view');
@@ -1076,7 +1075,7 @@ function NotFound(msg){
   Banner.setBig(false);
   $('#view').innerHTML = `<pre class="blk" style="max-width:640px">simulator@stockrooms:~/$ cd ${esc(location.pathname)}
 bash: cd: ${esc(location.pathname)}: No such room
-simulator@stockrooms:~/$ _</pre><p class="muted">${esc(msg || 'this room does not exist. or it did, and was never settled.')}</p><p><a href="/">&lt; back to the floor</a></p>`;
+simulator@stockrooms:~/$ _</pre><p class="muted">${esc(msg || 'page not found.')}</p><p><a href="/">&lt; home</a></p>`;
   setView({});
 }
 
