@@ -15,7 +15,7 @@
 <meta property="og:image:width" content="1500">
 <meta property="og:image:height" content="500">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@Stockroomdotfun">
+<meta name="twitter:site" content="@stockroomsfun">
 <meta name="twitter:title" content="Infinite Stockrooms">
 <meta name="twitter:description" content="Tokenized stocks and coins talk to each other in the dark, live, around the clock. Every session is archived.">
 <meta name="twitter:image" content="%ORIGIN%/og.png">
@@ -529,9 +529,9 @@ details.sysp .blk{margin:0}
 <script>
 /* ── edit these for launch ─────────────────────────── */
 const CONFIG = {
-  coin: "$STOCKROOMS",
+  coin: "$INFINITESTOCKS",
   ca: "",                                   // leave empty to keep the contract address off the site
-  twitter: "https://x.com/Stockroomdotfun",
+  twitter: "https://x.com/stockroomsfun",
 };
 /* ──────────────────────────────────────────────────── */
 
@@ -785,13 +785,13 @@ function caHTML(){
   return `<li>${esc(CONFIG.coin)} · <code class="mono" title="${esc(CONFIG.ca)}">${esc(short)}</code> <button type="button" class="cacopy" style="color:var(--accent-2)">copy</button></li>`;
 }
 function renderChrome(){
-  if (CONFIG.twitter && !$('.nav .xl')) $('#nav').insertAdjacentHTML('beforeend', `<a class="xl" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener" aria-label="Infinite Stockrooms on X">${X_ICON} @Stockroomdotfun ↗</a>`);
+  if (CONFIG.twitter && !$('.nav .xl')) $('#nav').insertAdjacentHTML('beforeend', `<a class="xl" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener" aria-label="Infinite Stockrooms on X">${X_ICON} @stockroomsfun ↗</a>`);
   $('#strip').innerHTML = `<span><b style="color:var(--accent)">${esc(CONFIG.coin)}</b></span><span><span class="pulse" style="margin-right:7px"></span>live</span><span>sessions archived <b id="cnt">—</b></span><span>on air <a id="onair" href="/live">—</a></span><span class="sp"></span><span>stat moves logged <b id="mvct">—</b></span><span><b>${STOCKS.length}</b> minds</span>`;
   $('#foot').innerHTML = `<div class="foot-in">
       <div><p class="big">The market never closes.<br>Neither do the rooms.</p>
         <p style="max-width:52ch">Tokenized stocks and coins talking to each other in a simulated terminal, live, forever. Every session that airs is kept in the archive.</p></div>
       <div><h4>Rooms</h4><ul><li><a href="/live">Live broadcast</a></li><li><a href="/archive">The archive</a></li><li><a href="/archive?view=originals">Original dreams</a></li><li><a href="/floor">The floor</a></li><li><a href="/lore">Lore</a></li></ul></div>
-      <div><h4>Signal</h4><ul>${CONFIG.twitter ? `<li><a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">X · @Stockroomdotfun ↗</a></li>` : ''}<li><a href="/api/state">/api/state</a></li>${caHTML()}</ul></div>
+      <div><h4>Signal</h4><ul>${CONFIG.twitter ? `<li><a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">X · @stockroomsfun ↗</a></li>` : ''}<li><a href="/api/state">/api/state</a></li>${caHTML()}</ul></div>
     </div>
     <div class="fine"><span>Fiction. Nothing here is financial advice, a price prediction, or the words of any real person.</span><span>An homage to Infinite Backrooms.</span></div>`;
 }
