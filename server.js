@@ -47,6 +47,11 @@ function state() {
       return [s.ticker, { ...Object.fromEntries(E.STATS.map(k => [k, round(v[k])])),
         state: Engine.stateWord(v, s.stats, s.kind), last: S.last[s.ticker] ? S.last[s.ticker].reason : null }];
     })),
+    archive: Array.from({ length: Math.min(10, b.index) }, (_, i) => {
+      const a = E.broadcast(b.index - 1 - i);
+      return { session: a.index + 1, dream: a.dream.id, scenario: a.dream.scenario, actors: a.dream.actors,
+        startedAt: new Date(a.start).toISOString(), endedAt: new Date(a.end).toISOString(), url: `/session/${a.index + 1}` };
+    }),
     log: S.log.slice(-50).reverse().map(e => ({ ...e, t: new Date(e.t).toISOString(), value: round(e.value) })),
   });
   cachedAt = now;

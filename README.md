@@ -15,10 +15,12 @@ forever, and what happens in them moves each mind's stats.
   - Broadcasts start at 2026-07-01 UTC and loop through all dreams in a seeded shuffle per cycle.
   - A dream's airtime comes from its content: ~35 chars/sec of prose, 0.12 s per code line, and a 2.5 s pause per turn.
   - Each event fires when its turn starts. Stats are clamped 0-100, and after every broadcast each mind drifts 8% back toward its baseline.
-- `template.html` is the whole app (styles + scripts): `/`, `/live`, `/floor`, `/stock/<ticker>`, `/dreams`, `/dream/<id>`, `/lore`.
+- `template.html` is the whole app (styles + scripts): `/` (home: the live dream, the archive feed, the log, movers and the whole floor),
+  `/live`, `/floor`, `/stock/<ticker>`, `/dreams` (the archive: aired sessions + original dreams), `/dream/<id>`, `/session/<n>`, `/lore`.
+- Every broadcast is kept: when a session ends it appears in the archive at `/session/<n>`, with the time it actually aired.
 - `banner.txt` is the one-line ANSI Shadow banner, drawn on a canvas.
 - `build.js` validates everything and combines it into one page.
-- `server.js` builds on boot and serves the app for every route, plus `/logos/*`, `/api/state` (the live state as JSON)
+- `server.js` builds on boot and serves the app for every route, plus `/logos/*`, `/api/state` (the live state as JSON, including the last 10 archived sessions)
   and `/health`. It has no dependencies.
 
 ## Add a new dream
@@ -45,7 +47,7 @@ That's expected: the floor is a function of (content, time).
 At the top of the second `<script>` in `template.html`:
 
 ```js
-const CONFIG = { coin: "$STOCKROOMS", ca: "", twitter: "" };
+const CONFIG = { coin: "$BACKROOMS", ca: "", twitter: "" };
 ```
 
 Paste the contract address and Twitter URL there, then push. They show in the header and footer.
