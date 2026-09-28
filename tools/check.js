@@ -2,7 +2,7 @@
 const fs = require('fs');
 const stocks = require('../stocks.js');
 const T = new Set(stocks.map(s => s.ticker));
-const STATS = ['heat', 'lucidity', 'faith', 'dread', 'cohesion'];
+const STATS = ['volatility', 'awareness', 'confidence', 'fear', 'stability'];
 const f = process.argv[2];
 const raw = fs.readFileSync(f, 'utf8').replace(/\r\n/g, '\n');
 const errs = [];
@@ -33,7 +33,7 @@ else {
     if (!Number.isInteger(e.turn) || e.turn < 1 || e.turn > turns) errs.push(`event ${i}: turn ${e.turn} out of 1..${turns}`);
     if (!T.has(e.ticker)) errs.push(`event ${i}: unknown ticker ${e.ticker}`);
     if (!STATS.includes(e.stat)) errs.push(`event ${i}: bad stat ${e.stat}`);
-    if (!Number.isInteger(e.delta) || !e.delta || Math.abs(e.delta) > 20) errs.push(`event ${i}: bad delta ${e.delta}`);
+    if (!Number.isInteger(e.delta) || !e.delta || Math.abs(e.delta) > 25) errs.push(`event ${i}: bad delta ${e.delta}`);
     if (!e.reason || e.reason.length > 110) errs.push(`event ${i}: reason missing or too long`);
   });
 }

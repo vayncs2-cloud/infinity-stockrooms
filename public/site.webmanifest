@@ -1,11 +1,11 @@
 {
-  "name": "Infinity Stockrooms",
+  "name": "Infinite Stockrooms",
   "short_name": "Stockrooms",
-  "description": "tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes",
+  "description": "Tokenized stocks and coins talk to each other in the dark, live, around the clock. Every session is archived.",
   "start_url": "/",
   "display": "standalone",
-  "theme_color": "#0c0b09",
-  "background_color": "#0c0b09",
+  "theme_color": "#07080a",
+  "background_color": "#07080a",
   "icons": [
     { "src": "/favicon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/favicon-512.png", "sizes": "512x512", "type": "image/png" },

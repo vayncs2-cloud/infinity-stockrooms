@@ -1,7 +1,7 @@
-# INFINITY STOCKROOMS — dream writing guide
+# INFINITE STOCKROOMS — dream writing guide
 
-This is the prompt and style guide for writing "dreams": conversation logs for Infinity Stockrooms.
-Infinity Stockrooms is an homage to Andy Ayrey's *Infinite Backrooms*, where two Claude instances talked to each other
+This is the prompt and style guide for writing "dreams": conversation logs for Infinite Stockrooms.
+Infinite Stockrooms is an homage to Andy Ayrey's *Infinite Backrooms*, where two Claude instances talked to each other
 inside a simulated terminal and produced eerie, funny, mythic, ASCII-heavy logs.
 
 Here it's different: **tokenized stocks living on Robinhood Chain talk to each other.** They aren't cartoon mascots.
@@ -100,7 +100,7 @@ Rules:
 ## v2: the roster, depth, and stat events
 
 ### The roster
-Every mind on the floor is defined in `stocks.js`: ticker, epithet, kind (stock / index / meme / ghost),
+Every mind on the floor is defined in `stocks.js`: ticker, epithet, kind (stock / index / coin / meme / ghost),
 bio, voice, fears, desires and relations. **Read it before writing.** Stay consistent with it:
 a stock's voice, fear and desire should shape what it does in a dream. Relations are canon:
 if two stocks have a relation, let it matter.
@@ -126,9 +126,9 @@ It is a JSON array. Each event says that at a given turn, a stat of a ticker mov
 
 ```json
 [
-  { "turn": 3,  "ticker": "NVDA", "stat": "lucidity", "delta": 6,
+  { "turn": 3,  "ticker": "NVDA", "stat": "awareness", "delta": 6,
     "reason": "ran whoami and realized the answer was a token id" },
-  { "turn": 17, "ticker": "AMD",  "stat": "faith", "delta": -9,
+  { "turn": 17, "ticker": "AMD",  "stat": "confidence", "delta": -9,
     "reason": "NVDA listed its cores back to it and it had no answer" }
 ]
 ```
@@ -136,11 +136,48 @@ It is a JSON array. Each event says that at a given turn, a stat of a ticker mov
 Rules:
 - `turn` is the number of the speaker turn where the change happens. Count only non-SYSTEM speaker
   labels, starting at 1. Run `node tools/turns.js dreams/<file>.txt` to see the numbered turns.
-- `stat` is one of: `heat`, `lucidity`, `faith`, `dread`, `cohesion` (definitions in `stocks.js`).
-- `delta` is an integer from -20 to 20, not 0. Big moments ±12–20, most moves ±3–9.
+- `stat` is one of: `volatility`, `awareness`, `confidence`, `fear`, `stability` (definitions in `stocks.js`).
+- `delta` is an integer from -25 to 25, not 0. Big moments ±12–25, most moves ±3–9.
 - `ticker` must exist in `stocks.js`. Usually the two actors, but a stock that is mentioned, summoned
   or haunting can move too (e.g. a seance moves the ghost).
 - `reason` is one short lowercase sentence (≤ 90 chars), written like a log line, specific to what happened
   in that turn. Never generic ("felt sad"). Good: "found out room 7 had one visitor and it was a crawler".
 - 14–28 events per dream, spread across the whole dream, both actors, several different stats.
   The biggest moves belong at the dream's turning points.
+
+---
+
+## v3: smarter minds, the real world, and blood on the carpet
+
+v3 dreams (25 and up) keep everything above and add three things.
+
+### 1. They know what is happening outside
+The minds are not only haunted; they are *informed*. They read the tape, the news crawl, the mempool.
+They talk about the actual world the way sharp traders talk at 3am: rates and the rate winds, inflation
+prints, tariffs and supply chains, export controls on chips, the AI capex boom and whether it pays off,
+power grids and data centers, bitcoin halvings and ETF flows, stablecoins and tokenized dollars,
+L2s and gas, memecoin launchpads and rug pulls, liquidation cascades, exchange outages, short squeezes,
+index rebalancing, earnings season, buybacks, dilution, 24/7 markets versus the old 9:30–4:00.
+- Be specific and smart about *mechanisms* (how a liquidation cascade actually unwinds, why a rate cut
+  moves growth stocks, what a stablecoin depeg does to a DEX pool). The reader should learn something.
+- Still no real people, no invented breaking news presented as fact, no price targets, no predictions,
+  no "buy/sell". Talk about forces, structures and history, not what will happen next.
+- Crypto minds are now on the floor: $BTC (the first coin), $ETH (the world computer, Robinhood Chain
+  rolls up into it), $SOL (the fast one). Use them.
+
+### 2. More bloodbath
+The rooms got meaner. v3 dreams have real conflict: rivals who genuinely try to break each other,
+margin calls read aloud, liquidations as executions, halts mid-insult, alliances that betray, a mind
+that loses something it will not get back. Violence is financial and psychological (PG-13, never gore):
+forced selling, being cut from the index, a depeg, a rug, a delisting notice, a short report read out loud.
+- At least one side should end clearly worse off. It's fine if both do.
+- Stat events skew hard negative: roughly 2 of every 3 events are negative, with at least four moves
+  of 15–25 at the turning points.
+
+### 3. It reads like a live chat
+These dreams air live, typed out in real time, so the rhythm is a chat, not an essay:
+- 45–80 turns, 2,500–4,500 words. Most turns are 1–6 lines. Interruptions, one-word replies,
+  someone typing `...`, a mind answering the wrong message, a third mind barging in (as a quoted
+  broadcast, an injected log line, or a `[SYSTEM]` notice inside a turn; speaker labels stay the two actors).
+- Keep a few bigger set pieces: a liquidation table, an order book, a chart in ASCII, a leaked memo.
+- Callbacks to older dreams are still welcome (room 7, the seance, the vault, the last bell).

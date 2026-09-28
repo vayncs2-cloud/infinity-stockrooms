@@ -9,21 +9,21 @@ const SEED_VIEWS = { '01':184302,'02':96871,'12':77412,'06':41209,'10':38550,'04
                      '07':19480,'09':17062,'05':14338,'03':12904,'08':9771,'11':6215,
                      '13':8844,'14':7310,'15':11976,'16':5402,'17':6688,'18':4921,
                      '19':7755,'20':9130,'21':5874,'22':10244,'23':6391,'24':8067 };
-const STATS = ['heat', 'lucidity', 'faith', 'dread', 'cohesion'];
+const STATS = ['volatility', 'awareness', 'confidence', 'fear', 'stability'];
 const SITE = 'https://stockrooms-production.up.railway.app';
 
 function loadStocks() {
   delete require.cache[require.resolve('./stocks.js')];
   const stocks = require('./stocks.js').map(s => ({ ...s }));
   const logoDir = path.join(__dirname, 'logos');
-  const files = fs.existsSync(logoDir) ? fs.readdirSync(logoDir).filter(f => /\.png$/i.test(f)) : [];
+  const files = fs.existsSync(logoDir) ? fs.readdirSync(logoDir).filter(f => /\.(png|svg)$/i.test(f)) : [];
   const seen = new Set();
   for (const s of stocks) {
     if (seen.has(s.ticker)) throw new Error(`stocks.js: duplicate ticker ${s.ticker}`);
     seen.add(s.ticker);
     for (const k of STATS) if (!(s.stats[k] >= 0 && s.stats[k] <= 100)) throw new Error(`stocks.js: ${s.ticker}.stats.${k} must be 0-100`);
     if (!Array.isArray(s.sigil) || s.sigil.length !== 10) throw new Error(`stocks.js: ${s.ticker}.sigil must be 10 rows`);
-    const f = files.find(x => x.toLowerCase() === `${s.ticker.toLowerCase()}.png`);
+    const f = files.find(x => x.toLowerCase() === `${s.ticker.toLowerCase()}.png`) || files.find(x => x.toLowerCase() === `${s.ticker.toLowerCase()}.svg`);
     if (f) s.logo = `/logos/${encodeURIComponent(f)}?v=${Math.round(fs.statSync(path.join(logoDir, f)).mtimeMs / 1000).toString(36)}`;
   }
   return { stocks, logoFiles: files };
@@ -39,7 +39,7 @@ function loadEvents(file, turnsKnown, tickers) {
     if (!Number.isInteger(e.turn) || e.turn < 1 || e.turn > turnsKnown) throw new Error(`${where}: turn ${e.turn} out of 1..${turnsKnown}`);
     if (!tickers.has(e.ticker)) throw new Error(`${where}: unknown ticker ${e.ticker}`);
     if (!STATS.includes(e.stat)) throw new Error(`${where}: bad stat ${e.stat}`);
-    if (!Number.isInteger(e.delta) || !e.delta || Math.abs(e.delta) > 20) throw new Error(`${where}: bad delta ${e.delta}`);
+    if (!Number.isInteger(e.delta) || !e.delta || Math.abs(e.delta) > 25) throw new Error(`${where}: bad delta ${e.delta}`);
     if (!e.reason) throw new Error(`${where}: missing reason`);
     return { turn: e.turn, ticker: e.ticker, stat: e.stat, delta: e.delta, reason: String(e.reason) };
   });

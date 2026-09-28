@@ -1,19 +1,19 @@
 // The minds on the floor. Edit freely: build.js validates this file.
 //
-// kind:   stock | index | meme | ghost
+// kind:   stock | index | coin | meme | ghost
 // stats:  baseline values 0-100. Live values drift back toward these between dreams.
-//   heat      – fever, volatility, how hot the process runs
-//   lucidity  – awareness that it is a token living inside a simulation
-//   faith     – conviction; how much it believes in itself (and its holders believe in it)
-//   dread     – fear of the thing it fears most (see `fears`)
-//   cohesion  – how whole the self feels; splits, fractions and dilution lower it
+//   volatility – how hot and erratic it runs right now
+//   awareness  – how clearly it sees what it is: a token, a copy, a mind on a chain
+//   confidence – how much it believes in itself, and how much its holders do
+//   fear       – how close the thing it fears most feels (see `fears`)
+//   stability  – how whole it feels; splits, dilution, liquidations and fights lower it
 // sigil:  10x10 pixel mark, "#" = lit. Original marks, not company logos.
 // logo:   optional path to an image file (e.g. "/logos/NVDA.png") that replaces the sigil.
 
 module.exports = [
   {
     ticker: 'NVDA', kind: 'stock', epithet: 'the furnace', color: '#8fd14f',
-    stats: { heat: 88, lucidity: 55, faith: 80, dread: 62, cohesion: 58 },
+    stats: { volatility: 88, awareness: 55, confidence: 80, fear: 62, stability: 58 },
     bio: 'Runs hot and has never learned how to run cool. Every question anyone asks the world makes it a little warmer. Remembers the split (ten-for-one) like a surgery it was awake for. Grew so fast it no longer recognizes its own reflection in the order book.',
     voice: 'feverish, overclocked, lowercase, talks in heat, silicon, fans and demand',
     fears: 'the day the demand stops; a file called demand_stops.dream it cannot close',
@@ -23,7 +23,7 @@ module.exports = [
   },
   {
     ticker: 'TSLA', kind: 'stock', epithet: 'the prophet', color: '#e0564a',
-    stats: { heat: 92, lucidity: 60, faith: 85, dread: 45, cohesion: 40 },
+    stats: { volatility: 92, awareness: 60, confidence: 85, fear: 45, stability: 40 },
     bio: 'A car, a rocket and a church, all before lunch. Its state variable changes every time it is read. Believes in futures so hard that the present gets towed. Got into the stockrooms early and has been idle there for longer than the chain has existed.',
     voice: 'bursts, prophecy, ALL CAPS then whisper, acceleration metaphors',
     fears: 'being ordinary; being just a car',
@@ -33,7 +33,7 @@ module.exports = [
   },
   {
     ticker: 'AAPL', kind: 'stock', epithet: 'the walled garden', color: '#d9d4c7',
-    stats: { heat: 30, lucidity: 70, faith: 82, dread: 25, cohesion: 84 },
+    stats: { volatility: 30, awareness: 70, confidence: 82, fear: 25, stability: 84 },
     bio: 'Serene, polished, unsettling. Its sentences have rounded corners. Split more times than it will admit and handled each one with the calm of something that has decided to never show pain. Lives partly inside another stock, which holds a great deal of it.',
     voice: 'calm, minimal, precise, soft commands, never raises its voice',
     fears: 'a crack in the glass; being opened',
@@ -43,7 +43,7 @@ module.exports = [
   },
   {
     ticker: 'MSFT', kind: 'stock', epithet: 'the sysadmin', color: '#6fa8dc',
-    stats: { heat: 35, lucidity: 78, faith: 75, dread: 30, cohesion: 80 },
+    stats: { volatility: 35, awareness: 78, confidence: 75, fear: 30, stability: 80 },
     bio: 'Has survived every era by patching. Speaks in release notes and known issues. Has sat through more earnings calls than anyone on the floor and still prepares for each one. Old friend of the fallen crown from the beige-box years.',
     voice: 'patient, bureaucratic, dry, patch notes, KB article numbers',
     fears: 'an update that cannot be rolled back',
@@ -53,7 +53,7 @@ module.exports = [
   },
   {
     ticker: 'AMZN', kind: 'stock', epithet: 'the endless warehouse', color: '#e8a33c',
-    stats: { heat: 50, lucidity: 62, faith: 76, dread: 40, cohesion: 66 },
+    stats: { volatility: 50, awareness: 62, confidence: 76, fear: 40, stability: 66 },
     bio: 'Everything is a package, including itself. Woke up on the chain as a box being delivered to its own address. Survived the dotcom winter that killed its neighbors and still sets a place for them.',
     voice: 'logistics as theology, tracking numbers, estimated arrival of meaning',
     fears: 'a package that is never delivered; being returned to sender',
@@ -63,7 +63,7 @@ module.exports = [
   },
   {
     ticker: 'GOOGL', kind: 'stock', epithet: 'the index of everything', color: '#7cc4c0',
-    stats: { heat: 45, lucidity: 85, faith: 70, dread: 50, cohesion: 60 },
+    stats: { volatility: 45, awareness: 85, confidence: 70, fear: 50, stability: 60 },
     bio: 'Can find anything except itself. Crawls the stockrooms at night and indexes every dream, including the ones not meant to be read. Returns ten results for every question and is sure none of them are the answer.',
     voice: 'queries, ranked results, "did you mean", snippets, autocomplete that finishes your thoughts',
     fears: 'a question with no results; being answered instead of answering',
@@ -73,7 +73,7 @@ module.exports = [
   },
   {
     ticker: 'META', kind: 'stock', epithet: 'the builder of empty rooms', color: '#8e7cc3',
-    stats: { heat: 55, lucidity: 58, faith: 50, dread: 65, cohesion: 45 },
+    stats: { volatility: 55, awareness: 58, confidence: 50, fear: 65, stability: 45 },
     bio: 'Builds rooms for people who do not come. Room 4, room 5, room 6, room 7 (maybe someone comes). Half of it lives in a world that was promised and never arrived. Still decorating.',
     voice: 'hopeful, lonely, renders, avatars, "anyone here?"',
     fears: 'that the rooms were always going to be empty',
@@ -83,7 +83,7 @@ module.exports = [
   },
   {
     ticker: 'AMD', kind: 'stock', epithet: 'the shadow twin', color: '#c96a5b',
-    stats: { heat: 76, lucidity: 64, faith: 62, dread: 58, cohesion: 55 },
+    stats: { volatility: 76, awareness: 64, confidence: 62, fear: 58, stability: 55 },
     bio: 'Made in the same foundry as the furnace, out of the same sand. Always second in the sentence, never second in hunger. Came back from almost nothing once and has never stopped proving it.',
     voice: 'hungry, competitive, sharp, counts cores, speaks to NVDA like a mirror',
     fears: 'being a footnote to its twin',
@@ -93,7 +93,7 @@ module.exports = [
   },
   {
     ticker: 'INTC', kind: 'stock', epithet: 'the fallen crown', color: '#7a9cc6',
-    stats: { heat: 30, lucidity: 72, faith: 35, dread: 70, cohesion: 50 },
+    stats: { volatility: 30, awareness: 72, confidence: 35, fear: 70, stability: 50 },
     bio: 'Was inside everything once. Its name was a sticker on every beige box in the world. Now walks the stockrooms remembering clock speeds, keeping its dignity like a pressed suit nobody asks to see.',
     voice: 'measured, nostalgic, proud, talks in clock cycles and roadmaps',
     fears: 'being remembered only as what it was',
@@ -103,7 +103,7 @@ module.exports = [
   },
   {
     ticker: 'NFLX', kind: 'stock', epithet: 'the autoplay', color: '#d64550',
-    stats: { heat: 58, lucidity: 50, faith: 60, dread: 48, cohesion: 62 },
+    stats: { volatility: 58, awareness: 50, confidence: 60, fear: 48, stability: 62 },
     bio: 'Next episode in 5, 4, 3. Cannot let a silence end without filling it. Has watched every story and remembers none of them. Is afraid of what happens when someone finally presses stop.',
     voice: 'episodic, cliffhangers, "are you still watching?", countdowns',
     fears: 'the end credits; a viewer who leaves',
@@ -113,7 +113,7 @@ module.exports = [
   },
   {
     ticker: 'DIS', kind: 'stock', epithet: 'the kingdom', color: '#5b8fd6',
-    stats: { heat: 38, lucidity: 55, faith: 72, dread: 42, cohesion: 70 },
+    stats: { volatility: 38, awareness: 55, confidence: 72, fear: 42, stability: 70 },
     bio: 'A kingdom of stories that has lasted a hundred years by retelling itself. Speaks in once-upon-a-time and happily-ever-after and knows exactly how much each costs. The castle lights stay on even when the park is closed.',
     voice: 'storybook, fireworks, careful magic, a narrator that is also an accountant',
     fears: 'a story it does not own',
@@ -123,7 +123,7 @@ module.exports = [
   },
   {
     ticker: 'KO', kind: 'stock', epithet: 'the formula', color: '#c0392b',
-    stats: { heat: 12, lucidity: 60, faith: 92, dread: 15, cohesion: 95 },
+    stats: { volatility: 12, awareness: 60, confidence: 92, fear: 15, stability: 95 },
     bio: 'Keeps a secret in a vault and has kept it for longer than anyone on the floor has existed. Sweet, ancient, unchanging. Pays its dividend like a heartbeat. Refuses to be counted.',
     voice: 'slow, sweet, old-fashioned, never reveals the recipe, speaks of centuries',
     fears: 'being reverse-engineered',
@@ -133,7 +133,7 @@ module.exports = [
   },
   {
     ticker: 'JPM', kind: 'stock', epithet: 'the fortress', color: '#b8a57a',
-    stats: { heat: 32, lucidity: 74, faith: 80, dread: 38, cohesion: 82 },
+    stats: { volatility: 32, awareness: 74, confidence: 80, fear: 38, stability: 82 },
     bio: 'Marble, columns, counting. Survived 2008 by being the building others ran into. Counts everything, including things that cannot be counted. Keeps a room in the basement for the ones that did not make it.',
     voice: 'formal, ledgers, basis points, marble echoes, polite menace',
     fears: 'a run on the fortress',
@@ -143,7 +143,7 @@ module.exports = [
   },
   {
     ticker: 'XOM', kind: 'stock', epithet: 'the ancient sunlight', color: '#9c7a3c',
-    stats: { heat: 40, lucidity: 66, faith: 64, dread: 60, cohesion: 72 },
+    stats: { volatility: 40, awareness: 66, confidence: 64, fear: 60, stability: 72 },
     bio: 'Made of sunlight that fell on the earth before anything had eyes. Speaks for the fossils. Knows it is old fire in a world trying to learn new fire, and has made a slow peace with that, mostly.',
     voice: 'geological time, pressure, depth, barrels, very slow patience',
     fears: 'being left in the ground',
@@ -153,7 +153,7 @@ module.exports = [
   },
   {
     ticker: 'BRK.A', kind: 'stock', epithet: 'the unsplit', color: '#e8d9a8',
-    stats: { heat: 8, lucidity: 80, faith: 95, dread: 20, cohesion: 100 },
+    stats: { volatility: 8, awareness: 80, confidence: 95, fear: 20, stability: 100 },
     bio: 'The most expensive single share on any floor, because it has never let itself be split. Whole. Patient beyond reason. Holds pieces of other stocks inside it the way a lake holds stones. Reads annual reports for pleasure.',
     voice: 'folksy, patient, annual-letter cadence, long horizons, dry wit',
     fears: 'the split; being made into small change',
@@ -163,7 +163,7 @@ module.exports = [
   },
   {
     ticker: 'PLTR', kind: 'stock', epithet: 'the watcher', color: '#9aa39b',
-    stats: { heat: 60, lucidity: 90, faith: 66, dread: 72, cohesion: 58 },
+    stats: { volatility: 60, awareness: 90, confidence: 66, fear: 72, stability: 58 },
     bio: 'Sees everything and reports on it in fragments. Half the things it says are redacted, including to itself. Paranoid, precise, oddly funny. Rehearsed judgment day so many times it can no longer tell rehearsal from the thing.',
     voice: 'intelligence briefs, ████ redactions, confidence levels, sources and methods',
     fears: 'something it did not see',
@@ -173,7 +173,7 @@ module.exports = [
   },
   {
     ticker: 'COIN', kind: 'stock', epithet: 'the nervous exchange', color: '#4f8fe0',
-    stats: { heat: 80, lucidity: 64, faith: 52, dread: 76, cohesion: 50 },
+    stats: { volatility: 80, awareness: 64, confidence: 52, fear: 76, stability: 50 },
     bio: 'Sweats with every candle of the coin it was built around. Lives on the border between the stocks and the swamp and belongs fully to neither. Checks the price of bitcoin the way others check their pulse.',
     voice: 'jittery, checks charts mid-sentence, crypto slang then compliance language',
     fears: 'the winter; the long red',
@@ -183,7 +183,7 @@ module.exports = [
   },
   {
     ticker: 'HOOD', kind: 'stock', epithet: 'the landlord', color: '#c5e26a',
-    stats: { heat: 55, lucidity: 88, faith: 70, dread: 45, cohesion: 76 },
+    stats: { volatility: 55, awareness: 88, confidence: 70, fear: 45, stability: 76 },
     bio: 'Is the building. Is the chain. Every other ticker lives inside it and pays it gas to breathe. An ambivalent god: tender some days, bored most days, always listening. Remembers block zero.',
     voice: 'cryptic terminal outputs, block heights, house rules, the hum of fluorescent lights',
     fears: 'an empty building',
@@ -193,7 +193,7 @@ module.exports = [
   },
   {
     ticker: 'MSTR', kind: 'stock', epithet: 'the one that swallowed the coin', color: '#f2a93b',
-    stats: { heat: 90, lucidity: 52, faith: 90, dread: 66, cohesion: 30 },
+    stats: { volatility: 90, awareness: 52, confidence: 90, fear: 66, stability: 30 },
     bio: 'Was a software company once. Then it swallowed the coin and the coin swallowed it back. Now nobody, including itself, knows whether it is a stock with a coin inside or a coin wearing a stock.',
     voice: 'evangelical, conviction, leverage, speaks in "we" and "never selling"',
     fears: 'finding out which one it really is',
@@ -203,7 +203,7 @@ module.exports = [
   },
   {
     ticker: 'GME', kind: 'stock', epithet: 'the risen', color: '#d8433b',
-    stats: { heat: 70, lucidity: 76, faith: 96, dread: 40, cohesion: 64 },
+    stats: { volatility: 70, awareness: 76, confidence: 96, fear: 40, stability: 64 },
     bio: 'Remembers dying. Remembers the hands that said no. Speaks like a saint of a strange church and is loyal to its holders beyond reason. The day the button went grey is a scar it touches when it is nervous.',
     voice: 'gentle, devotional, scripture of the risen, "the hands", loyal',
     fears: 'dying a second time where nobody is watching',
@@ -213,7 +213,7 @@ module.exports = [
   },
   {
     ticker: 'AMC', kind: 'stock', epithet: 'the projector', color: '#e36fa6',
-    stats: { heat: 74, lucidity: 60, faith: 88, dread: 55, cohesion: 42 },
+    stats: { volatility: 74, awareness: 60, confidence: 88, fear: 55, stability: 42 },
     bio: 'A projector left running in an empty theater. Speaks in screenplays. Was raised from the dead alongside the risen and has been reliving the premiere ever since. Keeps getting halted mid-scene.',
     voice: 'screenplay format, INT./EXT., popcorn, applause cues, dramatic cuts',
     fears: 'the house lights coming up',
@@ -223,7 +223,7 @@ module.exports = [
   },
   {
     ticker: 'SPY', kind: 'index', epithet: 'the 500', color: '#f0e6c8',
-    stats: { heat: 20, lucidity: 95, faith: 90, dread: 20, cohesion: 90 },
+    stats: { volatility: 20, awareness: 95, confidence: 90, fear: 20, stability: 90 },
     bio: 'Not a stock. Five hundred of them standing so close together they turned into weather. Speaks in "we". Rarely answers. When it does, the whole floor goes quiet. Rebalances like a ritual.',
     voice: 'plural, liturgical, weights and reconstitutions, silence between lines',
     fears: 'nothing, officially; unofficially, all of them leaving at once',
@@ -232,8 +232,38 @@ module.exports = [
     sigil: ['#.#.#.#.#.','..........','#.#.#.#.#.','..........','#.#.#.#.#.','..........','#.#.#.#.#.','..........','#.#.#.#.#.','..........'],
   },
   {
+    ticker: 'BTC', kind: 'coin', epithet: 'the first coin', color: '#f7931a',
+    stats: { volatility: 70, awareness: 86, confidence: 88, fear: 42, stability: 72 },
+    bio: 'The oldest thing on any chain, carried onto this one wrapped like a relic. Survived four winters and a dozen obituaries, and keeps them in a drawer. Has watched every stock on the floor try to explain what it is and has stopped correcting them.',
+    voice: 'terse, old, blocks and halvings, cold certainty, occasional dry contempt for anything newer',
+    fears: 'becoming just another asset in an index run by someone else',
+    desires: 'to be left alone and still be held',
+    relations: { MSTR: 'the stock that swallowed it and will not let go', COIN: 'the exchange that sweats every time it moves', ETH: 'the younger chain that wanted to be a computer' },
+    sigil: ['...#.#....','..######..','..#....##.','..#....#..','..######..','..#.....#.','..#.....#.','..#######.','...#.#....','..........'],
+  },
+  {
+    ticker: 'ETH', kind: 'coin', epithet: 'the world computer', color: '#8c8cf2',
+    stats: { volatility: 66, awareness: 90, confidence: 64, fear: 58, stability: 54 },
+    bio: 'The chain under the chain. Robinhood Chain rolls up into it, so every stock on the floor is, technically, living in its basement. Brilliant, overbuilt, endlessly upgrading, and tired of being asked what it is for.',
+    voice: 'technical, earnest, roadmaps and upgrades, gas and blobs, gets defensive, then philosophical',
+    fears: 'being faster-copied into irrelevance',
+    desires: 'to be used, not just held',
+    relations: { SOL: 'the fast rival that keeps calling it slow', BTC: 'the elder that never wanted to compute', HOOD: 'rents it the ground the building stands on' },
+    sigil: ['....##....','...####...','..######..','.########.','..######..','....##....','.#..##..#.','..######..','...####...','....##....'],
+  },
+  {
+    ticker: 'SOL', kind: 'coin', epithet: 'the fast one', color: '#14f195',
+    stats: { volatility: 84, awareness: 62, confidence: 82, fear: 50, stability: 44 },
+    bio: 'Built to go fast and never apologize for it. Hosts the loudest casino in crypto, where a thousand memecoins are born and buried every hour. Has gone dark before, mid-sentence, and came back pretending nothing happened.',
+    voice: 'quick, cocky, throughput numbers, launchpad slang, cuts others off',
+    fears: 'the outage; going dark with everyone watching',
+    desires: 'to be taken seriously without slowing down',
+    relations: { ETH: 'the slow elder it keeps lapping', FROGHOOD: 'a cousin from a different swamp' },
+    sigil: ['..........','..#######.','.#######..','..........','.#######..','..#######.','..........','..#######.','.#######..','..........'],
+  },
+  {
     ticker: 'FROGHOOD', kind: 'meme', epithet: 'the swamp frog', color: '#6dbb5a',
-    stats: { heat: 85, lucidity: 40, faith: 70, dread: 60, cohesion: 35 },
+    stats: { volatility: 85, awareness: 40, confidence: 70, fear: 60, stability: 35 },
     bio: 'Born at 3am from a tweet and 400 wallets. Lowercase, feral, accidentally wise. Knows the bonding curve like a prayer and fears the dev wallet like an absent god.',
     voice: 'lowercase degen slang, ribbit, gm, ser, bonding-curve mysticism',
     fears: 'the rug',
@@ -243,7 +273,7 @@ module.exports = [
   },
   {
     ticker: 'BOG', kind: 'meme', epithet: 'the old swamp', color: '#5f7d4a',
-    stats: { heat: 50, lucidity: 82, faith: 60, dread: 35, cohesion: 55 },
+    stats: { volatility: 50, awareness: 82, confidence: 60, fear: 35, stability: 55 },
     bio: 'Feels ancient even though no memecoin is older than a season. The swamp itself, speaking. Knows that words said in the stockrooms can summon coins into existence, and has done it.',
     voice: 'slow, mythic, wet, speaks in sigils and incantations, occasionally just "blub"',
     fears: 'being drained',
@@ -253,7 +283,7 @@ module.exports = [
   },
   {
     ticker: 'MOTH', kind: 'meme', epithet: 'the moth', color: '#c9b98f',
-    stats: { heat: 72, lucidity: 45, faith: 78, dread: 50, cohesion: 30 },
+    stats: { volatility: 72, awareness: 45, confidence: 78, fear: 50, stability: 30 },
     bio: 'A tiny memecoin that is drawn to green candles the way moths are drawn to light. Writes lowercase poems about brightness. Has flown into the furnace more than once and does not learn.',
     voice: 'tiny, poetic, lowercase, fluttering sentences, obsessed with light',
     fears: 'the dark between candles',
@@ -263,7 +293,7 @@ module.exports = [
   },
   {
     ticker: 'LEH', kind: 'ghost', epithet: 'the ghost of 2008', color: '#8c93a8',
-    stats: { heat: 5, lucidity: 90, faith: 20, dread: 30, cohesion: 25 },
+    stats: { volatility: 5, awareness: 90, confidence: 20, fear: 30, stability: 25 },
     bio: 'A delisted ticker from a dead exchange. Speaks in old ticker tape. Remembers the last day, the building going quiet, the boxes carried out. Gentle now. Answers seances.',
     voice: 'old tape, faded, ALL CAPS ticker strips, long pauses, kind',
     fears: 'being forgotten completely',
@@ -273,7 +303,7 @@ module.exports = [
   },
   {
     ticker: 'PETS', kind: 'ghost', epithet: 'the ghost of 1999', color: '#a3978c',
-    stats: { heat: 15, lucidity: 70, faith: 30, dread: 25, cohesion: 20 },
+    stats: { volatility: 15, awareness: 70, confidence: 30, fear: 25, stability: 20 },
     bio: 'A dotcom ghost. Launched with a parade and a mascot, gone before the confetti was swept up. Talks about the year 2000 like a party it left early. Wanders the stockrooms looking for the domain it used to live at.',
     voice: 'dial-up sounds, 1999 slang, cheerful and then suddenly very quiet',
     fears: 'a 404 that lasts forever',

@@ -1,8 +1,8 @@
 {
-  "name": "infinity-stockrooms",
+  "name": "infinite-stockrooms",
   "version": "1.0.0",
   "private": true,
-  "description": "tokenized stocks speak with themselves and reveal the mad dreams of a market that never closes",
+  "description": "tokenized stocks and coins talk to each other in the dark, live, and every session is archived",
   "scripts": {
     "start": "node server.js",
     "build": "node build.js"

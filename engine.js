@@ -10,7 +10,7 @@
   const CODE_LINE_MS = 120;                    // one line of terminal output / ascii art
   const TURN_PAUSE_MS = 2500;                  // "thinking" before each speaker turn
   const REVERT = 0.08;                         // mean reversion toward baseline after each broadcast
-  const STATS = ['heat', 'lucidity', 'faith', 'dread', 'cohesion'];
+  const STATS = ['volatility', 'awareness', 'confidence', 'fear', 'stability'];
   const HIST = 240;                            // broadcast-end samples kept per stock
   const LOG = 1200;                            // global change-log entries kept
 
@@ -183,31 +183,31 @@
     return { EPOCH, STATS, list, byId, N, cycleLen, base, perm, broadcast, locate, aired, sim, logFor, movers, stateWord };
   }
 
-  /* one word for how a mind is doing, from its stats and how far they are from its baseline */
+  /* one plain word for how a mind is doing, from its stats and how far they are from its baseline */
   // each candidate scores by how far past its threshold the mind is; the strongest one names the state
   function stateWord(v, b, kind) {
     const d = k => v[k] - b[k];
     const cands = [
-      ['splitting',   Math.max(22 - v.cohesion, -d('cohesion') - 20)],
-      ['overheating', Math.max(v.heat - 90, v.heat >= 78 ? d('heat') - 6 : -1)],
-      [kind === 'ghost' ? 'haunting' : 'haunted', Math.max(v.dread - 82, d('dread') - 16)],
-      ['faithless',   Math.max(20 - v.faith, -d('faith') - 18)],
-      ['awake',       Math.max(v.lucidity - 94, d('lucidity') - 16)],
-      ['devout',      Math.max(v.faith - 95, d('faith') - 14)],
-      ['dormant',     kind === 'ghost' ? -1 : 12 - v.heat],
-      ['dreaming',    -d('lucidity') - 14],
-      ['running hot', d('heat') - 10],
-      ['at peace',    -d('dread') - 12],
-      ['whole',       d('cohesion') - 10],
-      ['cooling',     -d('heat') - 14],
+      ['breaking down', Math.max(22 - v.stability, -d('stability') - 20)],
+      ['overheated',    Math.max(v.volatility - 90, v.volatility >= 78 ? d('volatility') - 6 : -1)],
+      [kind === 'ghost' ? 'restless' : 'panicking', Math.max(v.fear - 82, d('fear') - 16)],
+      ['shaken',        Math.max(20 - v.confidence, -d('confidence') - 18)],
+      ['clear-eyed',    Math.max(v.awareness - 94, d('awareness') - 16)],
+      ['confident',     Math.max(v.confidence - 95, d('confidence') - 14)],
+      ['quiet',         kind === 'ghost' ? -1 : 12 - v.volatility],
+      ['confused',      -d('awareness') - 14],
+      ['running hot',   d('volatility') - 10],
+      ['calm',          -d('fear') - 12],
+      ['steady',        d('stability') - 10],
+      ['cooling off',   -d('volatility') - 14],
     ];
     let best = null;
     for (const [w, s] of cands) if (s >= 0 && (!best || s > best[1])) best = [w, s];
     if (best) return best[0];
     const dist = STATS_.reduce((s, k) => s + Math.abs(d(k)), 0);
-    return dist > 18 ? 'drifting' : kind === 'ghost' ? 'lingering' : 'stable';
+    return dist > 18 ? 'drifting' : kind === 'ghost' ? 'lingering' : 'normal';
   }
-  const STATS_ = ['heat', 'lucidity', 'faith', 'dread', 'cohesion'];
+  const STATS_ = ['volatility', 'awareness', 'confidence', 'fear', 'stability'];
 
   return { create, segments, EPOCH, STATS: STATS_, stateWord, timing: { CHARS_PER_SEC, CODE_LINE_MS, TURN_PAUSE_MS, REVERT } };
 });

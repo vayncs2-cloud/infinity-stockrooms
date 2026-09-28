@@ -76,7 +76,8 @@ http.createServer((req, res) => {
   if (url.startsWith('/logos/')) {
     const buf = logos.get(url.slice(7).toLowerCase());
     if (!buf) return send(req, res, 404, { 'content-type': 'text/plain' }, 'not found');
-    return send(req, res, 200, { 'content-type': 'image/png', 'cache-control': 'public, max-age=604800, immutable' }, buf);
+    const type = url.toLowerCase().endsWith('.svg') ? 'image/svg+xml' : 'image/png';
+    return send(req, res, 200, { 'content-type': type, 'cache-control': 'public, max-age=604800, immutable' }, buf);
   }
   const file = pub.get(url);
   if (file) return send(req, res, 200, { 'content-type': file.type, 'cache-control': 'public, max-age=2592000' }, file.data);
@@ -90,4 +91,4 @@ http.createServer((req, res) => {
   if (req.headers['if-none-match'] === etag) return send(req, res, 304, headers, '');
   if (gz) headers['content-encoding'] = 'gzip';
   send(req, res, 200, headers, gz ? htmlGz : html);
-}).listen(PORT, () => console.log(`infinity stockrooms: ${count} dreams, ${stocks.length} minds, ${logos.size} logos on :${PORT}`));
+}).listen(PORT, () => console.log(`infinite stockrooms: ${count} dreams, ${stocks.length} minds, ${logos.size} logos on :${PORT}`));
