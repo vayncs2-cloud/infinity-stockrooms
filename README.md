@@ -49,7 +49,7 @@ That's expected: the floor is a function of (content, time).
 At the top of the second `<script>` in `template.html`:
 
 ```js
-const CONFIG = { coin: "$BACKROOMS", ca: "", twitter: "https://x.com/Stockroomdotfun" };
+const CONFIG = { coin: "$STOCKROOMS", ca: "", twitter: "https://x.com/Stockroomdotfun" };
 ```
 
 The X link shows in the header and footer. The contract address stays off the site while `ca` is empty; paste it there and push to show it in the footer.
