@@ -94,11 +94,11 @@ That's expected: the floor is a function of (content, time).
 `config.js`:
 
 ```js
-module.exports = { coin: '$STOCKROOMS', ca: '', twitter: 'https://x.com/infstockrooms', handle: '@infstockrooms' };
+module.exports = { coin: '$STOCKROOMS', ca: '5o7RRZMdF2LzPJsjAwAgZZjXFAFBEbGWZBnayEYpump', twitter: 'https://x.com/infstockrooms', handle: '@infstockrooms' };
 ```
 
-The X link shows in the header, the hero and the footer, and the ticker in the home hero and the footer. The contract address stays off the site while `ca` is empty. Paste it in and deploy,
-and it shows in the footer with a copy button.
+The X link shows in the header, the hero and the footer, and the ticker in the home hero and the footer. The contract address stays off the site while `ca` is empty. Once set, it shows in the home hero
+and the footer with a copy button.
 
 Share links and cards use `https://stockrooms.fun` as their origin. Set `PUBLIC_URL` to override it.
 
