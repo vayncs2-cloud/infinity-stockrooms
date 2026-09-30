@@ -1,6 +1,8 @@
 /* ── header, tape, footer ── */
+/* the coin always shows; the contract address and its copy button only once it is set in config.js */
 function caHTML(){
-  if (!CONFIG.ca) return '';
+  if (!CONFIG.coin) return '';
+  if (!CONFIG.ca) return `<div class="ca"><b>${esc(CONFIG.coin)}</b></div>`;
   return `<div class="ca"><b>${esc(CONFIG.coin)}</b><code title="${esc(CONFIG.ca)}">${esc(CONFIG.ca.slice(0, 6) + '…' + CONFIG.ca.slice(-4))}</code><button type="button" data-ca>Copy CA</button></div>`;
 }
 document.addEventListener('click', e => { if (e.target.closest('[data-ca]')) copyText(CONFIG.ca, 'Contract address copied'); });
