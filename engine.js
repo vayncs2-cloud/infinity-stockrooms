@@ -109,17 +109,40 @@
       return c + (pos <= cur.index % N ? 1 : 0);
     }
 
+    /* the walk runs on flat arrays: stock a, stat k lives at a * 5 + k */
+    const TI = new Map(stocks.map((s, i) => [s.ticker, i]));
+    const NS = stocks.length, NV = NS * 5, BASE = new Float64Array(NV);
+    stocks.forEach((s, a) => STATS.forEach((k, j) => { BASE[a * 5 + j] = s.stats[k]; }));
+    /* each dream's timeline compiled once: value slot (-1 = unknown mind or stat), delta, offset */
+    const compiled = new Map(list.map(d => {
+      const tl = d.timeline, n = tl.length, slot = new Int32Array(n), dl = new Float64Array(n), at = new Float64Array(n);
+      tl.forEach((e, i) => {
+        const a = TI.has(e.ticker) ? TI.get(e.ticker) : -1, k = STATS.indexOf(e.stat);
+        slot[i] = a >= 0 && k >= 0 ? a * 5 + k : -1; dl[i] = e.delta; at[i] = e.at;
+      });
+      return [d, { tl, slot, dl, at }];
+    }));
+    /* length of an array after n pushes under the rule "past 2K entries, cut back to the last K" */
+    const keep = (n, K) => n <= K * 2 ? n : K + (n - K * 2 - 1) % (K + 1);
+
     /* the stat simulator: walks every broadcast since EPOCH in order. advanceTo() is incremental,
-       and stepping in small increments gives exactly the same result as one big jump. */
+       and stepping in small increments gives exactly the same result as one big jump.
+       Only what can still be read gets built: the log tail (at most LOG * 2 entries), the last
+       HIST * 2 hist samples and each mind's last move. Older moves are applied and forgotten. */
     function sim(opts = {}) {
-      const track = opts.track || null;
-      const vals = {}, hist = {}, last = {};
+      const track = opts.track || null, tr = track === null ? -1 : TI.has(track) ? TI.get(track) : -2;
+      const vals = {}, hist = {}, last = {}, H = [];
       for (const s of stocks) {
         vals[s.ticker] = { ...s.stats };
-        hist[s.ticker] = { t: [], ...Object.fromEntries(STATS.map(k => [k, []])) };
+        H.push(hist[s.ticker] = { t: [], ...Object.fromEntries(STATS.map(k => [k, []])) });
       }
-      const log = [], trackLog = [];
-      let bi = 0, ei = 0, cur = broadcast(0), now = EPOCH;
+      const V = BASE.slice(), log = [], trackLog = [];
+      let bi = 0, ei = 0, cur = broadcast(0), now = EPOCH, logged = 0;
+      // per call: a ring of the latest LOG * 2 moves (the log tail), and each mind's latest move
+      const RING = LOG * 2, rV = new Float64Array(RING), rB = new Float64Array(RING), rS = new Float64Array(RING), rE = [], rD = [];
+      const lq = new Float64Array(NS), lV = new Float64Array(NS), lB = new Float64Array(NS), lS = new Float64Array(NS), lE = [], lD = [];
+      const entry = (e, start, d, value, b) => ({ t: start + e.at, ticker: e.ticker, stat: e.stat, delta: e.delta, value,
+        reason: e.reason, dream: d.id, turn: e.turn, b });
       const S = {
         vals, hist, log, last, trackLog,
         get now() { return now; },
@@ -127,32 +150,61 @@
         advanceTo(t, collect = true) {
           const fresh = [];
           if (t < now) return fresh;
+          const lazy = tr === -1 && !collect;                // nobody needs every entry: ring them, build the tail
+          const hFrom = locate(t).index - HIST * 2;          // hist samples from before this can never be read
+          let q = 0, hSkip = false, hClear = false;
+          lq.fill(-1);
           for (;;) {
-            const tl = cur.dream.timeline;
-            while (ei < tl.length && cur.start + tl[ei].at <= t) {
-              const e = tl[ei++], v = vals[e.ticker];
-              if (!v) continue;
-              const nv = Math.max(0, Math.min(100, v[e.stat] + e.delta));
-              v[e.stat] = nv;
-              const entry = { t: cur.start + e.at, ticker: e.ticker, stat: e.stat, delta: e.delta, value: nv,
-                reason: e.reason, dream: cur.dream.id, turn: e.turn, b: bi };
-              last[e.ticker] = entry;
-              if (track === null || track === e.ticker) {
-                if (track) trackLog.push(entry);
-                else { log.push(entry); if (log.length > LOG * 2) log.splice(0, log.length - LOG); }
-                if (collect) fresh.push(entry);
+            const C = compiled.get(cur.dream), n = C.at.length, st = cur.start;
+            while (ei < n && st + C.at[ei] <= t) {
+              const i = ei++, j = C.slot[i];
+              if (j < 0) continue;
+              const nv = Math.max(0, Math.min(100, V[j] + C.dl[i]));
+              V[j] = nv;
+              const a = (j / 5) | 0, e = C.tl[i];
+              if (tr === -1 && collect) {
+                const x = last[e.ticker] = entry(e, st, cur.dream, nv, bi);
+                log.push(x); if (log.length > LOG * 2) log.splice(0, log.length - LOG);
+                logged++; fresh.push(x);
+              } else if (a === tr) {
+                const x = last[e.ticker] = entry(e, st, cur.dream, nv, bi);
+                trackLog.push(x); if (collect) fresh.push(x);
+              } else {
+                if (lazy) { const r = q % RING; rV[r] = nv; rB[r] = bi; rS[r] = st; rE[r] = e; rD[r] = cur.dream; }
+                lq[a] = q; lV[a] = nv; lB[a] = bi; lS[a] = st; lE[a] = e; lD[a] = cur.dream;
               }
+              q++;
             }
             if (cur.end > t) break;
             // broadcast over: everyone drifts 8% back toward who they were
-            for (const s of stocks) {
-              const v = vals[s.ticker], b = s.stats, h = hist[s.ticker];
-              for (const k of STATS) { v[k] += REVERT * (b[k] - v[k]); h[k].push(Math.round(v[k] * 10) / 10); }
-              h.t.push(cur.end);
-              if (h.t.length > HIST * 2) for (const k of ['t', ...STATS]) h[k].splice(0, h[k].length - HIST);
+            for (let j = 0; j < NV; j++) V[j] += REVERT * (BASE[j] - V[j]);
+            if (bi < hFrom) hSkip = true;
+            else {
+              if (hSkip && !hClear) { hClear = true; for (const h of H) for (const k in h) h[k].length = 0; }
+              const len = keep(bi + 1, HIST);
+              for (let a = 0; a < NS; a++) {
+                const h = H[a];
+                for (let k = 0; k < 5; k++) h[STATS[k]].push(Math.round(V[a * 5 + k] * 10) / 10);
+                h.t.push(cur.end);
+                if (h.t.length > len) for (const k in h) h[k].splice(0, h[k].length - len);
+              }
             }
             bi++; ei = 0; cur = broadcast(bi);
           }
+          // the log tail, built from the ring: anything older than the ring is out of its reach
+          let from = q, built = [];
+          if (lazy && q) {
+            from = Math.max(0, q - RING); built = new Array(q - from);
+            for (let s = from; s < q; s++) { const r = s % RING; built[s - from] = entry(rE[r], rS[r], rD[r], rV[r], rB[r]); }
+            if (from > 0) log.length = 0;
+            logged += q;
+            for (const x of built) log.push(x);
+            const len = keep(logged, LOG);
+            if (log.length > len) log.splice(0, log.length - len);
+          }
+          for (let a = 0; a < NS; a++) if (lq[a] >= 0)
+            last[stocks[a].ticker] = lq[a] >= from ? built[lq[a] - from] : entry(lE[a], lS[a], lD[a], lV[a], lB[a]);
+          for (let a = 0; a < NS; a++) { const v = vals[stocks[a].ticker]; for (let k = 0; k < 5; k++) v[STATS[k]] = V[a * 5 + k]; }
           now = t;
           return fresh;
         },
