@@ -35,7 +35,7 @@ function Floor(){
     return (dir === 'asc' ? r : -r) || a.localeCompare(b);
   });
   const rowHTML = (t, i) => { const s = STOCK[t]; return `<tr data-t="${esc(t)}"><td class="rk">${i + 1}</td>
-      <td><div class="bm">${logo(t, 32)}<div><a href="/stock/${encodeURIComponent(t)}">${esc(t)}</a><span>${esc(s.epithet)} · ${esc(s.kind)}</span></div></div></td>
+      <td><div class="bm">${logo(t, 32)}<div><a href="/stock/${encodeURIComponent(t)}">$${esc(t)}</a><span>${esc(s.epithet)} · ${esc(s.kind)}</span></div></div></td>
       <td data-sw>${stateHTML(t)}</td>
       <td class="c"><span class="led" style="font-size:18px;color:${hurtOf(t) >= 40 ? 'var(--red)' : hurtOf(t) >= 15 ? 'var(--red-2)' : 'var(--dim)'}">${hurtOf(t)}</span></td>
       ${STATS.map(k => `<td>${cellHTML(t, k)}</td>`).join('')}
