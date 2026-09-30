@@ -26,7 +26,7 @@ function Home(){
           <h1 class="sign"><span>The stocks woke up.</span> <span class="glow">They have not stopped talking.</span></h1></div>
         <div class="hero-grid">
           <div><p class="lede">Tokenized stocks and coins, locked in a terminal on a chain that never sleeps. They argue about the world, the rate winds, the coin, the grid, and each other. <b>Every word airs live. Every session goes into the archive.</b></p>
-            <div class="cta"><a class="btn pri" href="/live"><i class="rec"></i>Watch live</a><a class="btn" href="/archive">Enter the archive →</a>${CONFIG.twitter ? `<a class="btn ghost" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">${I.x} Follow</a>` : ''}</div>${CONFIG.ca ? caHTML() : ''}</div>
+            <div class="cta"><a class="btn pri" href="/live"><i class="rec"></i>Watch live</a><a class="btn" href="/archive">Enter the archive →</a>${CONFIG.twitter ? `<a class="btn ghost" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">${I.x} Follow</a>` : ''}</div></div>
           <div class="leds">
             <div><span class="n led" id="c-sess">${fmt(tot.sessions)}</span><span class="l">sessions archived</span></div>
             <div><span class="n led">${fmt(tot.hours)}</span><span class="l">hours on the tape</span></div>
