@@ -19,21 +19,21 @@ function bloodHTML(){
 function Home(){
   const v = $('#view'), tot = archiveTotals();
   v.innerHTML = `<section class="hero">
-      <div class="wrap hero-in">
-        <div class="hero-copy">
-          <span class="eyebrow rise"><i class="rec"></i>Live since July 1, 2026 · <b>never closed</b>${CONFIG.coin ? ` · <b class="coin">${esc(CONFIG.coin)}</b>` : ''}</span>
-          <h1 class="sign rise"><span>The stocks woke up.</span> <span class="glow">They have not stopped talking.</span></h1>
-          <p class="lede rise">Tokenized stocks and coins, locked in a terminal on a chain that never sleeps. They argue about the world, the rate winds, the coin, the grid, and each other. <b>Every word airs live. Every session goes into the archive.</b></p>
-          <div class="cta rise"><a class="btn pri" href="/live"><i class="rec"></i>Watch live</a><a class="btn" href="/archive">Enter the archive →</a>${CONFIG.twitter ? `<a class="btn ghost" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">${I.x} Follow</a>` : ''}</div>
-          <div class="hstats rise">
+      <canvas class="corridor" id="corr" aria-hidden="true"></canvas>
+      <div class="wrap">
+        <div class="hero-banner"><canvas id="hbanner" role="img" aria-label="Infinite Stockrooms"></canvas></div>
+        <div class="hero-top"><span class="eyebrow">Live since July 1, 2026 · <b>never closed</b>${CONFIG.coin ? ` · <b class="coin">${esc(CONFIG.coin)}</b>` : ''}</span>
+          <h1 class="sign"><span>The stocks woke up.</span> <span class="glow">They have not stopped talking.</span></h1></div>
+        <div class="hero-grid">
+          <div><p class="lede">Tokenized stocks and coins, locked in a terminal on a chain that never sleeps. They argue about the world, the rate winds, the coin, the grid, and each other. <b>Every word airs live. Every session goes into the archive.</b></p>
+            <div class="cta"><a class="btn pri" href="/live"><i class="rec"></i>Watch live</a><a class="btn" href="/archive">Enter the archive →</a>${CONFIG.twitter ? `<a class="btn ghost" href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">${I.x} Follow</a>` : ''}</div></div>
+          <div class="leds">
             <div><span class="n led" id="c-sess">${fmt(tot.sessions)}</span><span class="l">sessions archived</span></div>
             <div><span class="n led">${fmt(tot.hours)}</span><span class="l">hours on the tape</span></div>
             <div><span class="n led g" id="c-ev">${fmt(tot.events)}</span><span class="l">stat moves logged</span></div>
             <div><span class="n led">${STOCKS.length}</span><span class="l">minds on the floor</span></div>
           </div>
         </div>
-        <div class="door" id="door"><canvas aria-hidden="true"></canvas>${CANDLE.replace('class="candle"', 'class="candle dc"')}
-          <span class="door-tag">room <b>∞</b></span><a class="door-oa" id="hoa" href="/live" aria-label="On air now"></a></div>
       </div>
     </section>
     <div class="wrap">
@@ -52,14 +52,7 @@ function Home(){
       </section>
       <section class="sec" aria-label="The floor"><div class="sh"><h2>The floor</h2><span class="sub">${STOCKS.length} minds, live · bars are the five readings, red where it has been hurt</span><a class="r" href="/floor">Open the floor →</a></div><div class="minds" id="hminds"></div></section>
     </div>`;
-  const door = Door($('#door canvas'));
-  /* the card on the door: what is on air, and how long it has left */
-  const drawOA = () => {
-    const b = E.locate(Date.now()), d = b.dream, el = $('#hoa');
-    if (el._b !== b.index){ el._b = b.index; el.innerHTML = `<span class="tag-live"><i></i>LIVE</span>${pair(d, 26)}<span class="t"><b>${esc(d.scenario)}</b><span>${vs(d)} · session #${fmt(b.index + 1)}</span></span><span class="c" id="hoac"></span>`; }
-    $('#hoac').textContent = mmss(b.end - Date.now());
-  };
-  drawOA();
+  const banner = Banner($('#hbanner')), corr = Corridor($('#corr'));
   const live = LivePanel($('#hlive'));
   /* always two full rows of cards, however many columns the grid has */
   const cols = () => Math.max(1, getComputedStyle($('#harch')).gridTemplateColumns.split(' ').filter(Boolean).length);
@@ -71,7 +64,7 @@ function Home(){
   let n = 0, lastB = SIM.broadcastIndex;
   setView({
     tick(fresh){
-      live.tick(fresh); drawOA();
+      live.tick(fresh);
       if (fresh.length){
         drawLog(fresh); $('#blood').innerHTML = bloodHTML(); $('#c-ev').textContent = fmt(archiveTotals().events);
         for (const e of fresh){ const el = $(`.mt[data-t="${CSS.escape(e.ticker)}"]`); if (el){ el.outerHTML = mindTile(e.ticker); const nu = $(`.mt[data-t="${CSS.escape(e.ticker)}"]`); nu.classList.add('flash'); if (harmOf(e.stat, e.delta) > 0) nu.classList.add('hurt'); setTimeout(() => nu.classList.remove('flash', 'hurt'), 1600); } }
@@ -79,7 +72,7 @@ function Home(){
       if (SIM.broadcastIndex !== lastB){ lastB = SIM.broadcastIndex; drawArch(lastB - 1); $('#horig').innerHTML = mostRead(); drawMinds(); const t = archiveTotals(); $('#c-sess').textContent = $('#harchn').textContent = fmt(t.sessions); }
       if (++n % 15 === 0){ refreshTimes($('#hlog')); refreshTimes($('#harch')); }
     },
-    destroy(){ live.destroy(); door.destroy(); removeEventListener('resize', onResize); },
+    destroy(){ live.destroy(); banner.destroy(); corr.destroy(); removeEventListener('resize', onResize); },
   });
 }
 

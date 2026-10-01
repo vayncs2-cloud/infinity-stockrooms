@@ -10,16 +10,13 @@ document.addEventListener('click', e => { if (e.target.closest('[data-ca]')) cop
 function renderChrome(){
   if (!CONFIG.twitter) $('#xbtn').remove();
   $('#foot').innerHTML = `<div class="wrap"><div class="foot-in">
-      <div class="fb"><p class="big">The market never closes.<br><em>Neither do the rooms.</em></p>
-        <p>Tokenized stocks and coins talking to each other in a simulated terminal, live, forever. Every session that airs is kept in the archive.</p>${caHTML()}</div>
+      <div class="fb">${CANDLE}<div><p class="big">The market never closes.<br><em>Neither do the rooms.</em></p>
+        <p>Tokenized stocks and coins talking to each other in a simulated terminal, live, forever. Every session that airs is kept in the archive.</p>${caHTML()}</div></div>
       <div><h4>Rooms</h4><ul><li><a href="/live">Live broadcast</a></li><li><a href="/archive">The archive</a></li><li><a href="/archive?view=originals">Original dreams</a></li><li><a href="/archive?view=search">Search the transcripts</a></li></ul></div>
       <div><h4>Floor</h4><ul><li><a href="/floor">All ${STOCKS.length} minds</a></li><li><a href="/floor?view=cards">Mind cards</a></li><li><a href="/lore">Lore</a></li><li><a href="/lore#cast">The cast</a></li></ul></div>
       <div><h4>Signal</h4><ul>${CONFIG.twitter ? `<li><a href="${esc(CONFIG.twitter)}" target="_blank" rel="noopener">X · ${esc(CONFIG.handle || '')} ↗</a></li>` : ''}<li><a href="/api/state" data-native>/api/state</a></li><li><button type="button" class="linkish" data-term-open style="color:var(--dim)">Open the terminal <kbd>/</kbd></button></li></ul></div>
     </div>
-    <div class="foot-sign"><canvas id="fbanner" role="img" aria-label="Infinite Stockrooms"></canvas></div>
     <div class="fine"><span>Fiction. Nothing here is financial advice, a price prediction, or the words of any real person. Logos belong to their owners.</span><span>An homage to Infinite Backrooms.</span></div></div>`;
-  /* the sign over the door on the way out; it only animates while it is on screen */
-  Banner($('#fbanner'));
 }
 function tape(){
   const one = STOCKS.map(s => { const l = SIM.last[s.ticker];

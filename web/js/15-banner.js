@@ -112,51 +112,43 @@ function Banner(canvas, opts = {}){
   return { destroy(){ dead = true; ro.disconnect(); io.disconnect(); cancelAnimationFrame(raf); cancelAnimationFrame(pend); document.removeEventListener('visibilitychange', onVis); } };
 }
 
-/* ── the door: frames receding forever toward one warm light, walked very slowly. The candle waits at the end. ── */
-function Door(canvas){
+/* ── the corridor: frames receding forever toward one warm light, walked very slowly ── */
+function Corridor(canvas){
   const ctx = canvas.getContext('2d');
   let W = 0, H = 0, dpr = 1, raf = 0, dead = false, visible = true, lastT = 0;
-  const R = .68, N = 12, LOOP = 6500;            // each frame is .68 the size of the one before it; one frame closer every 6.5 s
+  const N = 14, SPEED = 1 / 5200;                // one frame-depth every 5.2 s
   function size(){
     const r = canvas.getBoundingClientRect(); dpr = Math.min(window.devicePixelRatio || 1, 2);
     W = canvas.width = Math.max(1, Math.round(r.width * dpr)); H = canvas.height = Math.max(1, Math.round(r.height * dpr));
   }
-  const rr = (x, y, w, h, r) => { ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(x, y, w, h, r); else ctx.rect(x, y, w, h); };
-  /* light caught along one edge: brightest in the middle, gone by the corners */
-  function glint(x, y, w, h, horiz, a){
-    const g = horiz ? ctx.createLinearGradient(x, 0, x + w, 0) : ctx.createLinearGradient(0, y, 0, y + h);
-    g.addColorStop(0, 'rgba(255,170,60,0)'); g.addColorStop(.5, `rgba(255,196,100,${a.toFixed(3)})`); g.addColorStop(1, 'rgba(255,170,60,0)');
-    ctx.fillStyle = g; ctx.fillRect(x, y, w, h);
-  }
   function draw(t){
     ctx.clearRect(0, 0, W, H);
-    const cx = W / 2, cy = H / 2, ph = reduceMotion ? .35 : (t % LOOP) / LOOP;
+    const vx = W * .5, vy = H * .5, phase = reduceMotion ? .35 : (t * SPEED) % 1;
     // the light at the end
-    const bg = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.hypot(W, H) * .5);
-    bg.addColorStop(0, 'rgba(255,206,120,.42)'); bg.addColorStop(.07, 'rgba(243,170,60,.2)'); bg.addColorStop(.35, 'rgba(90,52,18,.1)'); bg.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
-    const fw = W * .84, fh = H * .86;
-    for (let i = -2; i <= N; i++){
-      const z = i - ph, s = Math.pow(R, z), w = fw * s, h = fh * s;
-      if (w > W * 1.9) continue;
+    const g = ctx.createRadialGradient(vx, vy, 0, vx, vy, Math.min(W, H) * .5);
+    g.addColorStop(0, 'rgba(255,206,120,.3)'); g.addColorStop(.18, 'rgba(243,181,65,.08)'); g.addColorStop(1, 'rgba(243,181,65,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    const bw = W * .62, bh = H * .78;
+    for (let i = N; i >= 0; i--){
+      const z = i + 1 - phase;                   // depth: 1 is at the viewer, N is far
+      const s = 1 / (z * .42);
+      const w = bw * s, h = bh * s;
+      if (w > W * 3.2) continue;
       // frames fade in from the far end and fade out again as they pass the viewer
-      const a = Math.min(1, Math.max(0, (1.7 - s) / .7)) * Math.min(1, Math.max(0, (N - z) / 3));
-      if (a <= .01) continue;
-      const x = cx - w / 2, y = cy - h / 2, lw = Math.max(1, 26 * s * dpr), r = lw * .45;
-      // the room past each frame is a little warmer than the one before it
-      rr(x, y, w, h, r); ctx.fillStyle = `rgba(58,32,10,${(.07 * a).toFixed(3)})`; ctx.fill();
-      // the frame: a dark lacquered band, a hairline on its outside, light caught on its inside
-      ctx.lineWidth = lw; ctx.strokeStyle = `rgba(6,4,3,${(.92 * a).toFixed(3)})`; rr(x, y, w, h, r); ctx.stroke();
-      ctx.lineWidth = Math.max(1, dpr * .8); ctx.strokeStyle = `rgba(255,200,120,${(.1 * a).toFixed(3)})`; rr(x - lw / 2, y - lw / 2, w + lw, h + lw, r * 1.6); ctx.stroke();
-      const gt = Math.max(1, lw * .15), ga = a, ins = lw * .5 + gt;
-      ctx.globalCompositeOperation = 'lighter';
-      glint(x + ins, y + ins - gt, w - ins * 2, gt, true, ga);
-      glint(x + ins, y + h - ins, w - ins * 2, gt, true, ga * .8);
-      glint(x + ins - gt, y + ins, gt, h - ins * 2, false, ga * .7);
-      glint(x + w - ins, y + ins, gt, h - ins * 2, false, ga * .7);
-      glint(x + ins, y + ins - gt * 4, w - ins * 2, gt * 7, true, .13 * a);
-      glint(x + ins, y + h - ins - gt * 3, w - ins * 2, gt * 7, true, .1 * a);
-      ctx.globalCompositeOperation = 'source-over';
+      const a = Math.min(1, (N - z) / 5) * Math.min(1, Math.max(0, z - .35) / 2.2) * .42;
+      if (a <= 0.01) continue;
+      const x = vx - w / 2, y = vy - h / 2;
+      ctx.strokeStyle = `rgba(243,181,65,${a.toFixed(3)})`;
+      ctx.lineWidth = Math.max(1, dpr * Math.min(1.6, s * .8));
+      ctx.strokeRect(x, y, w, h);
+      // doors along both walls, like the stockroom's filing cabinets
+      const dw = w * .07, dh = h * .09;
+      ctx.fillStyle = `rgba(243,181,65,${(a * .16).toFixed(3)})`;
+      for (let k = 0; k < 3; k++){
+        const yy = y + h * (.3 + k * .16);
+        ctx.fillRect(x - dw * 1.4, yy, dw, dh);
+        ctx.fillRect(x + w + dw * .4, yy, dw, dh);
+      }
     }
   }
   function frame(t){ raf = 0; if (dead || !visible || document.hidden) return; if (t - lastT >= 33){ lastT = t; draw(t); } if (!reduceMotion) raf = requestAnimationFrame(frame); }
