@@ -140,10 +140,8 @@ select.field{padding-right:30px;appearance:none;-webkit-appearance:none;backgrou
 .hdr-in{display:flex;align-items:center;gap:8px 18px;height:var(--hdr)}
 .mark{display:inline-flex;align-items:center;gap:11px;color:var(--bright);flex:none;margin-right:8px}
 .mark:hover{color:var(--bright)}
-.candle{width:17px;height:26px;flex:none;overflow:visible;filter:drop-shadow(0 0 8px rgba(243,181,65,.55))}
-.candle .body{fill:var(--gold)} .candle .wick{fill:#c98a16} .candle .eye{fill:#2a1a05} .candle .glint{fill:#fff6dc}
-.candle .eyes{transform-origin:8px 11px;animation:lids 7s infinite}
-@keyframes lids{0%,92%,100%{transform:scaleY(1)}94%,96%{transform:scaleY(.1)}}
+/* the mark: the CRT with candlestick eyes, the same face as the X avatar */
+.brandmark{width:34px;height:34px;flex:none;display:block;border-radius:50%;background:#000;box-shadow:0 0 0 1px var(--line-3),0 0 18px -4px rgba(98,208,151,.45)}
 .wm{font-family:var(--dot);font-weight:900;font-size:19px;letter-spacing:.05em;line-height:1;white-space:nowrap;color:var(--bright)}
 .wm b{font-weight:900;color:var(--accent);text-shadow:0 0 18px var(--glow)}
 .nav{display:flex;align-items:center;gap:2px;font-size:13px}
@@ -636,7 +634,7 @@ details.sysp .blk{margin:0;border-left-color:var(--line-3)}
 .lore-hero{padding:10px 0 34px;border-bottom:1px solid var(--line);display:grid;grid-template-columns:minmax(0,1fr) auto;gap:30px;align-items:end}
 .lore-hero h1{font-size:clamp(36px,5.4vw,88px);margin-top:16px}
 .lore-hero p{color:var(--dim);max-width:70ch;margin-top:18px;font-size:14.5px;line-height:1.7}
-.lore-hero .big-candle{width:clamp(70px,8vw,120px);height:auto;filter:drop-shadow(0 0 40px rgba(243,181,65,.5))}
+.lore-hero .big-mark{width:clamp(96px,10vw,150px);height:auto;box-shadow:0 0 0 1px var(--line-3),0 0 60px -10px rgba(98,208,151,.4)}
 .chap{display:grid;grid-template-columns:minmax(0,16rem) minmax(0,1fr);gap:12px 48px;padding:40px 0;border-bottom:1px solid var(--line)}
 .chap .no{font-family:var(--dot);font-weight:900;font-size:56px;line-height:1;color:var(--line-3)}
 .chap h2{font-size:22px;line-height:1.2;margin-top:12px}
@@ -668,7 +666,7 @@ details.sysp .blk{margin:0;border-left-color:var(--line-3)}
 .foot ul a{color:var(--dim)}
 .foot ul a:hover{color:var(--accent)}
 .foot .fb{display:flex;gap:18px;align-items:flex-start}
-.foot .fb .candle{width:26px;height:40px;margin-top:4px}
+.foot .fb .brandmark{width:46px;height:46px}
 .foot .big{font-family:var(--dot);font-weight:900;font-size:clamp(22px,2vw,30px);line-height:1.1;color:var(--bright);text-transform:uppercase;margin:0 0 12px}
 .foot .big em{font-style:normal;color:var(--accent);text-shadow:0 0 20px var(--glow)}
 .foot .fb p{max-width:52ch;line-height:1.7}
@@ -772,13 +770,13 @@ details.sysp .blk{margin:0;border-left-color:var(--line-3)}
   .verdict{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .verdict .mid{grid-column:1/-1;grid-row:2;max-width:none}
   .foot-in{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-  .lore-hero .big-candle{display:none}
+  .lore-hero .big-mark{display:none}
 }
 @media (max-width:640px){
   body{font-size:13.5px}
   main{padding-block:18px 56px}
   .wm{font-size:16px}
-  .candle{width:14px;height:22px}
+  .brandmark{width:28px;height:28px}
   .leds .n{font-size:30px}
   .leds > div{padding:14px 14px 12px}
   .how{grid-template-columns:minmax(0,1fr)}
@@ -839,7 +837,7 @@ details.sysp .blk{margin:0;border-left-color:var(--line-3)}
   .kbtn{padding:0 10px}
 }
 @media (prefers-reduced-motion:reduce){
-  .tape-in,.cur,.rec,.tag-live i,.typing .dots i,.candle .eyes{animation:none}
+  .tape-in,.cur,.rec,.tag-live i,.typing .dots i{animation:none}
   .st .tr i,.hpb i{transition:none}
   .ll li.fresh,.row.fresh,.sc.fresh,.pops li.pop,.ev.pop,.st.flash,.hit-pop,.fighter.shake .fl{animation:none}
   .sc:hover,.poster:hover{transform:none}

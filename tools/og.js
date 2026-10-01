@@ -30,7 +30,7 @@ const sigil = (t, op = 1) => { const s = STOCK[t]; let r = '';
   return `<svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="${s.color}" style="opacity:${op}">${r}</svg>`; };
 const logo = (t, sz) => { const src = logoSrc(t), s = STOCK[t], full = src && src.endsWith('.svg');
   return `<div class="logo${full ? ' full' : ''}" style="width:${sz}px;height:${sz}px;border-radius:${sz * .2}px;--c:${s.color}">${src ? `<img src="${src}">` : sigil(t)}</div>`; };
-const CANDLE = `<svg class="candle" viewBox="0 0 16 24" shape-rendering="crispEdges"><rect x="7" y="0" width="2" height="4" fill="#c98a16"/><rect x="7" y="20" width="2" height="4" fill="#c98a16"/><rect x="2" y="4" width="12" height="16" rx="1.5" fill="#f7c459"/><rect x="4" y="9" width="2.5" height="3.5" fill="#2a1a05"/><rect x="9.5" y="9" width="2.5" height="3.5" fill="#2a1a05"/><rect x="4.5" y="9.4" width="1" height="1" fill="#fff6dc"/><rect x="10" y="9.4" width="1" height="1" fill="#fff6dc"/><rect x="6" y="15" width="4" height="1" fill="#2a1a05"/></svg>`;
+const MARK = `<img class="bm" src="${fileURL(path.join(ROOT, 'public', 'mark.png'))}">`;
 
 const CSS = `
 *{box-sizing:border-box;margin:0}
@@ -39,8 +39,8 @@ body{font-family:"JetBrains Mono",monospace;color:#e4d9c6;position:relative}
 .card{position:absolute;inset:0;overflow:hidden;background:radial-gradient(900px 420px at 50% -120px,rgba(243,181,65,.13),transparent 70%),#0b0907}
 .card::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.28) 2px 3px);pointer-events:none;z-index:9}
 .frame{position:absolute;border:1.5px solid rgba(243,181,65,.16)}
-.brand{position:absolute;left:56px;top:46px;display:flex;align-items:center;gap:16px;z-index:5}
-.candle{width:22px;height:34px;filter:drop-shadow(0 0 10px rgba(243,181,65,.6))}
+.brand{position:absolute;left:56px;top:40px;display:flex;align-items:center;gap:16px;z-index:5}
+.bm{width:46px;height:46px;border-radius:50%;background:#000;box-shadow:0 0 0 1.5px #47392b,0 0 24px -4px rgba(98,208,151,.5)}
 .wm{font-family:Doto;font-weight:900;font-size:27px;letter-spacing:.05em;color:#fff5e4}
 .wm b{color:#f3b541;text-shadow:0 0 18px rgba(243,181,65,.5)}
 .url{position:absolute;right:56px;top:52px;font-size:19px;color:#a69580;z-index:5;letter-spacing:.04em}
@@ -61,7 +61,7 @@ body{font-family:"JetBrains Mono",monospace;color:#e4d9c6;position:relative}
 .eyebrow b{color:#f3b541}
 `;
 function frames() { let h = ''; for (let i = 1; i <= 7; i++) { const s = 1 / (i * .42); const w = 700 * s, hh = 480 * s; h += `<div class="frame" style="left:${600 - w / 2}px;top:${330 - hh / 2}px;width:${w}px;height:${hh}px;opacity:${Math.min(1, (8 - i) / 4) * .9}"></div>`; } return h; }
-const head = `<div class="brand">${CANDLE}<span class="wm">INFINITE <b>STOCKROOMS</b></span></div><span class="url">stockrooms.fun</span>`;
+const head = `<div class="brand">${MARK}<span class="wm">INFINITE <b>STOCKROOMS</b></span></div><span class="url">stockrooms.fun</span>`;
 
 function dreamCard(d) {
   const [a, b] = d.actors, by = {}; for (const e of d.events) by[e.ticker] = (by[e.ticker] || 0) + harm(e);

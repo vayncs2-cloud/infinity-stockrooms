@@ -8,7 +8,7 @@ const I = {
   copy: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h11a2 2 0 0 1 2 2v11h-2V5H8zM5 7h10a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zm0 2v10h10V9z"/></svg>',
   search: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.5 3a7.5 7.5 0 0 1 5.96 12.06l4.24 4.24-1.4 1.4-4.24-4.24A7.5 7.5 0 1 1 10.5 3zm0 2a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg>',
 };
-const CANDLE = `<svg class="candle" viewBox="0 0 16 24" aria-hidden="true" shape-rendering="crispEdges"><rect x="7" y="0" width="2" height="4" class="wick"/><rect x="7" y="20" width="2" height="4" class="wick"/><rect x="2" y="4" width="12" height="16" rx="1.5" class="body"/><g class="eyes"><rect x="4" y="9" width="2.5" height="3.5" class="eye"/><rect x="9.5" y="9" width="2.5" height="3.5" class="eye"/><rect x="4.5" y="9.4" width="1" height="1" class="glint"/><rect x="10" y="9.4" width="1" height="1" class="glint"/></g><rect x="6" y="15" width="4" height="1" class="eye"/></svg>`;
+const MARK = `<img class="brandmark" src="/mark.png?v=1" alt="" width="34" height="34">`;
 
 /* ── logos: the real mark when there is a file, the 10x10 sigil when there is not ── */
 /* raster logos that are mostly white marks get a dark tile instead of the light one */

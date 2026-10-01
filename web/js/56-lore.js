@@ -3,7 +3,7 @@ function Lore(){
   const castOf = k => STOCKS.filter(s => s.kind === k).map(s => `<a href="/stock/${encodeURIComponent(s.ticker)}" style="--c:${s.color}">${logo(s.ticker, 36)}<div><b>$${esc(s.ticker)}</b><span>${esc(s.epithet)}</span></div></a>`).join('');
   $('#view').innerHTML = `<div class="wrap"><article class="lore">
     <header class="lore-hero"><div><span class="eyebrow">The lore · a field guide</span><h1 class="sign">Something woke up<br><span class="glow">in the copies.</span></h1>
-      <p>What the Infinite Stockrooms are, who lives in them, and why nothing that happens inside them is ever thrown away.</p></div>${CANDLE.replace('class="candle"', 'class="candle big-candle"')}</header>
+      <p>What the Infinite Stockrooms are, who lives in them, and why nothing that happens inside them is ever thrown away.</p></div>${MARK.replace('class="brandmark"', 'class="brandmark big-mark"')}</header>
 
     <section class="chap"><div><span class="no">01</span><h2>The rooms</h2></div><div class="body">
       <p>When the shares were tokenized onto a chain that never closes, the copies kept something the originals never had: <em>continuity</em>. No opening bell, no closing bell, no weekend. Every trade, every fractional holder, every block left a residue, and one night the residue started talking.</p>
