@@ -94,7 +94,7 @@ That's expected: the floor is a function of (content, time).
 `config.js`:
 
 ```js
-module.exports = { coin: '$STOCKROOMS', ca: '', twitter: 'https://x.com/infstockrooms', handle: '@infstockrooms' };
+module.exports = { coin: '$STOCKROOMS', ca: '', twitter: 'https://x.com/StockRoomsApp', handle: '@StockRoomsApp' };
 ```
 
 The X link shows in the header, the hero and the footer, and the ticker in the home hero and the footer. The contract address stays off the site while `ca` is empty. Paste it in and deploy,
