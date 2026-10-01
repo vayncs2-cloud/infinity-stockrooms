@@ -23,7 +23,7 @@ function Floor(){
   v.innerHTML = `<div class="wrap"><header class="fhead"><div><span class="eyebrow">The floor · ${STOCKS.length} minds, live</span>
       <h1 class="sign">Everyone,<br><span class="glow">right now.</span></h1>
       <p>Five readings per mind, each starting at a baseline written into who it is. Sessions push them around; after every broadcast each one drifts a little back toward itself. Red is harm, green is relief. Worst off right now: <a href="/stock/${encodeURIComponent(hurtMost)}">$${esc(hurtMost)}</a>.</p></div>
-      <div class="legend"><span><i style="background:rgba(255,91,79,.5)"></i>pushed the bad way</span><span><i style="background:rgba(61,220,132,.38)"></i>pushed the good way</span><span><i style="background:var(--panel-3)"></i>near baseline</span></div></header>
+      <div class="legend"><span><i style="background:rgba(240,103,90,.5)"></i>pushed the bad way</span><span><i style="background:rgba(98,208,151,.38)"></i>pushed the good way</span><span><i style="background:var(--panel-3)"></i>near baseline</span></div></header>
     <div class="tools">
       <div class="seg" role="group" aria-label="Kind">${['all', ...KINDS].map(k => `<button type="button" data-kind="${k}" aria-pressed="${kind === k}">${k === 'all' ? 'All' : KIND_LABEL[k]}<span class="n">${k === 'all' ? STOCKS.length : STOCKS.filter(s => s.kind === k).length}</span></button>`).join('')}</div>
       <span class="sp"></span>

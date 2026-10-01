@@ -20,7 +20,7 @@ function sessionChart(d, W = 320, H = 120){
   const x = k => (k / Math.max(1, d.turns) * (W - 2 * P) + P), y = v => (P + (v - lo) / (hi - lo) * (H - 2 * P));
   const lines = cum.map((c, i) => { const col = ink(colorOf(d.actors[i]));
     const pts = c.map((v, k) => `${x(k).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
-    const dots = d.timeline.filter(e => e.ticker === d.actors[i]).map(e => `<circle cx="${x(e.turn).toFixed(1)}" cy="${y(c[e.turn]).toFixed(1)}" r="2.2" fill="${harmOf(e.stat, e.delta) > 0 ? 'var(--red)' : 'var(--accent)'}"/>`).join('');
+    const dots = d.timeline.filter(e => e.ticker === d.actors[i]).map(e => `<circle cx="${x(e.turn).toFixed(1)}" cy="${y(c[e.turn]).toFixed(1)}" r="2.2" fill="${harmOf(e.stat, e.delta) > 0 ? 'var(--red)' : 'var(--good)'}"/>`).join('');
     return `<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="1.8" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>${dots}`; }).join('');
   return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Damage taken by each mind over the turns" data-turns="${d.turns}" data-w="${W}" data-p="${P}">
     <line x1="${P}" x2="${W - P}" y1="${y(0).toFixed(1)}" y2="${y(0).toFixed(1)}" stroke="var(--line-3)" stroke-dasharray="3 4" vector-effect="non-scaling-stroke"/>

@@ -34,7 +34,7 @@ The site is a single-page app in `web/`:
 |---|---|
 | `00-core.js` | data, helpers, the engine instance, damage and verdicts, records, transcript search |
 | `10-ui.js` | logos, stat bars, the radar, session cards and rows, sharing, toasts |
-| `15-banner.js` | the ANSI banner (marquee and glitch) and the corridor behind the home hero |
+| `15-banner.js` | the ANSI banner (the marquee sign in the footer) and the door in the home hero: frames receding toward the candle |
 | `20-typist.js` | renders a dream as a chat at any time offset; typing sounds |
 | `30-chrome.js` | the header's on-air pill, the ticker tape, the footer |
 | `40-live.js` | the live stage: the fight card, the chat and the rail; the schedule |

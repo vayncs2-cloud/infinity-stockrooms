@@ -54,7 +54,7 @@ function logo(t, sz = 32){
 const pair = (d, sz = 28) => `<span class="pair" style="--sz:${sz}px">${logo(d.actors[0], sz)}${logo(d.actors[1], sz)}</span>`;
 const tk = t => `<a class="tk" href="/stock/${encodeURIComponent(t)}">$${esc(t)}</a>`;
 const vs = d => d.actors.map(t => '$' + esc(t)).join(' vs ');
-const colorOf = t => (STOCK[t] || {}).color || '#7a9087';
+const colorOf = t => (STOCK[t] || {}).color || '#a69580';
 
 /* ── state words and readings ── */
 function stateOf(t){ const s = STOCK[t]; return Engine.stateWord(SIM.vals[t], s.stats, s.kind); }
@@ -99,7 +99,7 @@ function radar(t, size = 220){
   const rings = [25, 50, 75, 100].map(p => `<polygon points="${poly(STATS.map(() => p))}" fill="none" stroke="var(--line-2)" stroke-width="1"/>`).join('');
   const spokes = STATS.map((k, i) => { const [x, y] = pt(i, 100); return `<line x1="${c}" y1="${c}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="var(--line-2)"/>`; }).join('');
   const labels = STATS.map((k, i) => { const [x, y] = pt(i, 128); const d = Math.round(v[k] - b[k]);
-    return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="var(--dim)" font-family="var(--mono)">${STAT_LABEL[k]}</text><text x="${x.toFixed(1)}" y="${(y + 13).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="${d && harmOf(k, d) > 0 ? 'var(--red-2)' : d ? 'var(--accent-2)' : 'var(--bright)'}" font-family="var(--mono)">${Math.round(v[k])}</text>`; }).join('');
+    return `<text x="${x.toFixed(1)}" y="${y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" fill="var(--dim)" font-family="var(--mono)">${STAT_LABEL[k]}</text><text x="${x.toFixed(1)}" y="${(y + 13).toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="10.5" font-weight="700" fill="${d && harmOf(k, d) > 0 ? 'var(--red-2)' : d ? 'var(--good-2)' : 'var(--bright)'}" font-family="var(--mono)">${Math.round(v[k])}</text>`; }).join('');
   const now = STATS.map(k => v[k]), base = STATS.map(k => b[k]);
   return `<svg class="radar" viewBox="0 0 ${size} ${size}" role="img" aria-label="$${esc(t)} readings now against its baseline">${rings}${spokes}
     <polygon points="${poly(base)}" fill="none" stroke="var(--dim)" stroke-width="1.2" stroke-dasharray="3 3"/>

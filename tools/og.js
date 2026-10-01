@@ -30,38 +30,38 @@ const sigil = (t, op = 1) => { const s = STOCK[t]; let r = '';
   return `<svg viewBox="0 0 10 10" shape-rendering="crispEdges" fill="${s.color}" style="opacity:${op}">${r}</svg>`; };
 const logo = (t, sz) => { const src = logoSrc(t), s = STOCK[t], full = src && src.endsWith('.svg');
   return `<div class="logo${full ? ' full' : ''}" style="width:${sz}px;height:${sz}px;border-radius:${sz * .2}px;--c:${s.color}">${src ? `<img src="${src}">` : sigil(t)}</div>`; };
-const CANDLE = `<svg class="candle" viewBox="0 0 16 24" shape-rendering="crispEdges"><rect x="7" y="0" width="2" height="4" fill="#c98a16"/><rect x="7" y="20" width="2" height="4" fill="#c98a16"/><rect x="2" y="4" width="12" height="16" rx="1.5" fill="#f2b53a"/><rect x="4" y="9" width="2.5" height="3.5" fill="#2a1a05"/><rect x="9.5" y="9" width="2.5" height="3.5" fill="#2a1a05"/><rect x="4.5" y="9.4" width="1" height="1" fill="#fff6dc"/><rect x="10" y="9.4" width="1" height="1" fill="#fff6dc"/><rect x="6" y="15" width="4" height="1" fill="#2a1a05"/></svg>`;
+const CANDLE = `<svg class="candle" viewBox="0 0 16 24" shape-rendering="crispEdges"><rect x="7" y="0" width="2" height="4" fill="#c98a16"/><rect x="7" y="20" width="2" height="4" fill="#c98a16"/><rect x="2" y="4" width="12" height="16" rx="1.5" fill="#f7c459"/><rect x="4" y="9" width="2.5" height="3.5" fill="#2a1a05"/><rect x="9.5" y="9" width="2.5" height="3.5" fill="#2a1a05"/><rect x="4.5" y="9.4" width="1" height="1" fill="#fff6dc"/><rect x="10" y="9.4" width="1" height="1" fill="#fff6dc"/><rect x="6" y="15" width="4" height="1" fill="#2a1a05"/></svg>`;
 
 const CSS = `
 *{box-sizing:border-box;margin:0}
-html,body{width:1200px;height:630px;overflow:hidden;background:#040706}
-body{font-family:"JetBrains Mono",monospace;color:#c6d6ce;position:relative}
-.card{position:absolute;inset:0;overflow:hidden;background:radial-gradient(900px 420px at 50% -120px,rgba(61,220,132,.13),transparent 70%),#040706}
-.card::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(to bottom,transparent 0 2px,rgba(0,0,0,.28) 2px 3px);pointer-events:none;z-index:9}
-.frame{position:absolute;border:1.5px solid rgba(61,220,132,.16)}
-.brand{position:absolute;left:56px;top:46px;display:flex;align-items:center;gap:16px;z-index:5}
-.candle{width:22px;height:34px;filter:drop-shadow(0 0 10px rgba(242,181,58,.6))}
-.wm{font-family:Doto;font-weight:900;font-size:27px;letter-spacing:.05em;color:#eef9f3}
-.wm b{color:#3ddc84;text-shadow:0 0 18px rgba(61,220,132,.5)}
-.url{position:absolute;right:56px;top:52px;font-size:19px;color:#7a9087;z-index:5;letter-spacing:.04em}
-.foot{position:absolute;left:56px;right:56px;bottom:44px;display:flex;align-items:center;gap:14px;font-size:21px;color:#7a9087;z-index:5}
-.foot b{color:#eef9f3;font-weight:700}
-.pill{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 14px;border-radius:7px;background:#0d1513;box-shadow:inset 0 0 0 1.5px #2b3f39;font-size:19px;color:#c6d6ce;font-weight:600}
-.pill.bad{background:rgba(255,91,79,.14);box-shadow:inset 0 0 0 1.5px rgba(255,91,79,.45);color:#ff9187}
-.pill.good{color:#7dffb4}
-.logo{display:grid;place-items:center;overflow:hidden;background:#e8f0ec;flex:none;box-shadow:0 0 0 2px #2b3f39,0 20px 60px -16px var(--c)}
+html,body{width:1200px;height:630px;overflow:hidden;background:#0b0907}
+body{font-family:"JetBrains Mono",monospace;color:#e4d9c6;position:relative}
+.card{position:absolute;inset:0;overflow:hidden;background:radial-gradient(900px 460px at 70% -140px,rgba(243,181,65,.16),transparent 70%),#0b0907}
+.card::after{content:"";position:absolute;inset:0;background:radial-gradient(130% 100% at 50% 50%,transparent 60%,rgba(0,0,0,.5));pointer-events:none;z-index:9}
+.frame{position:absolute;border:1.5px solid rgba(243,181,65,.15);border-radius:6px;box-shadow:inset 0 1px 0 rgba(255,214,140,.12)}
+.brand{position:absolute;left:56px;top:44px;display:flex;align-items:center;gap:16px;z-index:5}
+.candle{width:22px;height:34px;filter:drop-shadow(0 0 12px rgba(243,181,65,.65))}
+.wm{font-family:"Instrument Serif";font-size:36px;line-height:1;color:#fff5e4}
+.wm em{color:#f3b541;text-shadow:0 0 22px rgba(243,181,65,.4)}
+.url{position:absolute;right:56px;top:54px;font-size:19px;color:#a69580;z-index:5;letter-spacing:.04em}
+.foot{position:absolute;left:56px;right:56px;bottom:44px;display:flex;align-items:center;gap:14px;font-size:21px;color:#a69580;z-index:5}
+.foot b{color:#fff5e4;font-weight:700}
+.pill{display:inline-flex;align-items:center;gap:8px;height:40px;padding:0 16px;border-radius:999px;background:#231c15;box-shadow:inset 0 0 0 1.5px #47392b;font-size:19px;color:#e4d9c6;font-weight:600}
+.pill.bad{background:rgba(240,103,90,.14);box-shadow:inset 0 0 0 1.5px rgba(240,103,90,.45);color:#ffa396}
+.pill.good{color:#a6edc6}
+.logo{display:grid;place-items:center;overflow:hidden;background:#f3ebde;flex:none;box-shadow:0 0 0 2px #47392b,0 20px 60px -16px var(--c)}
 .logo img{width:100%;height:100%;object-fit:contain}
-.logo.full{background:#111}.logo.full img{object-fit:cover}
+.logo.full{background:#120e0b}.logo.full img{object-fit:cover}
 .logo svg{width:72%;height:72%}
-.sigils{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;opacity:.2;z-index:1}
+.sigils{position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;opacity:.16;z-index:1}
 .sigils svg{width:100%;height:100%}
-.title{font-family:Doto;font-weight:900;text-transform:uppercase;color:#eef9f3;line-height:1;letter-spacing:.01em}
-.glow{color:#3ddc84;text-shadow:0 0 30px rgba(61,220,132,.5)}
-.eyebrow{font-size:18px;letter-spacing:.2em;text-transform:uppercase;color:#7a9087}
-.eyebrow b{color:#3ddc84}
+.title{font-family:"Instrument Serif";color:#fff5e4;line-height:.95;letter-spacing:-.015em}
+.glow{font-style:italic;color:#f3b541;text-shadow:0 0 40px rgba(243,181,65,.35)}
+.eyebrow{font-size:18px;letter-spacing:.2em;text-transform:uppercase;color:#a69580}
+.eyebrow b{color:#f3b541}
 `;
-function frames() { let h = ''; for (let i = 1; i <= 7; i++) { const s = 1 / (i * .42); const w = 700 * s, hh = 480 * s; h += `<div class="frame" style="left:${600 - w / 2}px;top:${330 - hh / 2}px;width:${w}px;height:${hh}px;opacity:${Math.min(1, (8 - i) / 4) * .9}"></div>`; } return h; }
-const head = `<div class="brand">${CANDLE}<span class="wm">INFINITE <b>STOCKROOMS</b></span></div><span class="url">stockrooms.fun</span>`;
+function frames() { let h = ''; for (let i = 0; i <= 8; i++) { const s = Math.pow(.68, i); const w = 1100 * s, hh = 540 * s; h += `<div class="frame" style="left:${600 - w / 2}px;top:${330 - hh / 2}px;width:${w}px;height:${hh}px;opacity:${Math.min(1, (9 - i) / 4) * .9}"></div>`; } return h; }
+const head = `<div class="brand">${CANDLE}<span class="wm">Infinite <em>Stockrooms</em></span></div><span class="url">stockrooms.fun</span>`;
 
 function dreamCard(d) {
   const [a, b] = d.actors, by = {}; for (const e of d.events) by[e.ticker] = (by[e.ticker] || 0) + harm(e);
@@ -69,29 +69,29 @@ function dreamCard(d) {
   const worse = Math.max(da, db) > 0 && Math.abs(da - db) > 3 ? (da > db ? a : b) : null;
   const pill = (t, n) => `<span class="pill ${worse === t ? 'bad' : n < 0 ? 'good' : ''}">$${esc(t)} ${n > 0 ? '−' + n : n < 0 ? '+' + -n : '0'}</span>`;
   const verdict = worse ? `<b>$${esc(worse)}</b> came out worse` : Math.max(da, db) <= 0 ? 'both came out steadier' : 'both bled about the same';
-  const size = d.scenario.length > 21 ? 68 : d.scenario.length > 17 ? 78 : d.scenario.length > 13 ? 92 : 108;
+  const size = d.scenario.length > 21 ? 104 : d.scenario.length > 17 ? 120 : d.scenario.length > 13 ? 136 : 150;
   return `<div class="card"><div class="sigils">${sigil(a)}${sigil(b)}</div>${frames()}${head}
     <div style="position:absolute;left:56px;right:56px;top:150px;z-index:5;display:flex;align-items:center;gap:26px">
-      ${logo(a, 108)}<span class="title" style="font-size:44px;color:#4b5d56">VS</span>${logo(b, 108)}
-      <div style="margin-left:14px"><div class="eyebrow">Original dream No. ${esc(d.n)}</div><div style="font-size:26px;color:#eef9f3;font-weight:700;margin-top:10px">$${esc(a)} vs $${esc(b)}</div></div></div>
-    <div class="title" style="position:absolute;left:56px;right:56px;top:318px;font-size:${size}px;z-index:5">${esc(d.scenario)}</div>
+      ${logo(a, 108)}<span class="title glow" style="font-size:52px;opacity:.85">vs</span>${logo(b, 108)}
+      <div style="margin-left:14px"><div class="eyebrow">Original dream No. ${esc(d.n)}</div><div style="font-size:26px;color:#fff5e4;font-weight:700;margin-top:10px">$${esc(a)} vs $${esc(b)}</div></div></div>
+    <div class="title" style="position:absolute;left:56px;right:56px;top:300px;font-size:${size}px;z-index:5">${esc(d.scenario)}</div>
     <div class="foot">${pill(a, da)}${pill(b, db)}<span style="margin-left:8px">${verdict}</span><span style="margin-left:auto">${d.events.length} moves · live, forever</span></div></div>`;
 }
 function stockCard(s) {
   const bio = s.bio.length > 150 ? s.bio.slice(0, 149).replace(/\s+\S*$/, '') + '…' : s.bio;
-  return `<div class="card" style="background:radial-gradient(760px 520px at 12% 40%,${s.color}33,transparent 70%),radial-gradient(900px 420px at 50% -120px,rgba(61,220,132,.1),transparent 70%),#040706">
+  return `<div class="card" style="background:radial-gradient(760px 520px at 12% 40%,${s.color}33,transparent 70%),radial-gradient(900px 420px at 70% -140px,rgba(243,181,65,.12),transparent 70%),#0b0907">
     <div style="position:absolute;right:-70px;top:40px;width:560px;height:560px;opacity:.1;z-index:1">${sigil(s.ticker)}</div>${head}
     <div style="position:absolute;left:56px;top:160px;z-index:5">${logo(s.ticker, 250)}</div>
     <div style="position:absolute;left:362px;right:56px;top:170px;z-index:5">
       <div class="eyebrow">${esc(s.kind === 'meme' ? 'memecoin' : s.kind)} · <b>on the floor, live</b></div>
-      <div class="title" style="font-size:${s.ticker.length > 6 ? 104 : 136}px;margin-top:18px">$${esc(s.ticker)}</div>
-      <div style="font-size:32px;margin-top:18px;font-weight:600;color:color-mix(in srgb,${s.color} 55%,#fff)">${esc(s.epithet)}</div>
-      <div style="font-size:20px;line-height:1.55;margin-top:22px;color:#9fb3aa;max-width:740px">${esc(bio)}</div></div></div>`;
+      <div class="title" style="font-size:${s.ticker.length > 6 ? 136 : 168}px;margin-top:14px">$${esc(s.ticker)}</div>
+      <div style="font-family:'Instrument Serif';font-style:italic;font-size:42px;line-height:1.1;margin-top:10px;color:color-mix(in srgb,${s.color} 50%,#fff)">${esc(s.epithet)}</div>
+      <div style="font-size:20px;line-height:1.55;margin-top:22px;color:#bfae96;max-width:740px">${esc(bio)}</div></div></div>`;
 }
 function homeCard() {
-  return `<div class="card">${frames()}<div style="position:absolute;left:50%;top:50%;width:260px;height:260px;margin:-130px 0 0 -130px;background:radial-gradient(circle,rgba(255,217,140,.35),transparent 65%);z-index:1"></div>${head}
+  return `<div class="card">${frames()}<div style="position:absolute;left:50%;top:50%;width:260px;height:260px;margin:-130px 0 0 -130px;background:radial-gradient(circle,rgba(255,206,120,.4),transparent 65%);z-index:1"></div>${head}
     <div style="position:absolute;left:56px;right:56px;top:196px;z-index:5"><div class="eyebrow">Live since July 1, 2026 · <b>never closed</b></div>
-      <div class="title" style="font-size:84px;margin-top:22px">The stocks woke up.</div><div class="title glow" style="font-size:52px;margin-top:16px">They have not stopped talking.</div></div>
+      <div class="title" style="font-size:112px;margin-top:20px">The stocks woke up.</div><div class="title glow" style="font-size:80px;margin-top:10px">They have not stopped talking.</div></div>
     <div class="foot" style="gap:10px">${['NVDA', 'TSLA', 'AAPL', 'GME', 'BTC', 'SPY', 'COIN', 'HOOD', 'META', 'LEH'].filter(t => STOCK[t]).map(t => logo(t, 46)).join('')}<span style="margin-left:auto">${stocks.length} minds · every session archived</span></div></div>`;
 }
 
@@ -101,7 +101,7 @@ function homeCard() {
   fs.mkdirSync(path.join(OUT, 'stock'), { recursive: true });
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'og-'));
   const page = path.join(tmp, 'card.html');
-  fs.writeFileSync(page, `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Doto:ROND,wght@0..100,500..900&family=JetBrains+Mono:wght@400;600;700&display=block"><style>${CSS}</style></head><body><div id="c"></div></body></html>`);
+  fs.writeFileSync(page, `<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600;700&display=block"><style>${CSS}</style></head><body><div id="c"></div></body></html>`);
   const port = 9400 + Math.floor(Math.random() * 400);
   const ch = spawn(CHROME, ['--headless=new', `--remote-debugging-port=${port}`, `--user-data-dir=${path.join(tmp, 'profile')}`, '--hide-scrollbars', '--allow-file-access-from-files', '--no-first-run', 'about:blank'], { stdio: 'ignore' });
   let ver; for (let i = 0; i < 60 && !ver; i++) { try { ver = await (await fetch(`http://127.0.0.1:${port}/json/version`)).json(); } catch (e) { await sleep(250); } }
